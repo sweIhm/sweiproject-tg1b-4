@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActivityDetailsComponent implements OnInit {
 
+  activity = {
+    id: 1,
+    title: 'Activity',
+    content: 'test',
+    tag: 'tag'
+  }
+
   constructor() { }
 
   ngOnInit() {

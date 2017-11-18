@@ -1,54 +1,28 @@
-<body>
 <div class="container">
-  <header>
-    <div class="primary_header">
-      <div id="logo"><img src="/assets/Logo.svg" alt="Logo" height="40"></div>
-      <div id="register">
-        <a href="#" class="register">Register</a>
-        <a href="#" class="login">Login</a>
-      </div>
-    </div>
-    <nav class="sidebar_menu" id="menu">
-      <div style="margin-left: 15%">
-        <ul>
-          <ul><a href="#" class="container .sidebar_menu ul">Overview</a></ul>
-          <ul><a href="#" class="container .sidebar_menu ul">Test</a></ul>
-          <ul><a href="#" class="container .sidebar_menu ul">Test</a></ul>
-          <ul><a href="#" class="container .sidebar_menu ul">Test</a></ul>
-          <ul><a href="#" class="container .sidebar_menu ul">Test</a></ul>
-          <ul><a href="#" class="container .sidebar_menu ul">Test</a></ul>
-        </ul>
-      </div>
-    </nav>
-  </header>
-  <div style="margin-left: 10%">
-    <div style="margin-top: 8%">
-      <section>
-        <article class="left_article">
-          <h3><app-activity-overview></app-activity-overview></h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        </article>
-      </section>
-      <div class="row">
-        <div class="columns">
-          <h4>TITLE</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
-        </div>
-        <div class="columns">
-          <h4>TITLE</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
-        </div>
-        <div class="columns">
-          <h4>TITLE</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
-        </div>
-        <div class="columns">
-          <h4>TITLE</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
-        </div>
-      </div>
+  <div class="primary_header">
+    <div id="logo"><a href="activities"><img src="/assets/Logo.svg" alt="Logo" height="40"></a></div>
+    <div id="register">
+      <a href="registration" class="register">Register</a>
+      <a href="login" class="login">Login</a>
     </div>
   </div>
+  <nav class="sidebar_menu" id="menu">
+    <div style="margin-left: 15%">
+        <ul>
+          <ul><a href="activities">Overview</a></ul>
+          <ul><a href="#">Test</a></ul>
+          <ul><a href="#">Test</a></ul>
+          <ul><a href="#">Test</a></ul>
+          <ul><a href="#">Test</a></ul>
+          <ul><a href="#">Test</a></ul>
+        </ul>
+    </div>
+  </nav>
+  <main>
+    <div style="margin-left: 18%">
+      <div style="margin-top: 15%">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
 </div>
-</body>

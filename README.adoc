@@ -11,7 +11,7 @@ experimental: Try the code inside your browser with -> http://beta.codenvy.com/f
 :icons: font
 :source-highlighter: prettify
 
-This guide walks you through the process of creating a "hello world" link:/understanding/REST[RESTful web service] with Spring.
+This guide walks you through the process of creating a "base world" link:/understanding/REST[RESTful web service] with Spring.
 
 == What you'll build
 
@@ -79,10 +79,10 @@ The `id` field is a unique identifier for the greeting, and `content` is the tex
 
 To model the greeting representation, you create a resource representation class. Provide a plain old java object with fields, constructors, and accessors for the `id` and `content` data:
 
-`src/main/java/hello/Greeting.java`
+`src/main/java/base/Greeting.java`
 [source,java]
 ----
-include::complete/src/main/java/hello/Greeting.java[]
+include::complete/src/main/java/base/Greeting.java[]
 ----
 
 NOTE: As you see in steps below, Spring uses the http://wiki.fasterxml.com/JacksonHome[Jackson JSON] library to automatically marshal instances of type `Greeting` into JSON.
@@ -94,10 +94,10 @@ Next you create the resource controller that will serve these greetings.
 
 In Spring's approach to building RESTful web services, HTTP requests are handled by a controller. These components are easily identified by the http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/RestController.html[`@RestController`] annotation, and the `GreetingController` below handles `GET` requests for `/greeting` by returning a new instance of the `Greeting` class:
 
-`src/main/java/hello/GreetingController.java`
+`src/main/java/base/GreetingController.java`
 [source,java]
 ----
-include::complete/src/main/java/hello/GreetingController.java[]
+include::complete/src/main/java/base/GreetingController.java[]
 ----
 
 This controller is concise and simple, but there's plenty going on under the hood. Let's break it down step by step.
@@ -122,10 +122,10 @@ The `Greeting` object must be converted to JSON. Thanks to Spring's HTTP message
 Although it is possible to package this service as a traditional link:/understanding/WAR[WAR] file for deployment to an external application server, the simpler approach demonstrated below creates a standalone application. You package everything in a single, executable JAR file, driven by a good old Java `main()` method. Along the way, you use Spring's support for embedding the link:/understanding/Tomcat[Tomcat] servlet container as the HTTP runtime, instead of deploying to an external instance.
 
 
-`src/main/java/hello/Application.java`
+`src/main/java/base/Application.java`
 [source,java]
 ----
-include::complete/src/main/java/hello/Application.java[]
+include::complete/src/main/java/base/Application.java[]
 ----
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application.adoc[]

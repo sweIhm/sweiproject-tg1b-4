@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { ActivityOverviewComponent } from './activity-overview/activity-overview.component';
+import { ActivityOverviewComponent } from './activities/activity-overview.component';
 import { ActivityDetailsComponent } from './activity-details/activity-details.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
+import {FormsModule} from "@angular/forms";
+import {AppRoutingModule} from "./app-routing.module";
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { LoginComponent } from './login/login.component';
     LoginComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

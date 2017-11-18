@@ -12,6 +12,10 @@ export class ActivityOverviewComponent implements OnInit {
   ngOnInit() {
   }
 
-  activity = 'Activity';
-
+  activity = {
+    id: 1,
+    title: 'Activity',
+    content: 'test',
+    tag: 'tag'
+  }
 }
