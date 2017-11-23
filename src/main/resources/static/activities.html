@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html ng-app="ActivityMeterApp">
+<head>
+<title>ActivityMeterApp</title>
+<meta charset="utf-8">
+
+	
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script
+	src="https://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.1.0.js"></script>
+<!--
+<link
+	href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="table.css" />
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+<script>
+var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
+
+	function loadActivities ($scope, $http){
+		$http({
+       		 method : 'GET',
+       		 url : 'http://localhost:8080/activity'
+    		}).then(function (response) {
+     			 $scope.activities = response.data;
+  		});
+  	}
+
+app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
+  	
+  	loadActivities($scope, $http);
+  
+		  
+  	var addDialogOptions = {
+    	controller: 'AddActivityCtrl',
+    	templateUrl: './activityAdd.html'
+  	};
+  	
+  	$scope.add = function(activity){
+    	$dialog.dialog(angular.extend(addDialogOptions, {})).open().then(function (){
+    	    loadActivities($scope, $http);
+        }) ;
+  	};
+  	
+  	var editDialogOptions = {
+	    controller: 'EditActivityCtrl',
+	    templateUrl: './activityEdit.html',
+	};
+
+  	$scope.edit = function(activity){
+   	 	var activityToEdit = activity;
+    	$dialog.dialog(angular.extend(editDialogOptions, {resolve: {activity: angular.copy(activityToEdit)}})).open().then(function (){
+    	    loadActivities($scope, $http);
+        }) ;
+  	};
+		
+	$scope.delete = function(activity) {
+		var deleteRequest = {
+			method : 'DELETE',
+			url : 'http://localhost:8080/activity/' + activity.id
+		};
+		
+  		$http(deleteRequest).then(function() {
+			loadActivities($scope, $http);
+		});
+  		//todo handle error
+	};
+});
+
+app.controller('AddActivityCtrl', function($scope, $http, dialog){
+  
+  	$scope.save = function(Activity) {
+  		var postRequest = {
+    	method : 'POST',
+       	url : 'http://localhost:8080/activity/' ,
+       	data: {
+  				text: $scope.activity.text,
+  				tags: $scope.activity.tags,
+  				title: $scope.activity.title
+			  }
+		}  
+		
+  		$http(postRequest).then(function (response) {
+  		    $scope.activities = response.data;
+  		}).then(function () {
+  			$scope.close();
+  		});
+  	};
+  
+  	$scope.close = function(){;
+    	dialog.close(undefined);
+  	};
+});
+
+app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
+  
+	$scope.activity = activity;
+
+  	$scope.save = function($activity) {
+  	    var putRequest = {
+    	method : 'PUT',
+       	url : 'http://localhost:8080/activity/'+ $scope.activity.id ,
+       	data: {
+  				text: $scope.activity.text,
+  				tags: $scope.activity.tags,
+  				title: $scope.activity.title
+			  }
+		}  
+		
+  		$http(putRequest).then(function (response) {
+  		    $scope.activities = response.data;
+  		}).then(function () {
+			//todo handle error
+			$scope.close();
+		});
+  	};
+  
+  	$scope.close = function(){
+  		loadActivities($scope, $http);
+    	dialog.close();
+  	};
+});
+
+
+</script>
+</head>
+<body>
+	<div ng-controller="ActivityCtrl">
+		<h3>Activities:</h3>
+		<table class="mdl-data-table">
+			<tr>
+				<td class="mdl-data-table__cell--non-numeric" colspan=3>&nbsp;</td>
+				<td class="mdl-data-table__cell--non-numeric"><button class="mdl-button" ng-click="add()">add Activity</button></td>
+			</tr>
+			<tr ng-repeat="activity in activities">
+				<td class="mdl-data-table__cell--non-numeric">{{activity.title}}</td>
+				<td class="mdl-data-table__cell--non-numeric">{{activity.text}}</td>
+				<td class="mdl-data-table__cell--non-numeric">{{activity.tags}}</td>
+				<td class="mdl-data-table__cell--non-numeric"><button class="mdl-button" ng-click="edit(activity)">edit</button>
+					<button class="mdl-button" ng-click="delete(activity)">delete</button></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
