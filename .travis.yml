@@ -9,10 +9,10 @@ install:
 
   - mvn -N io.takari:maven:wrapper
 
-  - ./mvnw install
-
-
+  - ./mvnw install -Pdev
 
 script:
+
+  #mvn clean install -Pdev
 
   mvn clean install
