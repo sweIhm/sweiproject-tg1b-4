@@ -15,4 +15,4 @@ script:
 
   #mvn clean install -Pdev
 
-  mvn clean install
+  mvn spring-boot:run -Pdev
