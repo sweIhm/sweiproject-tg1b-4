@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/sweIhm/sweiproject-tg1b-4.svg?branch=master)](https://travis-ci.org/sweIhm/sweiproject-tg1b-4)
