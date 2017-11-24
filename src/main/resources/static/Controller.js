@@ -19,6 +19,27 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
 
     loadActivities($scope, $http);
 
+    var registrationDialogOptions = {
+        controller: 'RegistrationCtrl',
+        templateUrl: './registration.html'
+    };
+
+    $scope.registration = function() {
+        $dialog.dialog(angular.extend(registrationDialogOptions, {})).open().then(function () {
+            loadActivities($scope, $http);
+        })
+    };
+
+    var loginDialogOptions = {
+        controller: 'LoginCtrl',
+        templateUrl: './login.html'
+    };
+
+    $scope.login = function() {
+        $dialog.dialog(angular.extend(loginDialogOptions, {})).open().then(function () {
+            loadActivities($scope, $http);
+        })
+    };
 
     var addDialogOptions = {
         controller: 'AddActivityCtrl',
@@ -54,6 +75,38 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
         //todo handle error
     };
 });
+
+app.controller('RegistrationCtrl', function($scope, $http, dialog) {
+    $scope.save = function (User) {
+        if ($scope.user.password !== $scope.user.passwordControl) {
+            alert("Passwords don't match!");
+        }
+        if ($scope.user.password.length <= 10) {
+            alert("Password to short!");
+        }
+        var postRequest = {
+            method : 'POST',
+            url: 'user',
+            data: {
+                username: $scope.user.username,
+                email: $scope.user.email,
+                password: $scope.user.password
+            }
+        };
+    };
+
+    $scope.close = function () {
+        dialog.close(undefined);
+    };
+});
+
+app.controller('LoginCtrl', function($scope, $http, dialog) {
+    //...
+    $scope.close = function () {
+        dialog.close(undefined);
+    };
+});
+
 app.controller('AddActivityCtrl', function($scope, $http, dialog){
 
     $scope.save = function(Activity) {
@@ -65,7 +118,7 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
                 tags: $scope.activity.tags,
                 title: $scope.activity.title
             }
-        }
+        };
 
         $http(postRequest).then(function (response) {
             $scope.activities = response.data;
@@ -74,7 +127,7 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
         });
     };
 
-    $scope.close = function(){;
+    $scope.close = function(){
         dialog.close(undefined);
     };
 });

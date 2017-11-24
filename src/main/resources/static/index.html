@@ -35,11 +35,17 @@
 						<label class="mdl-textfield__label" for="addr1">Search for...</label>
 					</div>
 				</div>
-				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-					Registration</button>
-				<div style="padding-left: 20px">
-					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-						Login</button>
+				<div ng-controller="ActivityCtrl">
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="registration()">
+						Registration
+					</button>
+				</div>
+				<div ng-Controller="ActivityCtrl">
+					<div style="padding-left: 20px">
+						<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
+							Login
+						</button>
+					</div>
 				</div>
 			</nav>
 		</div>
@@ -110,5 +116,4 @@
 		</div>
 	</main>
 </div>
-
 </html>
