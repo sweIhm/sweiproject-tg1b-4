@@ -8,41 +8,42 @@
 <div class="modal-header">
     <h1>User Registration</h1>
 </div>
-<form action="#">
-<div class="modal-body">
-    <!-- Textfield with Floating Label -->
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" required id="nickname" ng-model="user.username">
-        <label class="mdl-textfield__label" for="nickname">Nickname...</label>
-    </div>
+<form ng-submit="save()">
+    <div class="modal-body">
+        <!-- Textfield with Floating Label -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" required autofocus pattern="^[A-Za-z0-9_]+"
+                   placeholder="Name..." id="username" ng-model="user.username">
+        </div>
 
-    <!-- Colored raised button -->
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-        Profile picture
-    </button>
+        <!--&lt;!&ndash; Colored raised button &ndash;&gt;
+        <button class="mdl-button mdl-js-button mdl-button&#45;&#45;raised mdl-js-ripple-effect mdl-button&#45;&#45;colored">
+            Profile picture
+        </button>-->
 
-    <!-- Textfield with Floating Label -->
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="email" required id="email" ng-model="user.email">
-        <label class="mdl-textfield__label" for="email">E-Mail...</label>
-    </div>
+        <!-- Textfield with Floating Label -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="email" required id="email"
+                   placeholder="E-Mail..." ng-model="user.email">
+        </div>
 
-    <!-- Textfield with Floating Label -->
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" minlength="10" required id="password" ng-model="user.password">
-        <label class="mdl-textfield__label" for="password">Password...</label>
-    </div>
+        <!-- Textfield with Floating Label -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" minlength="10" required
+                   pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" id="password"
+                   placeholder="Password..." ng-model="user.password">
+        </div>
 
-    <!-- Textfield with Floating Label -->
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" minlength="10" required id="passwordControl" ng-model="user.passwordControl">
-        <label class="mdl-textfield__label" for="passwordControl">Confirm Password...</label>
+        <!-- Textfield with Floating Label -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" minlength="10" required
+                   placeholder="Confirm Password..." id="passwordControl" ng-model="user.passwordControl">
+        </div>
     </div>
-</div>
 <div class="modal-footer">
     <!-- Colored raised button -->
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="save()">
-        <input type="submit" hidden>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <input type="submit" hidden/>
         Register
     </button>
 

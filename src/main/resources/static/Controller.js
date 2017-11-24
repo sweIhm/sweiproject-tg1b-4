@@ -80,9 +80,10 @@ app.controller('RegistrationCtrl', function($scope, $http, dialog) {
     $scope.save = function (User) {
         if ($scope.user.password !== $scope.user.passwordControl) {
             alert("Passwords don't match!");
-        } else {
-            alert("Works!");
+            document.getElementById("passwordControl").focus();
+            return;
         }
+        alert("Works!");
         var postRequest = {
             method : 'POST',
             url: 'user',
@@ -101,7 +102,7 @@ app.controller('RegistrationCtrl', function($scope, $http, dialog) {
 
 app.controller('LoginCtrl', function($scope, $http, dialog) {
     $scope.login = function (User) {
-        alert("Works!");
+        alert("Login Works!");
     };
 
     $scope.close = function () {

@@ -8,30 +8,25 @@
 <div class="modal-header">
     <h1>Login</h1>
 </div>
-<form>
-    <div class="modal-body">
-        <!-- Textfield with Floating Label -->
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="email" id="email">
-            <label class="mdl-textfield__label" for="email">E-Mail...</label>
-        </div>
-
-        <!-- Textfield with Floating Label -->
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="password">
-            <label class="mdl-textfield__label" for="password">Password...</label>
-        </div>
+<div class="modal-body">
+    <!-- Textfield with Floating Label -->
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="email" id="emailLogin" placeholder="E-Mail..." ng-model="user.emailLogin">
     </div>
-    <div class="modal-footer">
-        <!-- Colored raised button -->
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="login()">
-            <input type="submit" hidden>
-            Login
-        </button>
 
-        <!-- Accent-colored raised button with ripple -->
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="close()">
-            Back
-        </button>
+    <!-- Textfield with Floating Label -->
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" id="passwordLogin" placeholder="Password..." ng-model="user.passwordLogin">
     </div>
-</form>
+</div>
+<div class="modal-footer">
+    <!-- Colored raised button -->
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="login()">
+        Login
+    </button>
+
+    <!-- Accent-colored raised button with ripple -->
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="close()">
+        Back
+    </button>
+</div>
