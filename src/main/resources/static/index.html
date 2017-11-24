@@ -172,6 +172,7 @@
 					<body>
 					<div ng-controller="ActivityCtrl">
 						<h3>Activities:</h3>
+						<div ng-repeat="activity in activities">
 						<!-- Square card -->
 						<style>
 							.demo-card-square.mdl-card {
@@ -197,6 +198,7 @@
 									{{activity.tags}}
 								</a>
 							</div>
+						</div>
 						</div>
 						<table class="mdl-data-table">
 							<tr>
