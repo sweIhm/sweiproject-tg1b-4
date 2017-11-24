@@ -16,44 +16,48 @@
 	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.1.0/ui-bootstrap-tpls.js"></script>
-	<script src="Controller.js"></script>
+	<script src="controller.js"></script>
 </head>
 
 <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 	<header class="mdl-layout__header">
-		<div class="mdl-layout__header-row">
-			<!-- Title -->
-			<span class="mdl-layout-title">IUA</span>
-			<!-- Add spacer, to align navigation to the right -->
-			<div class="mdl-layout-spacer"></div>
-			<!-- Navigation. We hide it in small screens. -->
-			<nav class="mdl-navigation mdl-layout--large-screen-only">
-				<div class="searchBar">
-					<form action="#">
-						<div class="mdl-textfield mdl-js-textfield">
-							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-								<input class="mdl-textfield__input" type="text" id="addr1">
-								<label class="mdl-textfield__label" for="addr1"><div style="color: #e1e1e1"><div style="margin-left: 10px">Search for...</div></div></label>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div ng-controller="ActivityCtrl">
-					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="registration()">
-						Registration
-					</button>
-				</div>
-				<div ng-Controller="ActivityCtrl">
-					<div style="padding-left: 20px">
-						<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
-							Login
-						</button>
-					</div>
-				</div>
-			</nav>
-		</div>
-	</header>
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">IUA</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation mdl-layout--large-screen-only">
+                <div class="searchBar">
+                    <form action="#">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="addr1">
+                                <label class="mdl-textfield__label" for="addr1">
+                                    <div style="color: #e1e1e1">
+                                        <div style="margin-left: 10px">Search for...</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-controller="ActivityCtrl">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="registration()">
+                        Registration
+                    </button>
+                </div>
+                <div ng-Controller="ActivityCtrl">
+                    <div style="padding-left: 20px">
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
+                            Login
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
 	<div class="mdl-layout__drawer">
 		<span class="mdl-layout-title">IUA</span>
 		<nav class="mdl-navigation">
