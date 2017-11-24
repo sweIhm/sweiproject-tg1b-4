@@ -68,56 +68,58 @@
 			<div style="margin-top: 10%">
 				<div class="page-content">
 					<body>
-					<div ng-controller="ActivityCtrl">
-						<h3>Activities</h3>
-						<div ng-repeat="activity in activities">
-							<!-- Square card -->
-							<style>
-								.demo-card-square.mdl-card {
-									width: 320px;
-									height: 320px;
-									float: left;
-									margin-right: 30px;
-									margin-bottom: 30px;
-								}
-								.demo-card-square > .mdl-card__title {
-									color: #fff;
-									background:
-											url('https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/documents/Card_Background.png?raw=true')
-											bottom right 15% no-repeat #46B6AC;
-								}
-							</style>
-							<div class="demo-card-square mdl-card mdl-shadow--2dp">
-								<div class="mdl-card__title mdl-card--expand">
-									<h2 class="mdl-card__title-text"><div style="color: black">{{activity.title}}</div></h2>
-								</div>
-								<div class="mdl-card__supporting-text">
-									{{activity.text}}
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-										#{{activity.tags}}
-									</a>
-								</div>
-							</div>
-						</div>
+                        <div ng-controller="ActivityCtrl">
+                            <h3>Activities</h3>
+                            <div ng-repeat="activity in activities">
+                                <!-- Square card -->
+                                <style>
+                                    .demo-card-square.mdl-card {
+                                        width: 320px;
+                                        height: 320px;
+                                        float: left;
+                                        margin-right: 30px;
+                                        margin-bottom: 30px;
+                                    }
+                                    .demo-card-square > .mdl-card__title {
+                                        color: #fffff;
+                                        background:
+                                                url('https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/documents/Card_Background.png?raw=true')
+                                                bottom right 15% no-repeat #46B6AC;
+                                    }
+                                </style>
+                                <div class="demo-card-square mdl-card mdl-shadow--2dp">
+                                    <div class="mdl-card__title mdl-card--expand">
+                                        <h2 class="mdl-card__title-text"><div style="color: black">{{activity.title}}</div></h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text">
+                                        {{activity.text}}
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                            #{{activity.tags}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
-						<table class="mdl-data-table">
-							<tr>
-								<td class="mdl-data-table__cell--non-numeric" colspan=3>&nbsp;</td>
-								<td class="mdl-data-table__cell--non-numeric"><button
-										class="mdl-button" ng-click="add()">add Activity</button></td>
-							</tr>
-							<tr ng-repeat="activity in activities">
-								<!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{activity.title}}</td>-->
-								<!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{activity.text}}</td>-->
-								<!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{activity.tags}}</td>-->
-								<td class="mdl-data-table__cell--non-numeric">
-									<button	class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="edit(activity)">edit</button>
-									<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="delete(activity)">delete</button></td>
-							</tr>
-						</table>
-					</div>
+                            <table class="mdl-data-table">
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric" colspan=3>&nbsp;</td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <button class="mdl-button" ng-click="add()">add Activity</button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="activity in activities">
+                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{activity.title}}</td>-->
+                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{activity.text}}</td>-->
+                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{activity.tags}}</td>-->
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <button	class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="edit(activity)">edit</button>
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="delete(activity)">delete</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
 					</body>
 				</div>
 			</div>

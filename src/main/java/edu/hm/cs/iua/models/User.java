@@ -1,9 +1,15 @@
-package edu.hm.cs.iua.models.users;
+package edu.hm.cs.iua.models;
 import edu.hm.cs.iua.exceptions.PasswordNotMatchCriteriaException;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class User {
-    private String userName;
+
+    @Id
     private String userEmail;
+    private String userName;
     private String userPassword;
     private String codeSendToUser;
     private boolean confirmedAcc;
@@ -19,6 +25,7 @@ public class User {
         registrationDate = 0;
     }
     private User(User user) {}
+
     private User(String name, String email, String password) {
         userName = name;
         userEmail = email;
@@ -33,9 +40,11 @@ public class User {
             throw new PasswordNotMatchCriteriaException();
         return new User(name, email, encryptPassword(password));
     }
+
     public boolean login(String email, String password) {
         return false;
     }
+
     public void sendConfirmationCode() {
         // Send Code to Email
         // If already send, show alert.
@@ -50,16 +59,21 @@ public class User {
     private String encryptPassword(String password) {
         return "";
     }
+
     private String decryptPassword(String encryptedPassword) {
         return "";
     }
+
     private boolean comparePassword(String inputPassword) {
         return false;
     }
+
     private boolean testPassword(String password) {
         return false;
     }
+
     private String generateCode() {
         return "";
     }
+
 }
