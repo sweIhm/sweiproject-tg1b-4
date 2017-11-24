@@ -8,31 +8,30 @@
 <div class="modal-header">
     <h1>Login</h1>
 </div>
-<div class="modal-body">
-    <!-- Textfield with Floating Label -->
-    <form action="#">
+<form>
+    <div class="modal-body">
+        <!-- Textfield with Floating Label -->
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="sample2">
-            <label class="mdl-textfield__label" for="sample3">E-Mail...</label>
+            <input class="mdl-textfield__input" type="email" id="email">
+            <label class="mdl-textfield__label" for="email">E-Mail...</label>
         </div>
-    </form>
 
-    <!-- Textfield with Floating Label -->
-    <form action="#">
+        <!-- Textfield with Floating Label -->
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="sample3">
-            <label class="mdl-textfield__label" for="sample3">Password...</label>
+            <input class="mdl-textfield__input" type="password" id="password">
+            <label class="mdl-textfield__label" for="password">Password...</label>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <!-- Colored raised button -->
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-        Login
-    </button>
+    </div>
+    <div class="modal-footer">
+        <!-- Colored raised button -->
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="login()">
+            <input type="submit" hidden>
+            Login
+        </button>
 
-    <!-- Accent-colored raised button with ripple -->
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="close()">
-        Back
-    </button>
-</div>
+        <!-- Accent-colored raised button with ripple -->
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="close()">
+            Back
+        </button>
+    </div>
+</form>

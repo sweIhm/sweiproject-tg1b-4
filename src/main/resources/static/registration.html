@@ -8,14 +8,13 @@
 <div class="modal-header">
     <h1>User Registration</h1>
 </div>
+<form action="#">
 <div class="modal-body">
     <!-- Textfield with Floating Label -->
-    <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="nickname" ng-model="user.username">
-            <label class="mdl-textfield__label" for="nickname">Nickname...</label>
-        </div>
-    </form>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" required id="nickname" ng-model="user.username">
+        <label class="mdl-textfield__label" for="nickname">Nickname...</label>
+    </div>
 
     <!-- Colored raised button -->
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
@@ -23,33 +22,27 @@
     </button>
 
     <!-- Textfield with Floating Label -->
-    <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="email" ng-model="user.email">
-            <label class="mdl-textfield__label" for="email">E-Mail...</label>
-        </div>
-    </form>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="email" required id="email" ng-model="user.email">
+        <label class="mdl-textfield__label" for="email">E-Mail...</label>
+    </div>
 
     <!-- Textfield with Floating Label -->
-    <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="password" ng-model="user.password">
-            <label class="mdl-textfield__label" for="password">Password...</label>
-        </div>
-    </form>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" minlength="10" required id="password" ng-model="user.password">
+        <label class="mdl-textfield__label" for="password">Password...</label>
+    </div>
 
     <!-- Textfield with Floating Label -->
-    <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="passwordControl" ng-model="user.passwordControl">
-            <label class="mdl-textfield__label" for="passwordControl">Confirm Password...</label>
-        </div>
-    </form>
-
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" minlength="10" required id="passwordControl" ng-model="user.passwordControl">
+        <label class="mdl-textfield__label" for="passwordControl">Confirm Password...</label>
+    </div>
 </div>
 <div class="modal-footer">
     <!-- Colored raised button -->
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="save()">
+        <input type="submit" hidden>
         Register
     </button>
 
@@ -58,3 +51,4 @@
         Back
     </button>
 </div>
+</form>
