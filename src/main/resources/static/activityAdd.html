@@ -9,24 +9,15 @@
 	<h1>Add Activity</h1>
 </div>
 <div class="modal-body">
-	<form action="#">
-		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input class="mdl-textfield__input" type="text" id="title" ng-model="activity.title">
-			<label class="mdl-textfield__label" for="title"><div style="margin-left: 10px">Title...</div></label>
-		</div>
-	</form>
-	<form action="#">
-		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input class="mdl-textfield__input" type="text" id="text" ng-model="activity.text">
-			<label class="mdl-textfield__label" for="text"><div style="margin-left: 10px">Text...</div></label>
-		</div>
-	</form>
-	<form action="#">
-		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input class="mdl-textfield__input" type="text" id="tags" ng-model="activity.tags">
-			<label class="mdl-textfield__label" for="tags"><div style="margin-left: 10px">Tags...</div></label>
-		</div>
-	</form>
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+		<input class="mdl-textfield__input" type="text" id="title" placeholder="Title..." ng-model="activity.title">
+	</div>
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+		<input class="mdl-textfield__input" type="text" id="text" placeholder="Text..." ng-model="activity.text">
+	</div>
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+		<input class="mdl-textfield__input" type="text" id="tags" placeholder="Tags..." ng-model="activity.tags">
+	</div>
 </div>
 <div class="modal-footer">
 	<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="save(activity)">
