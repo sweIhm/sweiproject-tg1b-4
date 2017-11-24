@@ -1,0 +1,6 @@
+User clicks on Registration.
+Enters name, email, and password 2 times.
+-> JavaScript message if password does not equal
+-> JavaScript message if password does not match Criteria
+If good, call registration().
+-> Encrypts password and creates new user.
