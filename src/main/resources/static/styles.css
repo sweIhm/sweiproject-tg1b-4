@@ -1,17 +1,7 @@
 .searchBar {
     position: fixed;
-    top: 36px;
+    top: 6%;
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
-}
-
-.demo-card-square.mdl-card {
-    width: 320px;
-    height: 320px;
-}
-
-.demo-card-square > .mdl-card__title {
-    color: #ffffff;
-    background: bottom right 15% no-repeat #46B6AC;
 }
