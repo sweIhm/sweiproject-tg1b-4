@@ -1,5 +1,6 @@
-package base.activitymeter;
+package edu.hm.cs.iua;
 
+import edu.hm.cs.iua.models.Activity;
 import org.junit.Test;
 
 import com.openpojo.reflection.PojoClass;

@@ -1,4 +1,4 @@
-package base.exceptions;
+package edu.hm.cs.iua.exceptions;
 
 public class WrongPasswordException extends IUAExceptions {
     public WrongPasswordException() {

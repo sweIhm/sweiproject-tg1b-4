@@ -1,5 +1,5 @@
-package base.users;
-import base.exceptions.PasswordNotMatchCriteriaException;
+package edu.hm.cs.iua.models.users;
+import edu.hm.cs.iua.exceptions.PasswordNotMatchCriteriaException;
 
 public class User {
     private String userName;

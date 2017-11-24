@@ -1,4 +1,4 @@
-package base.exceptions;
+package edu.hm.cs.iua.exceptions;
 
 public class PasswordNotMatchCriteriaException extends IUAExceptions {
     public PasswordNotMatchCriteriaException() {

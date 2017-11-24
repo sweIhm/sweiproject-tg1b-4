@@ -1,4 +1,4 @@
-package base;
+package edu.hm.cs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

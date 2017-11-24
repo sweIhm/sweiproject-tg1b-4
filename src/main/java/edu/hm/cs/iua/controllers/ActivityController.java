@@ -1,5 +1,7 @@
-package base.activitymeter;
+package edu.hm.cs.iua.controllers;
 
+import edu.hm.cs.iua.models.Activity;
+import edu.hm.cs.iua.repositories.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,7 @@ public class ActivityController {
   @GetMapping
   public ArrayList<Activity> listAll() {
       ArrayList<Activity> activities = new ArrayList<>();
-      activityRepository.findAll().forEach(activity -> activities.add(activity));
+      activityRepository.findAll().forEach(activities::add);
       return activities;
   }
 
@@ -27,7 +29,7 @@ public class ActivityController {
 
   @PostMapping
   public Activity create(@RequestBody Activity input) {
-      return activityRepository.save(new Activity(input.getText(), input.getTags(), input.getTitle()));
+      return activityRepository.save(new Activity(input.getText(), input.getTags(), input.getTitle(), input.getImage()));
   }
 
   @DeleteMapping("{id}")

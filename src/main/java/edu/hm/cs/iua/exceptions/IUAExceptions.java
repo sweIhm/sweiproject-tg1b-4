@@ -1,4 +1,4 @@
-package base.exceptions;
+package edu.hm.cs.iua.exceptions;
 
 public abstract class IUAExceptions extends Exception {
     /**
