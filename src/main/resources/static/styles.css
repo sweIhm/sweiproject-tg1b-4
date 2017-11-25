@@ -1,6 +1,6 @@
 .searchBar {
     position: fixed;
-    top: 47px;
+    top: 37px;
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
