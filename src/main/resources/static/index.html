@@ -17,6 +17,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.1.0/ui-bootstrap-tpls.js"></script>
 	<script src="controller.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.js"></script>
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
 </head>
 
 <!-- Always shows a header, even in smaller screens. -->
@@ -44,11 +48,63 @@
                     </form>
                 </div>
                 <div ng-controller="ActivityCtrl">
+                    <dialog id="reg_dialog" class="mdl-dialog">
+                        <h3 class="mdl-dialog__title">Registration</h3>
+                        <form id="reg_form" ng-submit="reg_save()">
+                            <div class="mdl-dialog__content">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" required autofocus pattern="^[A-Za-z0-9_]+"
+                                           placeholder="Name..." id="username" ng-model="user.username">
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="email" required id="email"
+                                           placeholder="E-Mail..." ng-model="user.email">
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="password" minlength="10" required
+                                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" id="password"
+                                           placeholder="Password..." ng-model="user.password">
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="password" minlength="10" required
+                                           placeholder="Confirm Password..." id="passwordControl" ng-model="user.passwordControl">
+                                </div>
+                            </div>
+                            <div class="mdl-dialog__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                    <input type="submit" hidden/>
+                                    Register
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="reset" ng-click="reg_close()">
+                                    Back
+                                </button>
+                            </div>
+                        </form>
+                    </dialog>
                     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="registration()">
                         Registration
                     </button>
                 </div>
                 <div ng-Controller="ActivityCtrl">
+                    <dialog id="login_dialog" class="mdl-dialog">
+                        <h3 class="mdl-dialog__title">Login</h3>
+                        <div class="mdl-dialog__content">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="email" id="emailLogin" placeholder="E-Mail..." ng-model="user.emailLogin">
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="password" id="passwordLogin" placeholder="Password..." ng-model="user.passwordLogin">
+                            </div>
+                        </div>
+                        <div class="mdl-dialog__actions">
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="login_login()">
+                                Login
+                            </button>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login_close()">
+                                Back
+                            </button>
+                        </div>
+                    </dialog>
                     <div style="padding-left: 20px">
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
                             Login

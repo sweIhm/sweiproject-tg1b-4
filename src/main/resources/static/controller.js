@@ -25,20 +25,54 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
     };
 
     $scope.registration = function() {
-        $dialog.dialog(angular.extend(registrationDialogOptions, {})).open().then(function () {
-            loadActivities($scope, $http);
-        })
+        var dialog = document.getElementById('reg_dialog');
+        dialog.showModal();
     };
 
-    var loginDialogOptions = {
-        controller: 'LoginCtrl',
-        templateUrl: './login.html'
+    $scope.reg_save = function (User) {
+        if ($scope.user.password !== $scope.user.passwordControl) {
+            alert("Passwords don't match!");
+            document.getElementById("passwordControl").focus();
+            return;
+        }
+        alert("Works!");
+        var postRequest = {
+            method : 'POST',
+            url: 'user',
+            data: {
+                username: $scope.user.username,
+                email: $scope.user.email,
+                password: $scope.user.password
+            }
+        };
+    };
+
+    $scope.reg_close = function () {
+        var dialog = document.getElementById('reg_dialog');
+        dialog.close();
     };
 
     $scope.login = function() {
-        $dialog.dialog(angular.extend(loginDialogOptions, {})).open().then(function () {
-            loadActivities($scope, $http);
+        var dialog = document.getElementById('login_dialog');
+        dialog.showModal();
+        dialog.addEventListener('click', function (event) {
+            var rect = dialog.getBoundingClientRect();
+            var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
+                && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
+            if (!isInDialog) {
+                dialog.close();
+            }
         })
+    };
+
+    $scope.login_login = function() {
+        alert("Login Works!");
+        login_close();
+    };
+
+    $scope.login_close = function() {
+        var dialog = document.getElementById('login_dialog');
+        dialog.close();
     };
 
     var addDialogOptions = {
@@ -76,7 +110,7 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
     };
 });
 
-app.controller('RegistrationCtrl', function($scope, $http, dialog) {
+/*app.controller('RegistrationCtrl', function($scope, $http, dialog) {
     $scope.save = function (User) {
         if ($scope.user.password !== $scope.user.passwordControl) {
             alert("Passwords don't match!");
@@ -98,17 +132,18 @@ app.controller('RegistrationCtrl', function($scope, $http, dialog) {
     $scope.close = function () {
         dialog.close(undefined);
     };
-});
+});*/
 
-app.controller('LoginCtrl', function($scope, $http, dialog) {
+/*app.controller('LoginCtrl', function($scope, $http, dialog) {
     $scope.login = function (User) {
         alert("Login Works!");
     };
 
     $scope.close = function () {
-        dialog.close(undefined);
+        var dialog = document.getElementById('dialog');
+        dialog.close();
     };
-});
+});*/
 
 app.controller('AddActivityCtrl', function($scope, $http, dialog){
 
