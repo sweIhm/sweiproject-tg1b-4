@@ -97,24 +97,32 @@
                 <div ng-Controller="ActivityCtrl">
                     <dialog id="login_dialog" class="mdl-dialog">
                         <h3 class="mdl-dialog__title">Login</h3>
-                        <div class="mdl-dialog__content">
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="email" id="emailLogin" ng-model="user.emailLogin">
-                                <label class="mdl-textfield__label" for="emailLogin">E-Mail:</label>
+                        <form id="login_form" ng-submit="login_login()">
+                            <div class="mdl-dialog__content">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" required type="email" id="emailLogin" ng-model="user.emailLogin">
+                                    <label class="mdl-textfield__label" for="emailLogin">E-Mail:</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" required type="password" id="passwordLogin" ng-model="user.passwordLogin">
+                                    <label class="mdl-textfield__label" for="passwordLogin">Password:</label>
+                                </div>
+                                <button id="login_password_help" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+                                    <i class="material-icons">help_outline</i>
+                                </button>
+                                <div class="mdl-tooltip mdl-tooltip--large" for="login_password_help">
+                                    Forgot password ?
+                                </div>
                             </div>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="password" id="passwordLogin" ng-model="user.passwordLogin">
-                                <label class="mdl-textfield__label" for="passwordLogin">Password:</label>
+                            <div class="mdl-dialog__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="login_login()">
+                                    Login
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login_close()">
+                                    Back
+                                </button>
                             </div>
-                        </div>
-                        <div class="mdl-dialog__actions">
-                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="login_login()">
-                                Login
-                            </button>
-                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login_close()">
-                                Back
-                            </button>
-                        </div>
+                        </form>
                     </dialog>
                     <div style="padding-left: 20px">
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
