@@ -31,7 +31,7 @@ app.controller('ActivityCtrl', function ($scope, $http) {
             return;
         }
         alert("Works!");
-        var postRequest = {
+        /*var postRequest = {
             method : 'POST',
             url: 'user',
             data: {
@@ -39,11 +39,13 @@ app.controller('ActivityCtrl', function ($scope, $http) {
                 email: $scope.user.email,
                 password: $scope.user.password
             }
-        };
+        };*/
+        $scope.reg_close();
     };
 
     $scope.reg_close = function () {
         var dialog = document.getElementById('reg_dialog');
+        document.getElementById('reg_form').reset();
         dialog.close();
     };
 
@@ -74,26 +76,25 @@ app.controller('ActivityCtrl', function ($scope, $http) {
 
     $scope.add = function(activity){
         var dialog = document.getElementById('add_activity_dialog');
-        //document.getElementById('add_title').value = "";
         dialog.showModal();
-        dialog.addEventListener('click', function (event) {
+        /*dialog.addEventListener('click', function (event) {
             var rect = dialog.getBoundingClientRect();
             var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
                 && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
             if (!isInDialog) {
                 $scope.add_close();
             }
-        })
+        })*/
     };
 
-    $scope.add_save = function(Activity) {
+    $scope.add_save = function(activity) {
         var postRequest = {
             method : 'POST',
             url: 'activity' ,
             data: {
-                text: $scope.activity.text,
-                tags: $scope.activity.tags,
-                title: $scope.activity.title
+                title: document.getElementById('add_title').value,
+                text: document.getElementById('add_text').value,
+                tags: document.getElementById('add_tags').value
             }
         };
 
@@ -107,9 +108,7 @@ app.controller('ActivityCtrl', function ($scope, $http) {
 
     $scope.add_close = function(){
         var dialog = document.getElementById('add_activity_dialog');
-        document.getElementById('add_title').value = "";
-        document.getElementById('add_text').value = "";
-        document.getElementById('add_tags').value = "";
+        document.getElementById('add_form').reset();
         dialog.close();
     };
 
@@ -137,12 +136,11 @@ app.controller('ActivityCtrl', function ($scope, $http) {
             method : 'PUT',
             url: 'activity/' + edit_activity_id,
             data: {
-                text: $scope.activity.text,
-                tags: $scope.activity.tags,
-                title: $scope.activity.title
+                title: document.getElementById('edit_title').value,
+                text: document.getElementById('edit_text').value,
+                tags: document.getElementById('edit_tags').value
             }
         };
-
         $http(putRequest).then(function (response) {
             $scope.activities = response.data;
         }).then(function () {
@@ -153,9 +151,7 @@ app.controller('ActivityCtrl', function ($scope, $http) {
 
     $scope.edit_close = function(){
         var dialog = document.getElementById('edit_activity_dialog');
-        document.getElementById('edit_title').value = "";
-        document.getElementById('edit_text').value = "";
-        document.getElementById('edit_tags').value = "";
+        document.getElementById('edit_form').reset();
         dialog.close();
     };
 

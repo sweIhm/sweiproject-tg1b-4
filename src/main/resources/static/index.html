@@ -181,51 +181,56 @@
                             </div>
                             <dialog id="add_activity_dialog" class="mdl-dialog">
                                 <h3 class="mdl-dialog__title">Add Activity</h3>
-                                <div class="mdl-dialog__content">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="add_title" ng-model="activity.title">
-                                        <label class="mdl-textfield__label" for="add_title">Title:</label>
+                                <form id="add_form" ng-submit="add_save(activity)">
+                                    <div class="mdl-dialog__content">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" required type="text" id="add_title" ng-model="activity.add_title">
+                                            <label class="mdl-textfield__label" for="add_title">Title:</label>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <textarea class="mdl-textfield__input" required type="text" rows= "3" id="add_text" ng-model="activity.add_text"></textarea>
+                                            <label class="mdl-textfield__label" for="add_text">Description:</label>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" required type="text" id="add_tags" ng-model="activity.add_tags">
+                                            <label class="mdl-textfield__label" for="add_tags">Tags:</label>
+                                        </div>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <textarea class="mdl-textfield__input" type="text" rows= "3" id="add_text" ng-model="activity.text"></textarea>
-                                        <label class="mdl-textfield__label" for="add_text">Description:</label>
+                                    <div class="mdl-dialog__actions">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                            <input type="submit" hidden/>
+                                            Save
+                                        </button>
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="reset" ng-click="add_close()">
+                                            Back
+                                        </button>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="add_tags" ng-model="activity.tags">
-                                        <label class="mdl-textfield__label" for="add_tags">Tags:</label>
-                                    </div>
-                                </div>
-                                <div class="mdl-dialog__actions">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="add_save(activity)">
-                                        Save
-                                    </button>
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="add_close()">
-                                        Back
-                                    </button>
-                                </div>
+                                </form>
                             </dialog>
                             <dialog id="edit_activity_dialog" class="mdl-dialog">
                                 <h3 class="mdl-dialog__title">Edit Activity</h3>
+                                <form id="edit_form" ng-submit="edit_save(activity)">
                                 <div class="mdl-dialog__content">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="edit_title" ng-model="activity.title">
+                                        <input class="mdl-textfield__input" type="text" id="edit_title" ng-model="activity.edit_title">
                                         <label class="mdl-textfield__label" for="edit_title">Title:</label>
                                     </div>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                         <textarea class="mdl-textfield__input" type="text" rows= "3"
-                                                  id="edit_text" ng-model="activity.text"></textarea>
+                                                  id="edit_text" ng-model="activity.edit_text"></textarea>
                                         <label class="mdl-textfield__label" for="edit_text">Description:</label>
                                     </div>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="edit_tags" ng-model="activity.tags">
+                                        <input class="mdl-textfield__input" type="text" id="edit_tags" ng-model="activity.edit_tags">
                                         <label class="mdl-textfield__label" for="edit_tags">Tags:</label>
                                     </div>
                                 </div>
                                 <div class="mdl-dialog__actions">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="edit_save(activity)">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                        <input type="submit" hidden/>
                                         Save
                                     </button>
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="edit_close()">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="reset" ng-click="edit_close()">
                                         Back
                                     </button>
                                 </div>
