@@ -6,6 +6,22 @@
     transform: translate(-50%, -50%);
 }
 
+.material-icons.redSearchIcon { color: #f44336; }
+
+.demo-card-square.mdl-card {
+    width: 320px;
+    height: 320px;
+    float: left;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+.demo-card-square > .mdl-card__title {
+    color: #ffff;
+    background:
+            url('https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/documents/Card_Background.png?raw=true')
+            bottom right 15% no-repeat #46B6AC;
+}
+
 .mdl-dialog {
     border: none;
     box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2);
