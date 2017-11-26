@@ -26,7 +26,7 @@ app.controller('ActivityCtrl', function ($scope, $http) {
 
     $scope.reg_save = function (User) {
         if ($scope.user.password !== $scope.user.passwordControl) {
-            alert("Passwords don't match!");
+            document.getElementById("passwordControlError").innerHTML = "Passwords don't match!";
             document.getElementById("passwordControl").focus();
             return;
         }
@@ -46,20 +46,13 @@ app.controller('ActivityCtrl', function ($scope, $http) {
     $scope.reg_close = function () {
         var dialog = document.getElementById('reg_dialog');
         document.getElementById('reg_form').reset();
+        document.getElementById("passwordControlError").innerHTML = "";
         dialog.close();
     };
 
     $scope.login = function() {
         var dialog = document.getElementById('login_dialog');
         dialog.showModal();
-        dialog.addEventListener('click', function (event) {
-            var rect = dialog.getBoundingClientRect();
-            var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
-                && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
-            if (!isInDialog) {
-                $scope.login_close();
-            }
-        })
     };
 
     $scope.login_login = function() {
