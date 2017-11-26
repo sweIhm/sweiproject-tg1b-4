@@ -77,14 +77,6 @@ app.controller('ActivityCtrl', function ($scope, $http) {
     $scope.add = function(activity){
         var dialog = document.getElementById('add_activity_dialog');
         dialog.showModal();
-        /*dialog.addEventListener('click', function (event) {
-            var rect = dialog.getBoundingClientRect();
-            var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
-                && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
-            if (!isInDialog) {
-                $scope.add_close();
-            }
-        })*/
     };
 
     $scope.add_save = function(activity) {
@@ -121,14 +113,6 @@ app.controller('ActivityCtrl', function ($scope, $http) {
         document.getElementById('edit_text').value = activity.text;
         document.getElementById('edit_tags').value = activity.tags;
         dialog.showModal();
-        dialog.addEventListener('click', function (event) {
-            var rect = dialog.getBoundingClientRect();
-            var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
-                && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
-            if (!isInDialog) {
-                $scope.edit_close();
-            }
-        })
     };
 
     $scope.edit_save = function(activity) {
