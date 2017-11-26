@@ -15,14 +15,9 @@ function loadActivities ($scope, $http){
     });
 }
 
-app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
+app.controller('ActivityCtrl', function ($scope, $http) {
 
     loadActivities($scope, $http);
-
-    var registrationDialogOptions = {
-        controller: 'RegistrationCtrl',
-        templateUrl: './registration.html'
-    };
 
     $scope.registration = function() {
         var dialog = document.getElementById('reg_dialog');
@@ -60,30 +55,61 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
             var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
                 && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
             if (!isInDialog) {
-                dialog.close();
+                $scope.login_close();
             }
         })
     };
 
     $scope.login_login = function() {
         alert("Login Works!");
-        login_close();
+        $scope.login_close();
     };
 
     $scope.login_close = function() {
         var dialog = document.getElementById('login_dialog');
+        document.getElementById('emailLogin').value = "";
+        document.getElementById('passwordLogin').value = "";
         dialog.close();
     };
 
-    var addDialogOptions = {
-        controller: 'AddActivityCtrl',
-        templateUrl: './activityAdd.html'
+    $scope.add = function(activity){
+        var dialog = document.getElementById('add_activity_dialog');
+        dialog.showModal();
+        dialog.addEventListener('click', function (event) {
+            var rect = dialog.getBoundingClientRect();
+            var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
+                && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
+            if (!isInDialog) {
+                $scope.add_close();
+            }
+        })
     };
 
-    $scope.add = function(activity){
-        $dialog.dialog(angular.extend(addDialogOptions, {})).open().then(function (){
+    $scope.add_save = function(Activity) {
+        var postRequest = {
+            method : 'POST',
+            url: 'activity' ,
+            data: {
+                text: $scope.activity.text,
+                tags: $scope.activity.tags,
+                title: $scope.activity.title
+            }
+        };
+
+        $http(postRequest).then(function (response) {
+            $scope.activities = response.data;
+        }).then(function () {
             loadActivities($scope, $http);
-        }) ;
+            $scope.add_close();
+        });
+    };
+
+    $scope.add_close = function(){
+        var dialog = document.getElementById('add_activity_dialog');
+        document.getElementById('title').value = "";
+        document.getElementById('text').value = "";
+        document.getElementById('tags').value = "";
+        dialog.close();
     };
 
     var editDialogOptions = {
@@ -145,7 +171,7 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
     };
 });*/
 
-app.controller('AddActivityCtrl', function($scope, $http, dialog){
+/*app.controller('AddActivityCtrl', function($scope, $http, dialog){
 
     $scope.save = function(Activity) {
         var postRequest = {
@@ -168,7 +194,7 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
     $scope.close = function(){
         dialog.close(undefined);
     };
-});
+});*/
 app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 
     $scope.activity = activity;

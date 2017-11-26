@@ -152,7 +152,7 @@
                                         margin-bottom: 30px;
                                     }
                                     .demo-card-square > .mdl-card__title {
-                                        color: #fffff;
+                                        color: #ffff;
                                         background:
                                                 url('https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/documents/Card_Background.png?raw=true')
                                                 bottom right 15% no-repeat #46B6AC;
@@ -170,9 +170,41 @@
                                             #{{activity.tags}}
                                         </a>
                                     </div>
+                                    <div class="mdl-card__menu">
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">share</i>
+                                        </button>
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">more_vert</i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-
+                            <dialog id="add_activity_dialog" class="mdl-dialog">
+                                <h3 class="mdl-dialog__title">Add Activity</h3>
+                                <div class="mdl-dialog__content">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="title" ng-model="activity.title">
+                                        <label class="mdl-textfield__label" for="title">Title:</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="text" ng-model="activity.text">
+                                        <label class="mdl-textfield__label" for="text">Description:</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="tags" ng-model="activity.tags">
+                                        <label class="mdl-textfield__label" for="tags">Tags:</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-dialog__actions">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="add_save(activity)">
+                                        Save
+                                    </button>
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="add_close()">
+                                        Back
+                                    </button>
+                                </div>
+                            </dialog>
                             <table class="mdl-data-table">
                                 <tr>
                                     <td class="mdl-data-table__cell--non-numeric" colspan=3>&nbsp;</td>
