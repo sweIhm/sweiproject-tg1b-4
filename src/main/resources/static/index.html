@@ -49,20 +49,34 @@
                             <div class="mdl-dialog__content">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="text" required autofocus pattern="^[A-Za-z0-9_]+"
-                                           placeholder="Name..." id="username" ng-model="user.username">
+                                           id="username" ng-model="user.username">
+                                    <label class="mdl-textfield__label" for="username">Name:</label>
+                                </div>
+                                <div id="info_username" class="icon material-icons">info_outline</div>
+                                <div class="mdl-tooltip mdl-tooltip--large" for="info_username">
+                                    Username can only<br>contain uppercase-,<br> lowercase letters<br>and underscores.
                                 </div>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="email" required id="email"
-                                           placeholder="E-Mail..." ng-model="user.email">
+                                    <input class="mdl-textfield__input" type="email" required id="email" ng-model="user.email">
+                                    <label class="mdl-textfield__label" for="email">E-Mail:</label>
+                                </div>
+                                <div id="info_email" class="icon material-icons">info_outline</div>
+                                <div class="mdl-tooltip mdl-tooltip--large" for="info_email">
+                                    Only MUAS or Calpoly<br>email-addresses are allowed.
                                 </div>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="password" minlength="10" required
-                                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" id="password"
-                                           placeholder="Password..." ng-model="user.password">
+                                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" id="password" ng-model="user.password">
+                                    <label class="mdl-textfield__label" for="password">Password:</label>
+                                </div>
+                                <div id="info_password" class="icon material-icons">info_outline</div>
+                                <div class="mdl-tooltip mdl-tooltip--large" for="info_password">
+                                    Password needs at <br>least one uppercase-,<br>one lowercase letter<br>and one number.
                                 </div>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="password" minlength="10" required
-                                           placeholder="Confirm Password..." id="passwordControl" ng-model="user.passwordControl">
+                                           id="passwordControl" ng-model="user.passwordControl">
+                                    <label class="mdl-textfield__label" for="passwordControl">Confirm Password:</label>
                                 </div>
                             </div>
                             <div class="mdl-dialog__actions">
@@ -85,10 +99,12 @@
                         <h3 class="mdl-dialog__title">Login</h3>
                         <div class="mdl-dialog__content">
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="email" id="emailLogin" placeholder="E-Mail..." ng-model="user.emailLogin">
+                                <input class="mdl-textfield__input" type="email" id="emailLogin" ng-model="user.emailLogin">
+                                <label class="mdl-textfield__label" for="emailLogin">E-Mail:</label>
                             </div>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="password" id="passwordLogin" placeholder="Password..." ng-model="user.passwordLogin">
+                                <input class="mdl-textfield__input" type="password" id="passwordLogin" ng-model="user.passwordLogin">
+                                <label class="mdl-textfield__label" for="passwordLogin">Password:</label>
                             </div>
                         </div>
                         <div class="mdl-dialog__actions">
