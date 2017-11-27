@@ -16,9 +16,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.1.0/ui-bootstrap-tpls.js"></script>
 	<script src="controller.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.js"></script>
 </head>
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -26,109 +23,108 @@
         <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">IUA</span>
             <div class="mdl-layout-spacer"></div>
-            <div style="padding-right: 10px">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-                      mdl-textfield--floating-label mdl-textfield--align-right">
-                    <label class="mdl-button mdl-js-button mdl-button--icon"
-                           for="fixed-header-drawer-exp">
-                        <i class="material-icons redSearchIcon">search</i>
-                    </label>
-                    <div class="mdl-textfield__expandable-holder">
-                        <input class="mdl-textfield__input" type="text" name="sample"
-                               id="fixed-header-drawer-exp">
-                    </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right"
+                 style="padding-right: 10px">
+                <label class="mdl-button mdl-js-button mdl-button--icon"
+                       for="fixed-header-drawer-exp">
+                    <i class="material-icons redSearchIcon">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <input class="mdl-textfield__input" type="text" name="sample"
+                           id="fixed-header-drawer-exp">
                 </div>
             </div>
-                <div ng-controller="ActivityCtrl">
-                    <dialog id="reg_dialog" class="mdl-dialog">
-                        <h3 class="mdl-dialog__title">Registration</h3>
-                        <form id="reg_form" ng-submit="reg_save()">
-                            <div class="mdl-dialog__content">
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" required autofocus pattern="^[A-Za-z0-9_]+"
-                                           id="username" tabindex=1 ng-model="user.username">
-                                    <label class="mdl-textfield__label" for="username">Name:</label>
-                                </div>
-                                <div id="info_username" class="icon material-icons">info_outline</div>
-                                <div class="mdl-tooltip mdl-tooltip--large" for="info_username">
-                                    Username can only<br>contain uppercase-,<br> lowercase letters<br>and underscores.
-                                </div>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="email" required id="email" tabindex=2 ng-model="user.email">
-                                    <label class="mdl-textfield__label" for="email">E-Mail:</label>
-                                </div>
-                                <div id="info_email" class="icon material-icons">info_outline</div>
-                                <div class="mdl-tooltip mdl-tooltip--large" for="info_email">
-                                    Only MUAS or Calpoly<br>email-addresses are allowed.
-                                </div>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="password" minlength="10" required tabindex=3
-                                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" id="password" ng-model="user.password">
-                                    <label class="mdl-textfield__label" for="password">Password:</label>
-                                </div>
-                                <div id="info_password" class="icon material-icons">info_outline</div>
-                                <div class="mdl-tooltip mdl-tooltip--large" for="info_password">
-                                    Password needs at <br>least one uppercase-,<br>one lowercase letter<br>and one number.
-                                </div>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="password" minlength="10" required tabindex=4
-                                           id="passwordControl" ng-model="user.passwordControl">
-                                    <label class="mdl-textfield__label" for="passwordControl">Confirm Password:</label>
-                                </div>
-                                <span style="color:red" id="passwordControlError"></span>
+            <div ng-controller="ActivityCtrl">
+                <dialog id="reg_dialog" class="mdl-dialog">
+                    <h3 class="mdl-dialog__title">Registration</h3>
+                    <form id="reg_form" ng-submit="reg_save()">
+                        <div class="mdl-dialog__content">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" required autofocus pattern="^[A-Za-z0-9_]+"
+                                       id="username" tabindex=1 ng-model="user.username">
+                                <label class="mdl-textfield__label" for="username">Name:</label>
                             </div>
-                            <div class="mdl-dialog__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" tabindex=5>
-                                    <input type="submit" hidden/>
-                                    Register
-                                </button>
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="reset" ng-click="reg_close()">
-                                    Back
-                                </button>
+                            <div id="info_username" class="icon material-icons">info_outline</div>
+                            <div class="mdl-tooltip mdl-tooltip--large" for="info_username">
+                                Username can only<br>contain uppercase-,<br> lowercase letters<br>and underscores.
                             </div>
-                        </form>
-                    </dialog>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="registration()">
-                        Registration
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="email" required id="email" tabindex=2 ng-model="user.email">
+                                <label class="mdl-textfield__label" for="email">E-Mail:</label>
+                            </div>
+                            <div id="info_email" class="icon material-icons">info_outline</div>
+                            <div class="mdl-tooltip mdl-tooltip--large" for="info_email">
+                                Only MUAS or Calpoly<br>email-addresses are allowed.
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="password" minlength="10" required tabindex=3
+                                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" id="password" ng-model="user.password">
+                                <label class="mdl-textfield__label" for="password">Password:</label>
+                            </div>
+                            <div id="info_password" class="icon material-icons">info_outline</div>
+                            <div class="mdl-tooltip mdl-tooltip--large" for="info_password">
+                                Password needs at <br>least one uppercase-,<br>one lowercase letter<br>and one number.
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="password" minlength="10" required tabindex=4
+                                       id="passwordControl" ng-model="user.passwordControl">
+                                <label class="mdl-textfield__label" for="passwordControl">Confirm Password:</label>
+                            </div>
+                            <span style="color:red" id="passwordControlError"></span>
+                        </div>
+                        <div class="mdl-dialog__actions">
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" tabindex=5>
+                                <input type="submit" hidden/>
+                                Register
+                            </button>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="reset" ng-click="reg_close()">
+                                Back
+                            </button>
+                        </div>
+                    </form>
+                </dialog>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="registration()">
+                    Registration
+                </button>
+            </div>
+            <div ng-Controller="ActivityCtrl">
+                <dialog id="login_dialog" class="mdl-dialog">
+                    <h3 class="mdl-dialog__title">Login</h3>
+                    <form id="login_form" ng-submit="login_login()">
+                        <div class="mdl-dialog__content">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" required tabindex=1 type="email" id="emailLogin" ng-model="user.emailLogin">
+                                <label class="mdl-textfield__label" for="emailLogin">E-Mail:</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" required tabindex=2 type="password" id="passwordLogin" ng-model="user.passwordLogin">
+                                <label class="mdl-textfield__label" for="passwordLogin">Password:</label>
+                            </div>
+                            <button id="login_password_help" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+                                <i class="material-icons">help_outline</i>
+                            </button>
+                            <div class="mdl-tooltip mdl-tooltip--large" for="login_password_help">
+                                Forgot password ?
+                            </div>
+                        </div>
+                        <div class="mdl-dialog__actions">
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                                    tabindex=3 ng-click="login_login()">
+                                Login
+                            </button>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login_close()">
+                                Back
+                            </button>
+                        </div>
+                    </form>
+                </dialog>
+                <div style="padding-left: 10px">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
+                        Login
                     </button>
                 </div>
-                <div ng-Controller="ActivityCtrl">
-                    <dialog id="login_dialog" class="mdl-dialog">
-                        <h3 class="mdl-dialog__title">Login</h3>
-                        <form id="login_form" ng-submit="login_login()">
-                            <div class="mdl-dialog__content">
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" required tabindex=1 type="email" id="emailLogin" ng-model="user.emailLogin">
-                                    <label class="mdl-textfield__label" for="emailLogin">E-Mail:</label>
-                                </div>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" required tabindex=2 type="password" id="passwordLogin" ng-model="user.passwordLogin">
-                                    <label class="mdl-textfield__label" for="passwordLogin">Password:</label>
-                                </div>
-                                <button id="login_password_help" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
-                                    <i class="material-icons">help_outline</i>
-                                </button>
-                                <div class="mdl-tooltip mdl-tooltip--large" for="login_password_help">
-                                    Forgot password ?
-                                </div>
-                            </div>
-                            <div class="mdl-dialog__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
-                                        tabindex=3 ng-click="login_login()">
-                                    Login
-                                </button>
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login_close()">
-                                    Back
-                                </button>
-                            </div>
-                        </form>
-                    </dialog>
-                    <div style="padding-left: 10px">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="login()">
-                            Login
-                        </button>
-                    </div>
-                </div>
+            </div>
         </div>
     </header>
 	<div class="mdl-layout__drawer">
@@ -141,118 +137,113 @@
 		</nav>
 	</div>
 	<main class="mdl-layout__content">
-		<div style="margin-left: 20%">
-			<div style="margin-top: 10%">
-				<div class="page-content">
-					<body>
-                        <div ng-controller="ActivityCtrl">
-                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="add()">
-                                Add Activity
-                            </button>
-                            <h3>Activities</h3>
-                            <div ng-repeat="activity in activities">
-                                <!-- Square card -->
-                                <div class="demo-card-square mdl-card mdl-shadow--2dp">
-                                    <div class="mdl-card__title mdl-card--expand">
-                                        <h2 class="mdl-card__title-text"><div style="color: black">{{activity.title}}</div></h2>
-                                    </div>
-                                    <div class="mdl-card__supporting-text">
-                                        {{activity.text}}
-                                    </div>
-                                    <div class="mdl-card__actions mdl-card--border">
-                                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                            #{{activity.tags}}
-                                        </a>
-                                    </div>
-                                    <div class="mdl-card__menu">
-                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                                            <i class="material-icons">share</i>
-                                        </button>
-                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" ng-click="edit(activity)">
-                                            <i class="material-icons redSearchIcon">edit</i>
-                                        </button>
-                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"ng-click="delete(activity)">
-                                            <i class="material-icons redSearchIcon">delete</i>
-                                        </button>
-                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="activity_more_button">
-                                            <i class="material-icons">more_vert</i>
-                                        </button>
-                                        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                                            for="activity_more_button">
-                                            <li class="mdl-menu__item">Edit</li>
-                                            <li class="mdl-menu__item">Delete</li>
-                                        </ul>
-                                    </div>
+        <div class="page-content" style="margin-top: 10%; margin-left: 20%">
+            <body>
+                <div ng-controller="ActivityCtrl">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="add()">
+                        Add Activity
+                    </button>
+                    <h3>Activities</h3>
+                    <div ng-repeat="activity in activities">
+                        <div class="demo-card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand">
+                                <h2 class="mdl-card__title-text"><div style="color: black">{{activity.title}}</div></h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                {{activity.text}}
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    #{{activity.tags}}
+                                </a>
+                            </div>
+                            <div class="mdl-card__menu">
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <i class="material-icons">share</i>
+                                </button>
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" ng-click="edit(activity)">
+                                    <i class="material-icons redSearchIcon">edit</i>
+                                </button>
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"ng-click="delete(activity)">
+                                    <i class="material-icons redSearchIcon">delete</i>
+                                </button>
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="activity_more_button">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    for="activity_more_button">
+                                    <li class="mdl-menu__item">Edit</li>
+                                    <li class="mdl-menu__item">Delete</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <dialog id="add_activity_dialog" class="mdl-dialog">
+                        <h3 class="mdl-dialog__title">Add Activity</h3>
+                        <form id="add_form" ng-submit="add_save(activity)">
+                            <div class="mdl-dialog__content">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" required tabindex=1 type="text"
+                                           id="add_title" ng-model="activity.add_title">
+                                    <label class="mdl-textfield__label" for="add_title">Title:</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <textarea class="mdl-textfield__input" required tabindex=2 type="text"
+                                              rows= "3" id="add_text" ng-model="activity.add_text"></textarea>
+                                    <label class="mdl-textfield__label" for="add_text">Description:</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" required tabindex=3 type="text"
+                                           id="add_tags" ng-model="activity.add_tags">
+                                    <label class="mdl-textfield__label" for="add_tags">Tags:</label>
                                 </div>
                             </div>
-                            <dialog id="add_activity_dialog" class="mdl-dialog">
-                                <h3 class="mdl-dialog__title">Add Activity</h3>
-                                <form id="add_form" ng-submit="add_save(activity)">
-                                    <div class="mdl-dialog__content">
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" required tabindex=1 type="text"
-                                                   id="add_title" ng-model="activity.add_title">
-                                            <label class="mdl-textfield__label" for="add_title">Title:</label>
-                                        </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <textarea class="mdl-textfield__input" required tabindex=2 type="text"
-                                                      rows= "3" id="add_text" ng-model="activity.add_text"></textarea>
-                                            <label class="mdl-textfield__label" for="add_text">Description:</label>
-                                        </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" required tabindex=3 type="text"
-                                                   id="add_tags" ng-model="activity.add_tags">
-                                            <label class="mdl-textfield__label" for="add_tags">Tags:</label>
-                                        </div>
-                                    </div>
-                                    <div class="mdl-dialog__actions">
-                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" tabindex=4>
-                                            <input type="submit" hidden/>
-                                            Save
-                                        </button>
-                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                                                type="reset" ng-click="add_close()">
-                                            Back
-                                        </button>
-                                    </div>
-                                </form>
-                            </dialog>
-                            <dialog id="edit_activity_dialog" class="mdl-dialog">
-                                <h3 class="mdl-dialog__title">Edit Activity</h3>
-                                <form id="edit_form" ng-submit="edit_save(activity)">
-                                <div class="mdl-dialog__content">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" required tabindex=1 type="text"
-                                               id="edit_title" ng-model="activity.edit_title">
-                                        <label class="mdl-textfield__label" for="edit_title">Title:</label>
-                                    </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <textarea class="mdl-textfield__input" required tabindex=2 type="text" rows= "3"
-                                                  id="edit_text" ng-model="activity.edit_text"></textarea>
-                                        <label class="mdl-textfield__label" for="edit_text">Description:</label>
-                                    </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" required tabindex=3 type="text"
-                                               id="edit_tags" ng-model="activity.edit_tags">
-                                        <label class="mdl-textfield__label" for="edit_tags">Tags:</label>
-                                    </div>
-                                </div>
-                                <div class="mdl-dialog__actions">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" tabindex=4>
-                                        <input type="submit" hidden/>
-                                        Save
-                                    </button>
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                                            type="reset" ng-click="edit_close()">
-                                        Back
-                                    </button>
-                                </div>
-                            </dialog>
+                            <div class="mdl-dialog__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" tabindex=4>
+                                    <input type="submit" hidden/>
+                                    Save
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                        type="reset" ng-click="add_close()">
+                                    Back
+                                </button>
+                            </div>
+                        </form>
+                    </dialog>
+                    <dialog id="edit_activity_dialog" class="mdl-dialog">
+                        <h3 class="mdl-dialog__title">Edit Activity</h3>
+                        <form id="edit_form" ng-submit="edit_save(activity)">
+                        <div class="mdl-dialog__content">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" required tabindex=1 type="text"
+                                       id="edit_title" ng-model="activity.edit_title">
+                                <label class="mdl-textfield__label" for="edit_title">Title:</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <textarea class="mdl-textfield__input" required tabindex=2 type="text" rows= "3"
+                                          id="edit_text" ng-model="activity.edit_text"></textarea>
+                                <label class="mdl-textfield__label" for="edit_text">Description:</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" required tabindex=3 type="text"
+                                       id="edit_tags" ng-model="activity.edit_tags">
+                                <label class="mdl-textfield__label" for="edit_tags">Tags:</label>
+                            </div>
                         </div>
-					</body>
-				</div>
-			</div>
-		</div>
+                        <div class="mdl-dialog__actions">
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" tabindex=4>
+                                <input type="submit" hidden/>
+                                Save
+                            </button>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                    type="reset" ng-click="edit_close()">
+                                Back
+                            </button>
+                        </div>
+                    </dialog>
+                </div>
+            </body>
+        </div>
 	</main>
 </div>
 </html>
