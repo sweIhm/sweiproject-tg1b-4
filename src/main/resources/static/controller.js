@@ -31,16 +31,20 @@ app.controller('ActivityCtrl', function ($scope, $http) {
             return;
         }
         alert("Works!");
-        /*var postRequest = {
+        var postRequest = {
             method : 'POST',
             url: 'user',
             data: {
-                username: $scope.user.username,
-                email: $scope.user.email,
-                password: $scope.user.password
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
             }
-        };*/
-        $scope.reg_close();
+        };
+        $http(postRequest).then(function (response) {
+            // Work with response
+        }).then(function () {
+            $scope.reg_close();
+        });
     };
 
     $scope.reg_close = function () {

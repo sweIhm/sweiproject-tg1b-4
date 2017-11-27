@@ -2,12 +2,16 @@ package edu.hm.cs.iua.models;
 import edu.hm.cs.iua.exceptions.PasswordNotMatchCriteriaException;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class User {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
     private String userEmail;
     private String userName;
     private String userPassword;
@@ -26,14 +30,19 @@ public class User {
     }
     private User(User user) {}
 
-    private User(String name, String email, String password) {
+    public User(String name, String email, String password) {
         userName = name;
         userEmail = email;
-        userPassword = encryptPassword(password);
+        userPassword = password;
         confirmedAcc = false;
         codeSend = false;
         // registrationDate = System.getDate();
     }
+
+    public Long getUserID() {return id;}
+    public String getUserName() {return userName;}
+    public String getUserEmail() {return userEmail;}
+    public String getUserPassword() {return userPassword;}
 
     public User registration(String name, String email, String password) throws PasswordNotMatchCriteriaException {
         if (!testPassword(password))    // Could be tested in JavaScript
