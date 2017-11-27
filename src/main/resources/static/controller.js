@@ -1,43 +1,41 @@
-var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
+var app = angular.module('IUA', ['ui.bootstrap']);
 
 function loadActivities ($scope, $http){
     $http({
         method : 'GET',
-        /*
-         url: (window.location.hostname === 'localhost' ?
-         'http://localhost:8080/activity' :
-         'https://activityexample.herokuapp.com/activity')
-         */
-        url: 'activity'
-
+        url: (window.location.hostname === 'localhost' ?
+            'http://localhost:8080/activity' :
+            'https://iua.herokuapp.com/activity')
     }).then(function (response) {
         $scope.activities = response.data;
     });
 }
 
-app.controller('ActivityCtrl', function ($scope, $http) {
+app.controller('IUACtrl', function ($scope, $http) {
 
     loadActivities($scope, $http);
 
-    $scope.registration = function() {
+    $scope.open_registration_dialog = function() {
         var dialog = document.getElementById('reg_dialog');
         dialog.showModal();
     };
 
-    $scope.reg_save = function (User) {
-        if ($scope.user.password !== $scope.user.passwordControl) {
-            document.getElementById("passwordControlError").innerHTML = "Passwords don't match!";
-            document.getElementById("passwordControl").focus();
+    $scope.reg_save = function () {
+        if (document.getElementById('reg_password').value !== document.getElementById('reg_passwordControl').value) {
+            document.getElementById("reg_passwordControlError").innerHTML = "Passwords don't match!";
+            document.getElementById("reg_passwordControl").focus();
             return;
         }
-        alert("Works!");
+        alert("Registration form completed.");
         var postRequest = {
             method : 'POST',
-            url: 'user',
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/registration' :
+                'https://iua.herokuapp.com/registration'),
             data: {
-                username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value
+                username: document.getElementById('reg_username').value,
+                email: document.getElementById('reg_email').value,
+                password: document.getElementById('reg_password').value
             }
         };
         $http(postRequest).then(function (response) {
@@ -50,36 +48,51 @@ app.controller('ActivityCtrl', function ($scope, $http) {
     $scope.reg_close = function () {
         var dialog = document.getElementById('reg_dialog');
         document.getElementById('reg_form').reset();
-        document.getElementById("passwordControlError").innerHTML = "";
+        document.getElementById('reg_passwordControlError').innerHTML = "";
         dialog.close();
     };
 
-    $scope.login = function() {
+    $scope.open_login_dialog = function() {
         var dialog = document.getElementById('login_dialog');
         dialog.showModal();
     };
 
-    $scope.login_login = function() {
+    $scope.login = function() {
         alert("Login Works!");
-        $scope.login_close();
+        var postRequest = {
+            method : 'POST',
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/login' :
+                'https://iua.herokuapp.com/login'),
+            data: {
+                email: document.getElementById('login_email').value,
+                password: document.getElementById('login_password').value
+            }
+        };
+        $http(postRequest).then(function (response) {
+            // Work with response
+        }).then(function () {
+            $scope.login_close();
+        });
     };
 
     $scope.login_close = function() {
         var dialog = document.getElementById('login_dialog');
-        document.getElementById('emailLogin').value = "";
-        document.getElementById('passwordLogin').value = "";
+        document.getElementById('login_form').reset();
         dialog.close();
     };
 
-    $scope.add = function(activity){
+    $scope.open_add_dialog = function(){
         var dialog = document.getElementById('add_activity_dialog');
         dialog.showModal();
     };
 
-    $scope.add_save = function(activity) {
+    $scope.add_save = function() {
         var postRequest = {
             method : 'POST',
-            url: 'activity' ,
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/activity' :
+                'https://iua.herokuapp.com/activity'),
             data: {
                 title: document.getElementById('add_title').value,
                 text: document.getElementById('add_text').value,
@@ -103,7 +116,7 @@ app.controller('ActivityCtrl', function ($scope, $http) {
 
     var edit_activity_id;
 
-    $scope.edit = function(activity){
+    $scope.open_edit_dialog = function(activity){
         edit_activity_id = activity.id;
         var dialog = document.getElementById('edit_activity_dialog');
         document.getElementById('edit_title').value = activity.title;
@@ -112,10 +125,12 @@ app.controller('ActivityCtrl', function ($scope, $http) {
         dialog.showModal();
     };
 
-    $scope.edit_save = function(activity) {
+    $scope.edit_save = function() {
         var putRequest = {
             method : 'PUT',
-            url: 'activity/' + edit_activity_id,
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/activity/'+edit_activity_id :
+                'https://iua.herokuapp.com/activity/'+edit_activity_id),
             data: {
                 title: document.getElementById('edit_title').value,
                 text: document.getElementById('edit_text').value,
@@ -139,9 +154,10 @@ app.controller('ActivityCtrl', function ($scope, $http) {
     $scope.delete = function(activity) {
         var deleteRequest = {
             method : 'DELETE',
-            url: 'activity/' + activity.id
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/activity/'+activity.id :
+                'https://iua.herokuapp.com/activity/'+activity.id)
         };
-
         $http(deleteRequest).then(function() {
             loadActivities($scope, $http);
         });
