@@ -35,6 +35,7 @@ public class UserController {
         }
         if (userID == null) {
             //throw new UserNotInTheSystemException();
+
         }
         return userRepository.findOne(userID);
     }
