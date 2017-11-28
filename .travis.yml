@@ -1,18 +1,14 @@
 language: java
 jdk:
-
  - oraclejdk8
-
 install:
-
  # update mvnw
-
   - mvn -N io.takari:maven:wrapper
-
   - ./mvnw install -Pdev
 
+addons:
+   sonarcloud:
+       organization: "sweiws2017_18"
 script:
-
   #mvn clean install -Pdev
-
-  mvn clean install -Pdev
+  mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Pdev sonar:sonar

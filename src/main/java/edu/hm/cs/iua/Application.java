@@ -1,4 +1,4 @@
-package edu.hm.cs;
+package edu.hm.cs.iua;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
