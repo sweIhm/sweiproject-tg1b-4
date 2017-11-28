@@ -1,3 +1,4 @@
+/*
 package edu.hm.cs.iua.exceptions;
 
 public class WrongPasswordException extends IUAExceptions {
@@ -5,3 +6,4 @@ public class WrongPasswordException extends IUAExceptions {
         super("Password is incorrect.");
     }
 }
+*/

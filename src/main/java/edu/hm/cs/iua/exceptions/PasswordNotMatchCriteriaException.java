@@ -1,3 +1,4 @@
+/*
 package edu.hm.cs.iua.exceptions;
 
 public class PasswordNotMatchCriteriaException extends IUAExceptions {
@@ -5,3 +6,4 @@ public class PasswordNotMatchCriteriaException extends IUAExceptions {
         super("Password does not match the given Criteria.");
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package edu.hm.cs.iua.controllers;
 
 import edu.hm.cs.iua.models.User;
@@ -6,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 @RestController
 @RequestMapping("/user")
@@ -44,12 +44,15 @@ public class UserController {
         return userRepository.save(new User(input.getUserName(), input.getUserEmail(), input.getUserPassword()));
     }
 
-    /*@DeleteMapping("{id}")
+    */
+/*@DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         activityRepository.delete(id);
-    }*/
+    }*//*
 
-    /*@PutMapping("{id}")
+
+    */
+/*@PutMapping("{id}")
     public Activity update(@PathVariable Long id, @RequestBody Activity input) {
         Activity activity = activityRepository.findOne(id);
         if (activity == null) {
@@ -60,5 +63,7 @@ public class UserController {
             activity.setTitle(input.getTitle());
             return activityRepository.save(activity);
         }
-    }*/
+    }*//*
+
 }
+*/

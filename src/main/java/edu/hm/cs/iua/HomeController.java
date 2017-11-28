@@ -11,7 +11,6 @@ public class HomeController {
 
     @GetMapping
     public String index() {
-        System.out.println("'''''''''''''''''''''''''''''''''''''############################''''''''''''''''''''''Test");
         return "index.html";
     }
 

@@ -1,3 +1,4 @@
+/*
 package edu.hm.cs.iua.models;
 import edu.hm.cs.iua.exceptions.PasswordNotMatchCriteriaException;
 
@@ -86,3 +87,4 @@ public class User {
     }
 
 }
+*/
