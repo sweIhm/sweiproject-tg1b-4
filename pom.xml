@@ -6,7 +6,7 @@
 	<groupId>org.springframework</groupId>
 	<artifactId>international-university-app</artifactId>
 	<version>0.1.0</version>
-	<name>international-university-app (iua)</name>
+	<name>international-university-app (sweiproject-tg1b-4)</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
