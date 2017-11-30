@@ -47,6 +47,27 @@ public class ActivityControllerTest {
     }
 
     @Test
+    public void createMultipleTest() throws Exception {
+        MockHttpServletResponse response1 = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test1\",\"text\":\"test test1\",\"tags\":\"test1\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        MockHttpServletResponse response2 = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test2\",\"text\":\"test test2\",\"tags\":\"test2\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        char id1 = response1.getContentAsString().charAt(6);
+        char id2 = response2.getContentAsString().charAt(6);
+        mockMvc.perform(delete("/activity/" + id1));
+        mockMvc.perform(delete("/activity/" + id2));
+    }
+
+    @Test
     public void findTest() throws Exception {
         MockHttpServletResponse response = mockMvc.perform(post("/activity")
                 .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
@@ -56,6 +77,20 @@ public class ActivityControllerTest {
                 .getResponse();
         char id = response.getContentAsString().charAt(6);
         mockMvc.perform(get("/activity/" + id))
+                .andExpect(status().isOk());
+        mockMvc.perform(delete("/activity/" + id));
+    }
+
+    @Test
+    public void findTestFailed() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        char id = response.getContentAsString().charAt(6);
+        mockMvc.perform(get("/activity/0"))
                 .andExpect(status().isOk());
         mockMvc.perform(delete("/activity/" + id));
     }
