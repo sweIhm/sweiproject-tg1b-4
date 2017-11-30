@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,6 +87,14 @@ public class ActivityControllerTest {
                 .contentType("application/json"))
                 .andExpect(status().isOk());
         mockMvc.perform(delete("/activity/" + id));
+    }
+
+    @Test
+    public void updateTestFailed() throws Exception {
+        mockMvc.perform(put("/activity/" + 0)
+                .content("{\"title\":\"TestTest\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk());
     }
 
 }
