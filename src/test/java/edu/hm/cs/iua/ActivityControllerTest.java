@@ -1,0 +1,93 @@
+package edu.hm.cs.iua;
+
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public class ActivityControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    public void listAllTest() throws Exception {
+        mockMvc.perform(get("/activity"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
+    }
+
+    @Test
+    public void createTest() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        char id = response.getContentAsString().charAt(6);
+        mockMvc.perform(delete("/activity/" + id));
+    }
+
+    @Test
+    public void findTest() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        char id = response.getContentAsString().charAt(6);
+        mockMvc.perform(get("/activity/" + id))
+                .andExpect(status().isOk());
+        mockMvc.perform(delete("/activity/" + id));
+    }
+
+    @Test
+    public void deleteTest() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        char id = response.getContentAsString().charAt(6);
+        mockMvc.perform(delete("/activity/" + id))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateTest() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(post("/activity")
+                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        char id = response.getContentAsString().charAt(6);
+        mockMvc.perform(put("/activity/" + id)
+                .content("{\"title\":\"TestTest\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+        mockMvc.perform(delete("/activity/" + id));
+    }
+
+}
