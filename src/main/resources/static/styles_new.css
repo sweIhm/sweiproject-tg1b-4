@@ -12,5 +12,8 @@
     color: inherit;
 }
 
-.carddemoBasicUsage .card-media {
-    background-color: #999999; }
+.cards{
+    float: left;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}

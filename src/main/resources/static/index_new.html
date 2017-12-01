@@ -58,66 +58,42 @@
                 </md-button>
             </md-content>
         </md-sidenav>
-        <!--<section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">-->
-        <!--<md-button>{{title1}}</md-button>-->
-        <!--<md-button md-no-ink="" class="md-primary">Primary (md-noink)</md-button>-->
-        <!--<md-button ng-disabled="true" class="md-primary">Disabled</md-button>-->
-        <!--<md-button class="md-warn">{{title4}}</md-button>-->
-        <!--</section>-->
-        <h3>Activities:</h3>
-            <div ng-repeat="activity in activities">
-                <md-content class="md-padding" layout-xs="column" layout="row">
-                    <div flex-xs flex-gt-xs="50" layout="column">
-                        <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline">{{activity.title}}</span>
-                                    <span class="md-subhead">{{activity.text}}</span>
-                                </md-card-title-text>
-                                <md-card-title-media>
-                                    <div class="md-media-lg card-media"></div>
-                                </md-card-title-media>
-                            </md-card-title>
-                            <md-card-actions layout="row" layout-align="end center">
-                                <md-button>{{activity.tags}}</md-button>
-                            </md-card-actions>
-                        </md-card>
-                    </div>
-                    <div flex-xs flex-gt-xs="50" layout="column">
-                        <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline">Card with image</span>
-                                    <span class="md-subhead">Small</span>
-                                </md-card-title-text>
-                                <md-card-title-media>
-                                    <div class="md-media-sm card-media"></div>
-                                </md-card-title-media>
-                            </md-card-title>
-                            <md-card-actions layout="row" layout-align="end center">
-                                <md-button>Action 1</md-button>
-                                <md-button>Action 2</md-button>
-                            </md-card-actions>
-                        </md-card>
-                        <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline">Card with image</span>
-                                    <span class="md-subhead">Medium</span>
-                                </md-card-title-text>
-                                <md-card-title-media>
-                                    <div class="md-media-md card-media"></div>
-                                </md-card-title-media>
-                            </md-card-title>
-                            <md-card-actions layout="row" layout-align="end center">
-                                <md-button>Action 1</md-button>
-                                <md-button>Action 2</md-button>
-                            </md-card-actions>
-                        </md-card>
-                    </div>
-                </md-content>
-            </div>
     </section>
+    <h3>Activities:</h3>
+    <div ng-repeat="activity in activities">
+        <div layout="column" layout-gt-sm="row" layout-wrap>
+            <div class="cards" flex="25" flex-gt-sm="25" ng-repeat="i in [1,2,3,4] track by $index">
+                <md-card layout-fill flex>
+                    <md-card-header>
+                        <md-card-avatar>
+                            <img class="md-user-avatar" src="assets/user_icon.png"/>
+                        </md-card-avatar>
+                        <md-card-header-text>
+                            <span class="md-title">User</span>
+                            <span class="md-subhead">Student</span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">{{activity.title}}</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="start center">
+                        <div style="color: deepskyblue">
+                            <md-button>#{{activity.tags}}</md-button>
+                        </div>
+                    </md-card-actions>
+                    <md-card-content>
+                        <p>
+                            {{activity.text}}Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+                            sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
+                        </p>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
