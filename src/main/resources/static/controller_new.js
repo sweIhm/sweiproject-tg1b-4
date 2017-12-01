@@ -6,7 +6,18 @@ app.config(function($mdThemingProvider) {
         .accentPalette('red');
 });
 
-app.controller('IUACtrl', function($scope, $mdSidenav, $mdDialog) {
+function loadActivities ($scope, $http){
+    $http({
+        method : 'GET',
+        url: (window.location.hostname === 'localhost' ?
+            'http://localhost:8080/activity' :
+            'https://iua.herokuapp.com/activity')
+    }).then(function (response) {
+        /*$scope.activities = response.data;*/
+    });
+}
+
+app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
 
     // Check if user call's site from http and redirect to https if true.
     /*if (location.protocol !== 'https:')
@@ -14,6 +25,8 @@ app.controller('IUACtrl', function($scope, $mdSidenav, $mdDialog) {
         alert("This site only works in https:</br>Click okay to get redirected to https:");
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
     }*/
+
+    loadActivities($scope, $http);
 
     $scope.title1 = 'Button';
     $scope.title4 = 'Warn';
@@ -69,22 +82,32 @@ app.controller('IUACtrl', function($scope, $mdSidenav, $mdDialog) {
 
     };
 
-    function addActivityDialogCtrl($scope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
+    function addActivityDialogCtrl($scope, $mdDialog, $http) {
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
+        $scope.add = function(activity) {
+            var postRequest = {
+                method : 'POST',
+                url: (window.location.hostname === 'localhost' ?
+                    'http://localhost:8080/activity' :
+                    'https://iua.herokuapp.com/activity'),
+                data: {
+                    title: $scope.activity.title,
+                    text: $scope.activity.text,
+                    tags: $scope.activity.tags
+                }
+            };
+            $http(postRequest).then(function (response) {
+                /*$scope.activities = response.data;*/
+            }).then(function () {
+                loadActivities($scope, $http);
+                $scope.cancel();
+            });
         };
     }
 
     function loginDialogCtrl($scope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
