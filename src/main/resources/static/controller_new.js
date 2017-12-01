@@ -13,7 +13,7 @@ function loadActivities ($scope, $http){
             'http://localhost:8080/activity' :
             'https://iua.herokuapp.com/activity')
     }).then(function (response) {
-        /*$scope.activities = response.data;*/
+        $scope.activities = response.data;
     });
 }
 
@@ -39,7 +39,6 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
 
     $scope.search_form_submit = function() {
         if (document.getElementById('search_input').value !== "") {
-            alert("Works");
             document.getElementById('search_form').reset();
         }
     };
@@ -51,10 +50,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true
-        })
-            .then(function() {
-                //Load activities
-            });
+        }).finally(function() {
+            alert("hello");
+            loadActivities($scope, $http);
+        });
     };
 
     $scope.open_edit_activity_dialog = function() {
@@ -70,7 +69,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             clickOutsideToClose:true
         })
             .then(function() {
-                //Load activities
+                //...
             });
     };
 
@@ -84,7 +83,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
 
     function addActivityDialogCtrl($scope, $mdDialog, $http) {
         $scope.cancel = function() {
-            $mdDialog.cancel();
+            $mdDialog.cancel("blub");
         };
         $scope.add = function(activity) {
             var postRequest = {
@@ -99,9 +98,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 }
             };
             $http(postRequest).then(function (response) {
-                /*$scope.activities = response.data;*/
+                $scope.activities = response.data;
             }).then(function () {
-                loadActivities($scope, $http);
                 $scope.cancel();
             });
         };

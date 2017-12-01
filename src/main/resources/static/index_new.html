@@ -64,16 +64,14 @@
         <!--<md-button ng-disabled="true" class="md-primary">Disabled</md-button>-->
         <!--<md-button class="md-warn">{{title4}}</md-button>-->
         <!--</section>-->
-        <div ng-controller="IUACtrl" ng-cloak>
+        <h3>Activities:</h3>
             <div ng-repeat="activity in activities">
                 <md-content class="md-padding" layout-xs="column" layout="row">
                     <div flex-xs flex-gt-xs="50" layout="column">
                         <md-card>
-                            {{activity.title}}
-                            {{title}}
                             <md-card-title>
                                 <md-card-title-text>
-                                    <span class="md-headline">{{title}}</span>
+                                    <span class="md-headline">{{activity.title}}</span>
                                     <span class="md-subhead">{{activity.text}}</span>
                                 </md-card-title-text>
                                 <md-card-title-media>
@@ -119,7 +117,6 @@
                     </div>
                 </md-content>
             </div>
-        </div>
     </section>
 </div>
 </body>
