@@ -11,7 +11,7 @@ public class HomeController {
 
     @GetMapping
     public String index() {
-        return "index_new.html";
+        return "index.html";
     }
 
 }

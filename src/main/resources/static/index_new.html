@@ -5,19 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>International University App</title>
 
+    <!--Material Design styles by Google-->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--Style for AngularJS Material-->
     <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.min.css">
+    <!--Custom styles-->
     <link rel="stylesheet" href="styles_new.css">
 
+    <!--AngularJS scripts-->
     <script src="https://code.angularjs.org/1.6.7/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.6.7/angular-animate.min.js"></script>
     <script src="https://code.angularjs.org/1.6.7/angular-aria.min.js "></script>
+    <!---AngularJS Material script-->
     <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.min.js"></script>
+    <!--Custom scripts-->
     <script src="controller_new.js"></script>
 </head>
+
 <body>
     <div ng-controller="IUACtrl" layout="column" layout-fill>
+        <!--Header toolbar-->
         <md-toolbar class="md-primary">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeftSidebar()">
@@ -25,95 +33,89 @@
                 </md-button>
                 <img src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
                 <span flex></span>
-                <md-button class="md-icon-button" aria-label="Settings" ng-submit="">
+                <md-button class="md-icon-button" aria-label="Settings" form="search_form" type="submit">
                     <md-icon class="material-icons"> search </md-icon>
                 </md-button>
-                <form>
+                <form id="search_form" ng-submit="search_form_submit()">
                     <md-input-container id="input_container">
-                        <input type="text" id="search_input" placeholder="Search..."
-                               ng-model="data">
+                        <input type="text" id="search_input" placeholder="Search..." ng-model="search_text_field">
                     </md-input-container>
                 </form>
                 <span flex></span>
-                <md-button class="md-raised md-accent">Registration</md-button>
-                <md-button class="md-raised md-accent">Login</md-button>
+                <md-button class="md-raised md-accent" ng-click="open_registration_dialog()">Registration</md-button>
+                <md-button class="md-raised md-accent" ng-click="open_login_dialog()">Login</md-button>
             </div>
         </md-toolbar>
+        <!--Site body content-->
         <section layout="row" flex>
-        <md-sidenav
-                class="md-sidenav-left"
-                md-component-id="left_Sidebar"
-                md-whiteframe="4"
-                style="min-width: 250px">
-            <md-toolbar class="md-primary">
-                <h1 class="md-toolbar-tools">Sidenav Left</h1>
-            </md-toolbar>
-            <md-content layout-padding ng-controller="IUACtrl">
-
-            </md-content>
-        </md-sidenav>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-            <md-button>{{title1}}</md-button>
-            <md-button md-no-ink="" class="md-primary">Primary (md-noink)</md-button>
-            <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
-            <md-button class="md-warn">{{title4}}</md-button>
-        </section>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-            <md-button class="md-raised">Button</md-button>
-            <md-button class="md-raised md-primary">Primary</md-button>
-            <md-button ng-disabled="true" class="md-raised md-primary">Disabled</md-button>
-            <md-button class="md-raised md-warn">Warn</md-button>
-        </section>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-        <md-button class="md-fab" aria-label="Eat cake">
-            <md-icon md-font-set="material-icons"> cake </md-icon>
-        </md-button>
-
-        <md-button class="md-fab md-primary" aria-label="Use Android">
-            <md-icon md-font-set="material-icons"> android </md-icon>
-        </md-button>
-
-        <md-button class="md-fab" ng-disabled="true" aria-label="Comment">
-            <md-icon md-font-set="material-icons"> comment </md-icon>
-        </md-button>
-
-        <md-button class="md-fab md-primary md-hue-2" aria-label="Profile">
-            <md-icon md-font-set="material-icons"> people </md-icon>
-        </md-button>
-
-        <md-button class="md-fab md-mini" aria-label="Eat cake">
-            <md-icon md-font-set="material-icons"> cake </md-icon>
-        </md-button>
-
-        <md-button class="md-fab md-mini md-primary" aria-label="Use Android">
-            <md-icon md-font-set="material-icons" style="color: greenyellow;"> android </md-icon>
-        </md-button>
-        </section>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-            <md-button ng-href="{{googleUrl}}" target="_blank">Default Link</md-button>
-            <md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">Primary Link</md-button>
-            <md-button>Default Button</md-button>
-        </section>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-            <md-button class="md-primary md-hue-1">Primary Hue 1</md-button>
-            <md-button class="md-warn md-raised md-hue-2">Warn Hue 2</md-button>
-            <md-button class="md-accent">Accent</md-button>
-            <md-button class="md-accent md-raised md-hue-1">Accent Hue 1</md-button>
-        </section>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-            <md-button class="md-icon-button md-primary" aria-label="Settings">
-                <md-icon md-font-set="material-icons"> menu </md-icon>
+            <md-sidenav class="md-sidenav-left" md-component-id="left_Sidebar" md-whiteframe="4" style="min-width: 250px">
+                <md-toolbar class="md-primary">
+                    <h1 class="md-toolbar-tools">IUA - Sidebar</h1>
+                </md-toolbar>
+                <md-content layout-padding>
+                    <md-button class="md-raised md-accent" ng-click="open_add_activity_dialog()">
+                        Add Activity (DEBUG)
+                    </md-button>
+                </md-content>
+            </md-sidenav>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+                <md-button>{{title1}}</md-button>
+                <md-button md-no-ink="" class="md-primary">Primary (md-noink)</md-button>
+                <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
+                <md-button class="md-warn">{{title4}}</md-button>
+            </section>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+                <md-button class="md-raised">Button</md-button>
+                <md-button class="md-raised md-primary">Primary</md-button>
+                <md-button ng-disabled="true" class="md-raised md-primary">Disabled</md-button>
+                <md-button class="md-raised md-warn">Warn</md-button>
+            </section>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+            <md-button class="md-fab" aria-label="Eat cake">
+                <md-icon md-font-set="material-icons"> cake </md-icon>
             </md-button>
-            <md-button class="md-icon-button md-accent" aria-label="Favorite">
-                <md-icon md-font-set="material-icons"> favorite </md-icon>
+            <md-button class="md-fab md-primary" aria-label="Use Android">
+                <md-icon md-font-set="material-icons"> android </md-icon>
             </md-button>
-            <md-button class="md-icon-button" aria-label="More">
-                <md-icon md-font-set="material-icons"> more_vert </md-icon>
+            <md-button class="md-fab" ng-disabled="true" aria-label="Comment">
+                <md-icon md-font-set="material-icons"> comment </md-icon>
             </md-button>
-            <md-button href="http://google.com" title="Launch Google.com in new window" target="_blank" ng-disabled="true" aria-label="Google.com" class="md-icon-button launch">
-                <md-icon md-font-set="material-icons"> launch </md-icon>
+            <md-button class="md-fab md-primary md-hue-2" aria-label="Profile">
+                <md-icon md-font-set="material-icons"> people </md-icon>
             </md-button>
-        </section>
+            <md-button class="md-fab md-mini" aria-label="Eat cake">
+                <md-icon md-font-set="material-icons"> cake </md-icon>
+            </md-button>
+            <md-button class="md-fab md-mini md-primary" aria-label="Use Android">
+                <md-icon md-font-set="material-icons" style="color: greenyellow;"> android </md-icon>
+            </md-button>
+            </section>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+                <md-button ng-href="{{googleUrl}}" target="_blank">Default Link</md-button>
+                <md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">Primary Link</md-button>
+                <md-button>Default Button</md-button>
+            </section>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+                <md-button class="md-primary md-hue-1">Primary Hue 1</md-button>
+                <md-button class="md-warn md-raised md-hue-2">Warn Hue 2</md-button>
+                <md-button class="md-accent">Accent</md-button>
+                <md-button class="md-accent md-raised md-hue-1">Accent Hue 1</md-button>
+            </section>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+                <md-button class="md-icon-button md-primary" aria-label="Settings">
+                    <md-icon md-font-set="material-icons"> menu </md-icon>
+                </md-button>
+                <md-button class="md-icon-button md-accent" aria-label="Favorite">
+                    <md-icon md-font-set="material-icons"> favorite </md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="More">
+                    <md-icon md-font-set="material-icons"> more_vert </md-icon>
+                </md-button>
+                <md-button href="http://google.com" title="Launch Google.com in new window" target="_blank"
+                           ng-disabled="true" aria-label="Google.com" class="md-icon-button launch">
+                    <md-icon md-font-set="material-icons"> launch </md-icon>
+                </md-button>
+            </section>
         </section>
     </div>
 </body>
