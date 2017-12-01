@@ -15,4 +15,9 @@ app.controller('IUACtrl', function($scope, $timeout, $mdSidenav) {
     $scope.toggleLeftSidebar = function() {
         $mdSidenav('left_Sidebar').toggle();
     };
+
+    $scope.expand_search_field = function () {
+        document.getElementById("searchInput").style.visibility = "visible";
+        document.getElementById("searchInput").style.width = "50%";
+    }
 });

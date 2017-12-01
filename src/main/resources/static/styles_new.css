@@ -1,0 +1,14 @@
+#input_container {
+    display: flex;
+}
+
+#input_container label {
+    padding-left: 10px;
+    color: white;
+}
+
+#search_input {
+    background-color: rgba(205, 205, 205, 0.51);
+    color: inherit;
+}
+

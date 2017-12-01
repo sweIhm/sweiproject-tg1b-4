@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.min.css">
+    <link rel="stylesheet" href="styles_new.css">
 
     <script src="https://code.angularjs.org/1.6.7/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.6.7/angular-animate.min.js"></script>
@@ -22,7 +23,17 @@
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeftSidebar()">
                     <md-icon md-font-set="material-icons"> menu </md-icon>
                 </md-button>
-                <h2>IUA</h2>
+                <img src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Settings" ng-submit="">
+                    <md-icon class="material-icons"> search </md-icon>
+                </md-button>
+                <form>
+                    <md-input-container id="input_container">
+                        <input type="text" id="search_input" placeholder="Search..."
+                               ng-model="data">
+                    </md-input-container>
+                </form>
                 <span flex></span>
                 <md-button class="md-raised md-accent">Registration</md-button>
                 <md-button class="md-raised md-accent">Login</md-button>
@@ -32,7 +43,6 @@
         <md-sidenav
                 class="md-sidenav-left"
                 md-component-id="left_Sidebar"
-                md-is-locked-open="$mdMedia('gt-md')"
                 md-whiteframe="4"
                 style="min-width: 250px">
             <md-toolbar class="md-primary">
