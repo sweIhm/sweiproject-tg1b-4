@@ -37,13 +37,13 @@
                     <md-icon class="material-icons"> search </md-icon>
                 </md-button>
                 <form id="search_form" ng-submit="search_form_submit()">
-                    <md-input-container id="input_container">
-                        <input type="text" id="search_input" placeholder="Search..." ng-model="search_text_field">
+                    <md-input-container id="search_input_container">
+                        <input type="text" id="search_input_field" placeholder="Search..." ng-model="search_text_field">
                     </md-input-container>
                 </form>
                 <span flex></span>
-                <md-button class="md-raised md-accent" ng-click="open_registration_dialog()">Registration</md-button>
-                <md-button class="md-raised md-accent" ng-click="open_login_dialog()">Login</md-button>
+                <md-button class="md-raised md-accent" ng-click="open_registration_dialog($event)">Registration</md-button>
+                <md-button class="md-raised md-accent" ng-click="open_login_dialog($event)">Login</md-button>
             </div>
         </md-toolbar>
         <!--Site body content-->
@@ -53,7 +53,7 @@
                     <h1 class="md-toolbar-tools">IUA - Sidebar</h1>
                 </md-toolbar>
                 <md-content layout-padding>
-                    <md-button class="md-raised md-accent" ng-click="open_add_activity_dialog()">
+                    <md-button class="md-raised md-accent" ng-click="open_add_activity_dialog($event)">
                         Add Activity (DEBUG)
                     </md-button>
                 </md-content>

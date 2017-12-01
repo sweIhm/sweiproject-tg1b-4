@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<md-dialog aria-label="Login" style="width: 35%">
+    <form id="login_form" ng-submit="login(login)">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Login</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" type="reset" ng-click="cancel()" tabindex="5">
+                    <md-icon class="material-icons" aria-label="Close dialog"> close </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="min-width: 100px">
+            <div class="md-dialog-content" layout="column">
+                <md-input-container id="login_input_container">
+                    <input ng-model="login.email" type="email" placeholder="E-Mail:" md-autofocus tabindex="1" required>
+                </md-input-container>
+                <md-input-container id="login_input_container">
+                    <input ng-model="login.password" type="password" placeholder="Password:" tabindex="2" required>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-icon-button md-fab md-mini md-primary" ng-click="forgot_password()" tabindex="4">
+                <md-tooltip md-direction="top">Forgot password ?</md-tooltip>
+                <md-icon class="material-icons" aria-label="Close dialog"> help_outline </md-icon>
+            </md-button>
+            <md-button class="md-raised md-accent " type="submit" tabindex="3">
+                Login
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
