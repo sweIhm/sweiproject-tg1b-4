@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<md-dialog aria-label="Activity Details" style="width: 35%">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{activity.title}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()" tabindex="1">
+                    <md-icon class="material-icons" aria-label="Close dialog"> close </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="min-width: 100px">
+            <md-card layout-fill flex>
+                <md-card-header>
+                    <md-card-avatar>
+                        <img class="md-user-avatar" src="assets/user_icon.png"/>
+                    </md-card-avatar>
+                    <md-card-header-text>
+                        <span class="md-title">User</span>
+                        <span class="md-subhead">Student</span>
+                    </md-card-header-text>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
+                        <md-icon md-font-set="material-icons"> edit </md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
+                        <md-icon md-font-set="material-icons"> delete </md-icon>
+                    </md-button>
+                </md-card-header>
+                <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{activity.title}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="start center">
+                    <div style="color: deepskyblue">
+                        <md-button>#{{activity.tags}}</md-button>
+                    </div>
+                </md-card-actions>
+                <md-card-content>
+                    <p>
+                        {{activity.text}}Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+                        sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
+                    </p>
+                </md-card-content>
+            </md-card>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+        </md-dialog-actions>
+</md-dialog>

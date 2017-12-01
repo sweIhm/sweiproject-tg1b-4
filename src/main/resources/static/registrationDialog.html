@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<md-dialog aria-label="Registration" style="width: 35%">
+    <form id="reg_form" name="reg_form" ng-submit="registration(reg)">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Registration</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" type="reset" ng-click="cancel()" tabindex="6">
+                    <md-icon class="material-icons" aria-label="Close dialog"> close </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="min-width: 100px">
+            <div class="md-dialog-content" layout="column">
+                <md-input-container id="reg_input_container">
+                    <input ng-model="reg.name" name="reg_name" type="text" placeholder="Name:" md-autofocus tabindex="1" required ng-pattern=/^[A-Za-z0-9_]+$/>
+                    <div ng-messages="register.reg_name.$error" role="alert">
+                        <div ng-message-exp="['required', 'pattern']">
+                            Your user name may only contain uppercase-, lowercase letters, numbers and underscores.
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container id="reg_input_container">
+                    <input ng-model="reg.email" type="email" placeholder="E-Mail:" tabindex="2" required>
+                </md-input-container>
+                <md-input-container id="reg_input_container">
+                    <input ng-model="reg.password" name="reg_password" type="password" placeholder="Password:" tabindex="3"
+                           required minlength="10"
+                    ng-pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/>
+                    <div ng-messages="register.reg_password.$error" role="alert">
+                        <div ng-message-exp="['required', 'pattern']">
+                            Password needs at least one uppercase-,one lowercase letter and one number.
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container id="reg_input_container">
+                    <input ng-model="reg.passwordConfirm" name="reg_password_confirm" type="password"
+                           placeholder="Confirm password:" tabindex="4" required>
+                    <div ng-messages="register.reg_password_confirm.$error">
+                        <div ng-message="password">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised md-accent" type="submit" tabindex="5">
+                Register
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
