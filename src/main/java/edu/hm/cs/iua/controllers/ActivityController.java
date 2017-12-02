@@ -30,7 +30,7 @@ public class ActivityController {
 
   @PostMapping
   public Activity create(@RequestBody Activity input) {
-      return activityRepository.save(new Activity(input.getText(), input.getTags(), input.getTitle(), input.getImage()));
+      return activityRepository.save(new Activity((long)0, input.getText(), input.getTags(), input.getTitle()));
   }
 
   @DeleteMapping("{id}")

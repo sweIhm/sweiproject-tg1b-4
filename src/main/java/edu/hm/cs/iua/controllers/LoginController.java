@@ -1,0 +1,51 @@
+package edu.hm.cs.iua.controllers;
+
+import edu.hm.cs.iua.exceptions.InvalidPasswordException;
+import edu.hm.cs.iua.exceptions.LoginException;
+import edu.hm.cs.iua.exceptions.UserNotFoundException;
+import edu.hm.cs.iua.exceptions.UserNotValidatedException;
+import edu.hm.cs.iua.models.Token;
+import edu.hm.cs.iua.models.User;
+import edu.hm.cs.iua.repositories.TokenRepository;
+import edu.hm.cs.iua.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/login")
+public class LoginController {
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
+
+    @GetMapping
+    public Token login(@RequestParam String email, @RequestParam String password) throws LoginException {
+        for (User user: userRepository.findAll())
+            if (user.getEmail().equals(email)) {
+                if (!user.isValidated())
+                    throw new UserNotValidatedException("User is not validated.");
+                if (!user.getPassword().equals(password))
+                    throw new InvalidPasswordException("Password is incorrect.");
+
+                Token token = new Token(user.getId());
+                while (!isTokenAvailable(token))
+                    token = new Token(user.getId());
+                tokenRepository.save(token);
+                return token;
+            }
+        throw new UserNotFoundException("No user with the specified email address could be found.");
+    }
+
+    private boolean isTokenAvailable(Token token) {
+        for (Token existingToken: tokenRepository.findAll())
+            if (token.hashCode() == existingToken.hashCode() && token.equals(existingToken))
+                return false;
+        return true;
+    }
+
+}

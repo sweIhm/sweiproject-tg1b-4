@@ -9,20 +9,28 @@ import javax.persistence.Id;
 public class Activity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long author;
     private String text;
     private String tags;
     private String title;
-    private String image;
 
     public Activity (){}
 
-    public Activity(String text, String tags, String title, String image) {
+    public Activity(Long author, String text, String tags, String title) {
         this.text = text;
         this.tags = tags;
         this.title = title;
-        this.image = image;
+    }
+
+    public Long getAuthor() {
+        return author;
+    }
+
+    public Activity setAuthor(Long author) {
+        this.author = author;
+        return this;
     }
 
     public void setId(Long id) {
@@ -55,14 +63,6 @@ public class Activity {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
 }
