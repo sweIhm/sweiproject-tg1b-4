@@ -24,7 +24,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     // Check if user call's site from http and redirect to https if true.
     if (location.protocol !== 'https:')
     {
-        alert("This site only works in https:</br>Click okay to get redirected to https:");
+        alert("This site only works in https:. Click ok to get redirected to https:");
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
     }
 
