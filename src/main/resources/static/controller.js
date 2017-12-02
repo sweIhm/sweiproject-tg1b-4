@@ -41,7 +41,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     $scope.open_add_activity_dialog = function(ev) {
         $mdDialog.show({
             controller: addActivityDialogCtrl,
-            templateUrl: 'addActivityDialog.html',
+            templateUrl: './dialogs/addActivityDialog.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true
@@ -54,7 +54,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
         ev.stopPropagation();
         $mdDialog.show({
             controller: editActivityDialogCtrl,
-            templateUrl: 'editActivityDialog.html',
+            templateUrl: './dialogs/editActivityDialog.html',
             locals: {
                 activity: activity
             },
@@ -69,7 +69,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     $scope.open_login_dialog = function(ev) {
         $mdDialog.show({
             controller: loginDialogCtrl,
-            templateUrl: 'loginDialog.html',
+            templateUrl: './dialogs/loginDialog.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true
@@ -108,7 +108,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     $scope.open_registration_dialog = function(ev) {
         $mdDialog.show({
             controller: registrationDialogCtrl,
-            templateUrl: 'registrationDialog.html',
+            templateUrl: './dialogs/registrationDialog.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true
@@ -120,7 +120,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     $scope.open_activity_details_dialog = function(activity, ev) {
         $mdDialog.show({
             controller: activityDetailsDialogCtrl,
-            templateUrl: 'activityDetailsDialog.html',
+            templateUrl: './dialogs/activityDetailsDialog.html',
             locals: {
                 activity: activity
             },
