@@ -1,5 +1,7 @@
 var app = angular.module('IUA_new', ['ngMaterial']);
 
+var heroku_address =  'https://iua-experimental.herokuapp.com/';
+
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('blue')
@@ -11,7 +13,7 @@ function loadActivities ($scope, $http){
         method : 'GET',
         url: (window.location.hostname === 'localhost' ?
             'http://localhost:8080/activity' :
-            'https://iua-experimental.herokuapp.com/activity')
+            heroku_address + '/activity')
     }).then(function (response) {
         $scope.activities = response.data;
     });
@@ -20,11 +22,11 @@ function loadActivities ($scope, $http){
 app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
 
     // Check if user call's site from http and redirect to https if true.
-    /*if (location.protocol !== 'https:')
+    if (location.protocol !== 'https:')
     {
-        alert("This site only works in https:</br>Click okay to get redirected to https:");
+        alert("This site only works in https:. Click ok to get redirected to https:");
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-    }*/
+    }
 
     loadActivities($scope, $http);
 
@@ -84,7 +86,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             method : 'DELETE',
             url: (window.location.hostname === 'localhost' ?
                 'http://localhost:8080/activity/'+activity.id :
-                'https://iua-experimental.herokuapp.com/activity/'+activity.id)
+                heroku_address + '/activity/'+activity.id)
         };
         $http(deleteRequest).then(function() {
             loadActivities($scope, $http);
@@ -141,7 +143,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
                     'http://localhost:8080/activity' :
-                    'https://iua-experimental.herokuapp.com/activity'),
+                    heroku_address + '/activity'),
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
@@ -166,7 +168,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 method : 'PUT',
                 url: (window.location.hostname === 'localhost' ?
                     'http://localhost:8080/activity/' + activity.id :
-                    'https://iua-experimental.herokuapp.com/activity/' + activity.id),
+                    heroku_address + '/activity/' + activity.id),
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
@@ -206,7 +208,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
                     'http://localhost:8080/registration' :
-                    'https://iua-experimental.herokuapp.com/registration'),
+                    heroku_address + '/registration'),
                 data: {
                     username: $scope.reg.name,
                     email: $scope.reg.email,
