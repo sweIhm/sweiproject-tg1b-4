@@ -12,12 +12,6 @@
     color: inherit;
 }
 
-.cards{
-    float: left;
-    margin-left: 30px;
-    margin-bottom: 30px;
-}
-
 #fixed-header {
     position: fixed;
     top: 0;
