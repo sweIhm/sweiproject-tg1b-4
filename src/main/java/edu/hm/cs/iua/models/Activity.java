@@ -64,5 +64,4 @@ public class Activity {
     public void setTitle(String title) {
         this.title = title;
     }
-
 }

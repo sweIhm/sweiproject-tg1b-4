@@ -50,5 +50,4 @@ public class ActivityController {
           return activityRepository.save(activity);
       }
   }
-
 }

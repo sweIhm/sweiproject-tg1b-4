@@ -13,5 +13,4 @@ public class UserNotValidatedException extends LoginException {
     public UserNotValidatedException(String message) {
         super(message);
     }
-
 }

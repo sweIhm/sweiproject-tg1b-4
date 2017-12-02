@@ -33,8 +33,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     };
 
     $scope.search_form_submit = function() {
-        if (document.getElementById('search_input').value !== "") {
-            document.getElementById('search_form').reset();
+        if ($scope.search_text_field.value !== "") {
+            $scope.search_text_field = '';
         }
     };
 

@@ -26,5 +26,4 @@ public class TestController {
         for (User user: userRepository.findAll())
             System.out.println(user.getId() + " " + user.getName() + " " + user.getEmail() + " " + user.getPassword());
     }
-
 }

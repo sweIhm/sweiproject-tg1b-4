@@ -47,5 +47,4 @@ public class LoginController {
                 return false;
         return true;
     }
-
 }

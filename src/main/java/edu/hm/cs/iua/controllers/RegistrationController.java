@@ -39,5 +39,4 @@ public class RegistrationController {
         final User user = new User(input.getName(), input.getEmail(), input.getPassword());
         userRepository.save(user);
     }
-
 }
