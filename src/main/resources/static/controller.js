@@ -11,7 +11,7 @@ function loadActivities ($scope, $http){
         method : 'GET',
         url: (window.location.hostname === 'localhost' ?
             'http://localhost:8080/activity' :
-            'https://iua.herokuapp.com/activity')
+            'https://iua-experimental.herokuapp.com/activity')
     }).then(function (response) {
         $scope.activities = response.data;
     });
@@ -84,7 +84,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             method : 'DELETE',
             url: (window.location.hostname === 'localhost' ?
                 'http://localhost:8080/activity/'+activity.id :
-                'https://iua.herokuapp.com/activity/'+activity.id)
+                'https://iua-experimental.herokuapp.com/activity/'+activity.id)
         };
         $http(deleteRequest).then(function() {
             loadActivities($scope, $http);
@@ -141,7 +141,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
                     'http://localhost:8080/activity' :
-                    'https://iua.herokuapp.com/activity'),
+                    'https://iua-experimental.herokuapp.com/activity'),
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
@@ -166,7 +166,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 method : 'PUT',
                 url: (window.location.hostname === 'localhost' ?
                     'http://localhost:8080/activity/' + activity.id :
-                    'https://iua.herokuapp.com/activity/' + activity.id),
+                    'https://iua-experimental.herokuapp.com/activity/' + activity.id),
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
@@ -206,7 +206,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
                     'http://localhost:8080/registration' :
-                    'https://iua.herokuapp.com/registration'),
+                    'https://iua-experimental.herokuapp.com/registration'),
                 data: {
                     username: $scope.reg.name,
                     email: $scope.reg.email,
