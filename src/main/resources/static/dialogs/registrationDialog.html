@@ -36,7 +36,7 @@
                     <input ng-model="reg.passwordConfirm" name="reg_password_confirm" type="password"
                            placeholder="Confirm password:" tabindex="4" required>
                     <div ng-messages="register.reg_password_confirm.$error">
-                        <div ng-message="password">This is required.</div>
+                        <div ng-message="password">Passwords don't match!</div>
                     </div>
                 </md-input-container>
             </div>
