@@ -1,6 +1,6 @@
 var app = angular.module('IUA_new', ['ngMaterial']);
 
-var heroku_address =  'https://iua-experimental.herokuapp.com/';
+var heroku_address =  'https://iua.herokuapp.com/';
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
@@ -22,11 +22,11 @@ function loadActivities ($scope, $http){
 app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
 
     // Check if user call's site from http and redirect to https if true.
-    if (location.protocol !== 'https:')
+    /*if (location.protocol !== 'https:')
     {
         alert("This site only works in https:. Click ok to get redirected to https:");
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-    }
+    }*/
 
     loadActivities($scope, $http);
 
