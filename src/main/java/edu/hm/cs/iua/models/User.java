@@ -68,4 +68,5 @@ public class User {
     public void setValidated(boolean validated) {
         isValidated = validated;
     }
+    
 }

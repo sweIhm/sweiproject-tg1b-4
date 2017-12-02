@@ -13,5 +13,4 @@ public class EmailAlreadyTakenException extends RegistrationException {
     public EmailAlreadyTakenException(String message) {
         super(message);
     }
-
 }

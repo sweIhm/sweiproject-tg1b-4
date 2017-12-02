@@ -9,5 +9,4 @@ public abstract class IUAExceptions extends Exception {
     public IUAExceptions(String message) {
         super(message);
     }
-
 }

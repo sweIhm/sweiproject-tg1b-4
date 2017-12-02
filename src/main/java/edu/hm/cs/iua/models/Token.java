@@ -53,4 +53,5 @@ public class Token {
     public int hashCode() {
         return token.hashCode();
     }
+
 }

@@ -9,5 +9,4 @@ public abstract class RegistrationException extends IUAExceptions {
     public RegistrationException(String message) {
         super(message);
     }
-
 }
