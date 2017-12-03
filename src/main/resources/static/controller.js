@@ -1,4 +1,4 @@
-var app = angular.module('IUA_new', ['ngMaterial']);
+var app = angular.module('IUA_new', ['ngMaterial','ngMessages']);
 
 var heroku_address =  'https://iua.herokuapp.com/';
 
@@ -201,24 +201,49 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
         };
         $scope.registration = function(reg) {
             if (reg.password !== reg.passwordConfirm) {
-                $scope.reg_form.reg_password_confirm.$setValidity("password", false);
+                $scope.reg_form.reg_password_confirm.$setValidity('password', false);
                 return;
+            } else {
+                $scope.reg_form.reg_password_confirm.$setValidity('password', true);
             }
             var postRequest = {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
-                    'http://localhost:8080/registration' :
-                    heroku_address + '/registration'),
+                    'http://localhost:8080/register' :
+                    heroku_address + '/register'),
                 data: {
-                    username: $scope.reg.name,
+                    name: $scope.reg.name,
                     email: $scope.reg.email,
                     password: $scope.reg.password
                 }
             };
-            $http(postRequest).then(function (response) {
+            $http(postRequest).then(function () {
+                alert("Registration worked.");
                 // Work with response
             }).then(function () {
                 $scope.cancel();
+            }).catch(function (error) {
+                var error_data = error.data;
+                alert(error_data.exception);
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidDataException") {
+                    if (error_data.message === "Email invalid.") {
+                        $scope.reg_form.reg_email.$setValidity('noHMorCalEmail', false);
+                    } else {
+                        $scope.reg_form.reg_email.$setValidity('noHMorCalEmail', true);
+                    }
+                } else {
+                    $scope.reg_form.reg_email.$setValidity('noHMorCalEmail', true);
+                }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.EmailAlreadyTakenException") {
+                    $scope.reg_form.reg_email.$setValidity('emailAlreadyTaken', false);
+                } else {
+                    $scope.reg_form.reg_email.$setValidity('emailAlreadyTaken', true);
+                }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UsernameAlreadyTakenException") {
+                    $scope.reg_form.reg_name.$setValidity('nameAlreadyTaken', false);
+                } else {
+                    $scope.reg_form.reg_name.$setValidity('nameAlreadyTaken', true);
+                }
             });
         };
     }

@@ -32,7 +32,7 @@ public class RegistrationController {
         }
         if (input.getName() == null)
             throw new InvalidDataException("Name invalid.");
-        if (input.getEmail() == null || !input.getEmail().endsWith("@hm.edu"))
+        if (input.getEmail() == null || !input.getEmail().endsWith("@hm.edu") && !input.getEmail().endsWith("@calpoly.edu"))
             throw new InvalidDataException("Email invalid.");
         if (input.getPassword() == null)
             throw new InvalidDataException("Password invalid.");
