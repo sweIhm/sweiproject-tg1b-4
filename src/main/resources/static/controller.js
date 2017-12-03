@@ -134,6 +134,20 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
         });
     };
 
+    $scope.open_registration_code_dialog = function (user, ev) {
+        var confirm = $mdDialog.prompt()
+            .title('Please enter the code we send to your e-mail:')
+            .placeholder('Confirmation code:')
+            .ariaLabel('Confirmation code:')
+            .targetEvent(ev)
+            .required(true)
+            .ok('Enter')
+            .cancel('Cancel');
+        $mdDialog.show(confirm).then(function(result) {
+            //send code to server and request confirmation
+        });
+    };
+
     function addActivityDialogCtrl($scope, $mdDialog, $http) {
         $scope.cancel = function() {
             $mdDialog.cancel();
@@ -196,9 +210,26 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
     }
 
     function registrationDialogCtrl($scope, $mdDialog) {
+        var response;
+
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
+
+        $scope.open_registration_code_dialog = function (user, ev) {
+            var confirm = $mdDialog.prompt()
+                .title('Please enter the code we send to your e-mail:')
+                .placeholder('Confirmation code:')
+                .ariaLabel('Confirmation code:')
+                .targetEvent(ev)
+                .required(true)
+                .ok('Enter')
+                .cancel('Cancel');
+            $mdDialog.show(confirm).then(function(result) {
+                //send code to server and request confirmation
+            });
+        };
+
         $scope.registration = function(reg) {
             if (reg.password !== reg.passwordConfirm) {
                 $scope.reg_form.reg_password_confirm.$setValidity('password', false);
@@ -217,11 +248,11 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                     password: $scope.reg.password
                 }
             };
-            $http(postRequest).then(function () {
-                alert("Registration worked.");
-                // Work with response
+            $http(postRequest).then(function (response) {
+                $scope.response = response;
             }).then(function () {
                 $scope.cancel();
+                $scope.open_registration_code_dialog(response);
             }).catch(function (error) {
                 var error_data = error.data;
                 alert(error_data.exception);
