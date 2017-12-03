@@ -202,7 +202,41 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             $mdDialog.cancel();
         };
         $scope.login = function(login) {
-            //Handle login
+            var getRequest = {
+                method : 'GET',
+                url: (window.location.hostname === 'localhost' ?
+                    'http://localhost:8080/login?email=' + login.email + '&password=' + login.password :
+                    heroku_address + '/login?email=' + login.email + '&password=' + login.password)
+            };
+            $http(getRequest).then(function (response) {
+                alert("Login works");
+                // save token
+            }).then(function () {
+                $scope.cancel();
+            }).catch(function (error) {
+                var error_data = error.data;
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UserNotValidatedException") {
+                    if (error_data.message !== "") {
+                        $scope.login.timeTillUnlock = error_data.message;
+                        $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', false);
+                    } else {
+                        $scope.login_form.login_email.$setValidity('accNotConfirmedWithResend', false);
+                    }
+                } else {
+                    $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', true);
+                    $scope.login_form.login_email.$setValidity('accNotConfirmedWithResend', true);
+                }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidPasswordException") {
+                    $scope.login_form.login_password.$setValidity('wrongPassword', false);
+                } else {
+                    $scope.login_form.login_password.$setValidity('wrongPassword', true);
+                }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UserNotFoundException") {
+                    $scope.login_form.login_email.$setValidity('emailNotExists', false);
+                } else {
+                    $scope.login_form.login_email.$setValidity('emailNotExists', true);
+                }
+            });
         };
         $scope.forgot_password = function () {
             //Handle forgot password
@@ -255,7 +289,6 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 $scope.open_registration_code_dialog(response);
             }).catch(function (error) {
                 var error_data = error.data;
-                alert(error_data.exception);
                 if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidDataException") {
                     if (error_data.message === "Email invalid.") {
                         $scope.reg_form.reg_email.$setValidity('noHMorCalEmail', false);

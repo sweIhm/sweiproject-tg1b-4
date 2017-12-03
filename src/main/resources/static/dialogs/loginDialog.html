@@ -1,5 +1,5 @@
 <md-dialog aria-label="Login" style="width: 35%">
-    <form id="login_form" ng-submit="login(login)">
+    <form id="login_form" name="login_form" ng-submit="login(login)">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Login</h2>
@@ -12,10 +12,22 @@
         <md-dialog-content style="min-width: 100px">
             <div class="md-dialog-content" layout="column">
                 <md-input-container id="login_input_container">
-                    <input ng-model="login.email" type="email" placeholder="E-Mail:" md-autofocus tabindex="1" required>
+                    <input ng-model="login.email" name="login_email" type="email" placeholder="E-Mail:" md-autofocus tabindex="1" required>
+                    <div ng-messages="login_form.login_email.$error" role="alert">
+                        <div ng-message="required">This is required!</div>
+                        <div ng-message="emailNotExists">There is no account connected to this e-mail address!</div>
+                        <div ng-message="accNotConfirmedWithResend">Your account is not confirmed.
+                            Please use the link in the e-mail we send you, to confirm your account.</div>
+                        <div ng-message="accNotConfirmedLocked">Your account is not confirmed.
+                            Resend of the confirmation e-mail possible in {{login.timeTillUnlock}} minutes.</div>
+                    </div>
                 </md-input-container>
                 <md-input-container id="login_input_container">
-                    <input ng-model="login.password" type="password" placeholder="Password:" tabindex="2" required>
+                    <input ng-model="login.password" name="login_password" type="password" placeholder="Password:" tabindex="2" required>
+                    <div ng-messages="login_form.login_password.$error" role="alert">
+                        <div ng-message="required">This is required!</div>
+                        <div ng-message="wrongPassword">Incorrect password! If you forgot your password, press the ?</div>
+                    </div>
                 </md-input-container>
             </div>
         </md-dialog-content>
