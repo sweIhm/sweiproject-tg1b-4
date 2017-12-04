@@ -30,6 +30,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     loadActivities($scope, $http);
 
+    $scope.loginButtonHide = false;
+    $scope.current_user = null;
+
     $scope.toggleLeftSidebar = function() {
         $mdSidenav('left_Sidebar').toggle();
     };
@@ -38,6 +41,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         if ($scope.search_text_field.value !== "") {
             $scope.search_text_field = '';
         }
+    };
+
+    $scope.openUserMenu = function($mdMenu, ev) {
+        $mdMenu.open(ev);
     };
 
     $scope.open_add_activity_dialog = function(ev) {
@@ -75,8 +82,12 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true
-        }).then(function() {
-            //...
+        }).then(function(result) {
+            $scope.current_user = result;
+        }).finally(function() {
+            if ($scope.current_user !== null) {
+                $scope.loginButtonHide = true;
+            }
         });
     };
 
@@ -218,6 +229,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
+        $scope.hide = function(value) {
+            $mdDialog.hide(value);
+        };
+        $scope.current_user = null;
         $scope.login = function(login) {
             var getRequest = {
                 method : 'GET',
@@ -226,10 +241,19 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     heroku_address + '/login?email=' + login.email + '&password=' + login.password)
             };
             $http(getRequest).then(function (response) {
-                alert("Login works");
-                // save token
+                $scope.current_user = response.data;
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('You logged in successfully')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
             }).then(function () {
-                $scope.cancel();
+                if ($scope.current_user !== null) {
+                    $scope.hide($scope.current_user)
+                } else {
+                    $scope.cancel();
+                }
             }).catch(function (error) {
                 var error_data = error.data;
                 if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UserNotValidatedException") {
@@ -261,25 +285,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     }
 
     function registrationDialogCtrl($scope, $mdDialog, $mdToast) {
-        /*var response;*/
-
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
-
-        /*$scope.open_registration_code_dialog = function (user, ev) {
-            var confirm = $mdDialog.prompt()
-                .title('Please enter the code we send to your e-mail:')
-                .placeholder('Confirmation code:')
-                .ariaLabel('Confirmation code:')
-                .targetEvent(ev)
-                .required(true)
-                .ok('Enter')
-                .cancel('Cancel');
-            $mdDialog.show(confirm).then(function(result) {
-                //send code to server and request confirmation
-            });
-        };*/
 
         $scope.registration = function(reg) {
             if (reg.password !== reg.passwordConfirm) {
@@ -300,7 +308,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }
             };
             $http(postRequest).then(function (response) {
-                /*$scope.response = response;*/
+                //...
             }).then(function () {
                 $scope.cancel();
                 $mdToast.show(
@@ -309,7 +317,6 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                         .position('bottom right')
                         .hideDelay(3000)
                 );
-                /*$scope.open_registration_code_dialog(response);*/
             }).catch(function (error) {
                 var error_data = error.data;
                 if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidDataException") {

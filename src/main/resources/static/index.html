@@ -43,8 +43,29 @@
                 </md-input-container>
             </form>
             <span flex></span>
-            <md-button class="md-raised md-accent" ng-click="open_registration_dialog($event)">Registration</md-button>
-            <md-button class="md-raised md-accent" ng-click="open_login_dialog($event)">Login</md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_registration_dialog($event)">Registration</md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">Login</md-button>
+            <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.id}}</h1><!--Placeholder-->
+            <md-menu>
+                <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
+                           background-image: url(assets/user_icon.png); background-size: cover;" ng-click="openUserMenu($mdMenu, $event)"
+                           ng-show="loginButtonHide"></md-button>
+                <md-menu-content width="3">
+                    <md-menu-item>
+                        <md-button>Profile</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>My activities</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>Subscribed activities</md-button>
+                    </md-menu-item>
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item>
+                        <md-button>Logout</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </div>
     </md-toolbar>
     <!--Site body content-->
