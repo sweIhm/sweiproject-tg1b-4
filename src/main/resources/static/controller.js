@@ -19,7 +19,7 @@ function loadActivities ($scope, $http){
     });
 }
 
-app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
+app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToast) {
 
     // Check if user call's site from http and redirect to https if true.
     /*if (location.protocol !== 'https:')
@@ -75,10 +75,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true
-        })
-            .then(function() {
-                //...
-            });
+        }).then(function() {
+            //...
+        });
     };
 
     $scope.delete_activity = function(activity) {
@@ -103,6 +102,12 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             .ok('Yes, delete it.')
             .cancel('No, f*** go back.');
         $mdDialog.show(confirm).then(function() {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Activity ' + activity.title + ' deleted.')
+                    .position('bottom right')
+                    .hideDelay(3000)
+            );
             $scope.delete_activity(activity);
         });
     };
@@ -168,11 +173,17 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 $scope.activities = response.data;
             }).then(function () {
                 $scope.cancel();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Activity ' + $scope.activity.title + ' added.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
             });
         };
     }
 
-    function editActivityDialogCtrl($scope, $mdDialog, $http, activity) {
+    function editActivityDialogCtrl($scope, $mdDialog, $mdToast, $http, activity) {
         $scope.activity = activity;
         $scope.cancel = function() {
             $mdDialog.cancel();
@@ -193,6 +204,12 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 $scope.activities = response.data;
             }).then(function () {
                 $scope.cancel();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Activity ' + $scope.activity.title + ' edited.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
             });
         };
     }
@@ -243,14 +260,14 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
         }
     }
 
-    function registrationDialogCtrl($scope, $mdDialog) {
-        var response;
+    function registrationDialogCtrl($scope, $mdDialog, $mdToast) {
+        /*var response;*/
 
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
 
-        $scope.open_registration_code_dialog = function (user, ev) {
+        /*$scope.open_registration_code_dialog = function (user, ev) {
             var confirm = $mdDialog.prompt()
                 .title('Please enter the code we send to your e-mail:')
                 .placeholder('Confirmation code:')
@@ -262,7 +279,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
             $mdDialog.show(confirm).then(function(result) {
                 //send code to server and request confirmation
             });
-        };
+        };*/
 
         $scope.registration = function(reg) {
             if (reg.password !== reg.passwordConfirm) {
@@ -283,10 +300,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog) {
                 }
             };
             $http(postRequest).then(function (response) {
-                $scope.response = response;
+                /*$scope.response = response;*/
             }).then(function () {
                 $scope.cancel();
-                $scope.open_registration_code_dialog(response);
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('User ' + $scope.reg.name + ' created.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
+                /*$scope.open_registration_code_dialog(response);*/
             }).catch(function (error) {
                 var error_data = error.data;
                 if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidDataException") {
