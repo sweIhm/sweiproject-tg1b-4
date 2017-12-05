@@ -23,3 +23,6 @@
 md-backdrop, md-sidenav {
     position: fixed;
 }
+
+.md-fab:hover, .md-fab.md-focused {
+    background-color: #b9b9b9 !important; }

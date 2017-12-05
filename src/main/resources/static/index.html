@@ -43,7 +43,7 @@
                 </md-input-container>
             </form>
             <span flex></span>
-            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_registration_dialog($event)">Registration</md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_registration_dialog($event)">Sign up</md-button>
             <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">Login</md-button>
             <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.id}}</h1><!--Placeholder-->
             <md-menu>
@@ -53,6 +53,9 @@
                 <md-menu-content width="3">
                     <md-menu-item>
                         <md-button>Profile</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="open_add_activity_dialog($event)">Add activity</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button>My activities</md-button>
@@ -78,6 +81,8 @@
                 <md-button class="md-raised md-accent" ng-click="open_add_activity_dialog($event)">
                     Add Activity (DEBUG)
                 </md-button>
+                <span flex></span>
+                <md-button>Imprint</md-button>
             </md-content>
         </md-sidenav>
     </section>
@@ -93,12 +98,23 @@
                     <span class="md-subhead">Student</span>
                 </md-card-header-text>
                 <span flex></span>
-                <md-button class="md-icon-button" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
-                    <md-icon md-font-set="material-icons"> edit </md-icon>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
-                    <md-icon md-font-set="material-icons"> delete </md-icon>
-                </md-button>
+                <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();">
+                    <md-fab-trigger>
+                        <md-button aria-label="menu" class="md-fab md-mini md-raised">
+                            <md-icon md-font-set="material-icons"> more_vert </md-icon>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions style="height: 0px;">
+                        <md-button class="md-fab md-mini md-raised" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
+                            <md-tooltip md-direction="left">Edit</md-tooltip>
+                            <md-icon md-font-set="material-icons"> edit </md-icon>
+                        </md-button>
+                        <md-button class="md-fab md-mini md-raised" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
+                            <md-tooltip md-direction="left">Delete</md-tooltip>
+                            <md-icon md-font-set="material-icons"> delete </md-icon>
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
             </md-card-header>
             <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
             <md-card-title>
