@@ -10,7 +10,8 @@ public class TokenGenerator {
 
     private SecureRandom random = new SecureRandom();
 
-    public String nextToken() {
+    public synchronized String nextToken() {
         return new BigInteger(STRENGTH, random).toString(BASE);
     }
+
 }

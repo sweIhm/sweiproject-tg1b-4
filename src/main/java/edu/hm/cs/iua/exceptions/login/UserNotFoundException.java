@@ -1,16 +1,16 @@
-package edu.hm.cs.iua.exceptions;
+package edu.hm.cs.iua.exceptions.login;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class UsernameAlreadyTakenException extends RegistrationException {
+public class UserNotFoundException extends LoginException {
 
-    public UsernameAlreadyTakenException() {
+    public UserNotFoundException() {
         super();
     }
 
-    public UsernameAlreadyTakenException(String message) {
+    public UserNotFoundException(String message) {
         super(message);
     }
 }

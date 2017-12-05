@@ -1,16 +1,16 @@
-package edu.hm.cs.iua.exceptions;
+package edu.hm.cs.iua.exceptions.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class InvalidDataException extends RegistrationException {
+public class InvalidTokenException extends AuthException {
 
-    public InvalidDataException() {
+    public InvalidTokenException() {
         super();
     }
 
-    public InvalidDataException(String message) {
+    public InvalidTokenException(String message) {
         super(message);
     }
 }

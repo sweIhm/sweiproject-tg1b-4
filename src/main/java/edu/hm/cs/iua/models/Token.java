@@ -8,17 +8,17 @@ import javax.persistence.Id;
 @Entity
 public class Token {
 
-    private static volatile TokenGenerator generator = new TokenGenerator();
+    private static final TokenGenerator generator = new TokenGenerator();
 
     @Id
     private Long id;
-    private String token;
+    private String key;
 
     public Token() {}
 
     public Token(Long id) {
         this.id = id;
-        this.token = generator.nextToken();
+        this.key = generator.nextToken();
     }
 
     public Long getId() {
@@ -31,11 +31,11 @@ public class Token {
     }
 
     public String getToken() {
-        return token;
+        return key;
     }
 
     public Token setToken(String token) {
-        this.token = token;
+        this.key = token;
         return this;
     }
 
@@ -46,12 +46,12 @@ public class Token {
 
         Token token1 = (Token) o;
 
-        return token.equals(token1.token);
+        return key.equals(token1.key);
     }
 
     @Override
     public int hashCode() {
-        return token.hashCode();
+        return key.hashCode();
     }
 
 }

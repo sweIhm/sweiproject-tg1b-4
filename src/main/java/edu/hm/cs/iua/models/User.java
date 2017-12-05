@@ -15,14 +15,16 @@ public class User {
     private String email;
     private String password;
     private boolean isValidated;
+    private String confirmationCode;
 
     public User() {}
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, String confirmationCode) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.isValidated = false;
+        this.confirmationCode = confirmationCode;
     }
 
     public Long getId() {
@@ -68,5 +70,13 @@ public class User {
     public void setValidated(boolean validated) {
         isValidated = validated;
     }
-    
+
+    public String getConfirmationCode() {
+        return confirmationCode;
+    }
+
+    public void setConfirmationCode(String confirmationCode) {
+        this.confirmationCode = confirmationCode;
+    }
+
 }

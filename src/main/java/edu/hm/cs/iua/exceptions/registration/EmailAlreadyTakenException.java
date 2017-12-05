@@ -1,4 +1,4 @@
-package edu.hm.cs.iua.exceptions;
+package edu.hm.cs.iua.exceptions.registration;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
