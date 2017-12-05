@@ -12,6 +12,12 @@
     color: inherit;
 }
 
+.cards{
+    float: left;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
 #fixed-header {
     position: fixed;
     top: 0;
@@ -23,6 +29,3 @@
 md-backdrop, md-sidenav {
     position: fixed;
 }
-
-.md-fab:hover, .md-fab.md-focused {
-    background-color: #b9b9b9 !important; }

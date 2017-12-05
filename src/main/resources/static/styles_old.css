@@ -13,7 +13,7 @@
 .demo-card-square > .mdl-card__title {
     color: #ffff;
     background:
-            url('../assets/activity_background.png')
+            url('./assets/activity_background.png')
             bottom right 15% no-repeat #46B6AC;
 }
 

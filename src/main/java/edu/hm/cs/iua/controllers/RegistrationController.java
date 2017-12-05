@@ -71,7 +71,6 @@ public class RegistrationController {
             if (user.getName().equals(input.getName()))
                 throw new UsernameAlreadyTakenException();
         }
-<<<<<<< HEAD
 
         final User user = userRepository.save(new User(input.getName(), input.getEmail(), input.getPassword(), generator.nextToken()));
         try {
@@ -121,16 +120,6 @@ public class RegistrationController {
         return firstAt >= 0 && lastAt != email.length() - 1
                 && firstAt == lastAt
                 && validDomains.contains(email.substring(firstAt + 1));
-=======
-        if (input.getName() == null)
-            throw new InvalidDataException("Name invalid.");
-        if (input.getEmail() == null || !input.getEmail().endsWith("@hm.edu") && !input.getEmail().endsWith("@calpoly.edu"))
-            throw new InvalidDataException("Email invalid.");
-        if (input.getPassword() == null)
-            throw new InvalidDataException("Password invalid.");
-        final User user = new User(input.getName(), input.getEmail(), input.getPassword());
-        userRepository.save(user);
->>>>>>> f5816c83d9b39916d5fa68b3e6aa25f703b916ec
     }
 
 }
