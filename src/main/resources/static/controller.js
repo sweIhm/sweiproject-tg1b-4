@@ -19,6 +19,22 @@ function loadActivities ($scope, $http){
     });
 }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToast) {
 
     // Check if user call's site from http and redirect to https if true.
@@ -28,10 +44,21 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
     }*/
 
-    loadActivities($scope, $http);
+    var userid = getCookie("userid");
+    var usertoken = getCookie("usertoken");
 
-    $scope.loginButtonHide = false;
-    $scope.current_user = null;
+    if (userid !== "" && usertoken !== "") {
+        $scope.current_user = {
+            id: userid,
+            token: usertoken
+        };
+        $scope.loginButtonHide = true;
+    } else {
+        $scope.loginButtonHide = false;
+        $scope.current_user = null;
+    }
+
+    loadActivities($scope, $http);
 
     $scope.toggleLeftSidebar = function() {
         $mdSidenav('left_Sidebar').toggle();
@@ -45,6 +72,13 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     $scope.openUserMenu = function($mdMenu, ev) {
         $mdMenu.open(ev);
+    };
+
+    $scope.logout = function() {
+        document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "usertoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        $scope.loginButtonHide = false;
+        $scope.current_user = null;
     };
 
     $scope.open_add_activity_dialog = function(ev) {
@@ -84,6 +118,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             clickOutsideToClose:true
         }).then(function(result) {
             $scope.current_user = result;
+            document.cookie = "userid="+$scope.current_user.id+"; expires=Wed, 6 Dez 2017 12:00:00 UTC; path=/";
+            document.cookie = "usertoken="+$scope.current_user.token+"; expires=Wed, 6 Dez 2017 12:00:00 UTC; path=/";
         }).finally(function() {
             if ($scope.current_user !== null) {
                 $scope.loginButtonHide = true;
@@ -244,7 +280,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 $scope.current_user = response.data;
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('You logged in successfully')
+                        .textContent('You signed in successfully')
                         .position('bottom right')
                         .hideDelay(3000)
                 );
