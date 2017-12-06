@@ -19,6 +19,13 @@ function loadActivities ($scope, $http){
     });
 }
 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -46,11 +53,13 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     var userid = getCookie("userid");
     var usertoken = getCookie("usertoken");
+    var username = getCookie("username");
 
-    if (userid !== "" && usertoken !== "") {
+    if (userid !== "" && usertoken !== "" && username !== "") {
         $scope.current_user = {
             id: userid,
-            token: usertoken
+            token: usertoken,
+            name: username
         };
         $scope.loginButtonHide = true;
     } else {
@@ -75,10 +84,34 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     };
 
     $scope.logout = function() {
-        document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "usertoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        setCookie("userid", "", -1);
+        setCookie("usertoken", "", -1);
+        setCookie("username", "", -1);
         $scope.loginButtonHide = false;
         $scope.current_user = null;
+        $mdToast.show(
+            $mdToast.simple()
+                .textContent('You signed out successfully.')
+                .position('bottom right')
+                .hideDelay(3000)
+        );
+    };
+
+    $scope.add_test_user = function () {
+        var getRequest = {
+            method : 'GET',
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/test' :
+                heroku_address + '/test')
+        };
+        $http(getRequest).then(function () {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Test user activated.')
+                    .position('bottom right')
+                    .hideDelay(3000)
+            );
+        });
     };
 
     $scope.open_add_activity_dialog = function(ev) {
@@ -118,10 +151,20 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             clickOutsideToClose:true
         }).then(function(result) {
             $scope.current_user = result;
-            document.cookie = "userid="+$scope.current_user.id+"; expires=Wed, 6 Dez 2017 12:00:00 UTC; path=/";
-            document.cookie = "usertoken="+$scope.current_user.token+"; expires=Wed, 6 Dez 2017 12:00:00 UTC; path=/";
+            setCookie("userid", $scope.current_user.id, 1);
+            setCookie("usertoken", $scope.current_user.token, 1);
         }).finally(function() {
             if ($scope.current_user !== null) {
+                var getRequest = {
+                    method : 'GET',
+                    url: (window.location.hostname === 'localhost' ?
+                        'http://localhost:8080/user/' + $scope.current_user.id :
+                        heroku_address + '/user/' + $scope.current_user.id)
+                };
+                $http(getRequest).then(function (response) {
+                    $scope.current_user.name = response.data.name;
+                    setCookie("username", $scope.current_user.name, 1);
+                });
                 $scope.loginButtonHide = true;
             }
         });

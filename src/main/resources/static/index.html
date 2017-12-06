@@ -45,7 +45,7 @@
             <span flex></span>
             <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_registration_dialog($event)">Sign up</md-button>
             <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">Login</md-button>
-            <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.id}}</h1><!--Placeholder-->
+            <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.name}}</h1>
             <md-menu>
                 <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
                            background-image: url(assets/user_icon.png); background-size: cover;" ng-click="openUserMenu($mdMenu, $event)"
@@ -81,6 +81,13 @@
                 <md-button class="md-raised md-accent" ng-click="open_add_activity_dialog($event)">
                     Add Activity (DEBUG)
                 </md-button>
+                <md-button class="md-raised md-accent" ng-click="add_test_user()">
+                    Add Dummy User (DEBUG)
+                </md-button>
+                <p>
+                    E-Mail: information.iua@gmail.com
+                    Password: test
+                </p>
                 <md-button>Support</md-button>
                 <md-button>Imprint</md-button>
             </md-content>
