@@ -6,7 +6,7 @@
     <title>International University App</title>
 
     <!--Material Design styles by Google-->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!--Style for AngularJS Material-->
     <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.min.css">
@@ -37,14 +37,38 @@
             <md-button class="md-icon-button" aria-label="Settings" form="search_form" type="submit">
                 <md-icon class="material-icons"> search</md-icon>
             </md-button>
-            <form id="search_form" ng-submit="search_form_submit()">
+            <form id="search_form" name="search_form" ng-submit="search_form_submit()">
                 <md-input-container id="search_input_container">
                     <input type="text" id="search_input_field" placeholder="Search..." ng-model="search_text_field">
                 </md-input-container>
             </form>
             <span flex></span>
-            <md-button class="md-raised md-accent" ng-click="open_registration_dialog($event)">Registration</md-button>
-            <md-button class="md-raised md-accent" ng-click="open_login_dialog($event)">Login</md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_registration_dialog($event)">Sign up</md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">Login</md-button>
+            <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.id}}</h1><!--Placeholder-->
+            <md-menu>
+                <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
+                           background-image: url(assets/user_icon.png); background-size: cover;" ng-click="openUserMenu($mdMenu, $event)"
+                           ng-show="loginButtonHide"></md-button>
+                <md-menu-content width="3">
+                    <md-menu-item>
+                        <md-button>Profile</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="open_add_activity_dialog($event)">Add activity</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>My activities</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>Subscribed activities</md-button>
+                    </md-menu-item>
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item>
+                        <md-button ng-click="logout()">Logout</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </div>
     </md-toolbar>
     <!--Site body content-->
@@ -57,50 +81,56 @@
                 <md-button class="md-raised md-accent" ng-click="open_add_activity_dialog($event)">
                     Add Activity (DEBUG)
                 </md-button>
+                <span flex></span>
+                <md-button>Imprint</md-button>
             </md-content>
         </md-sidenav>
     </section>
-    <h3 style="margin-top: 5%; margin-left: 1%">Activities:</h3>
-    <div ng-repeat="activity in activities">
-        <div layout="column" layout-gt-sm="row" layout-wrap>
-            <div class="cards" flex="25" flex-gt-sm="25">
-                <md-card layout-fill flex ng-click="open_activity_details_dialog(activity, $event)">
-                    <md-card-header>
-                        <md-card-avatar>
-                            <img class="md-user-avatar" src="assets/user_icon.png"/>
-                        </md-card-avatar>
-                        <md-card-header-text>
-                            <span class="md-title">User</span>
-                            <span class="md-subhead">Student</span>
-                        </md-card-header-text>
-                        <span flex></span>
-                        <md-button class="md-icon-button" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
+    <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
+        <md-card style="max-width: 400px; margin-left: 20px; margin-bottom: 20px;"
+                 ng-repeat="activity in activities" ng-click="open_activity_details_dialog(activity, $event)">
+            <md-card-header>
+                <md-card-avatar>
+                    <img class="md-user-avatar" src="assets/user_icon.png"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <span class="md-title">User</span>
+                    <span class="md-subhead">Student</span>
+                </md-card-header-text>
+                <span flex></span>
+                <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();">
+                    <md-fab-trigger>
+                        <md-button aria-label="menu" class="md-fab md-mini md-raised">
+                            <md-icon md-font-set="material-icons"> more_vert </md-icon>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions style="height: 0px;">
+                        <md-button class="md-fab md-mini md-raised" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
+                            <md-tooltip md-direction="left">Edit</md-tooltip>
                             <md-icon md-font-set="material-icons"> edit </md-icon>
                         </md-button>
-                        <md-button class="md-icon-button" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
+                        <md-button class="md-fab md-mini md-raised" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
+                            <md-tooltip md-direction="left">Delete</md-tooltip>
                             <md-icon md-font-set="material-icons"> delete </md-icon>
                         </md-button>
-                    </md-card-header>
-                    <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">{{activity.title}}</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="start center">
-                        <div style="color: deepskyblue">
-                            <md-button>#{{activity.tags}}</md-button>
-                        </div>
-                    </md-card-actions>
-                    <md-card-content>
-                        <p>
-                            {{activity.text}}Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                            sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                        </p>
-                    </md-card-content>
-                </md-card>
-            </div>
-        </div>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+            </md-card-header>
+            <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{activity.title}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="start center">
+                <div style="color: deepskyblue">
+                    <md-button>#{{activity.tags}}</md-button>
+                </div>
+            </md-card-actions>
+            <md-card-content style="word-wrap: break-word;">
+                {{activity.text}}
+            </md-card-content>
+        </md-card>
     </div>
 </div>
 </body>
