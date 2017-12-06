@@ -1,5 +1,5 @@
 <md-dialog aria-label="Registration" style="width: 35%">
-    <form id="reg_form" name="reg_form" ng-submit="registration(reg)">
+    <form id="reg_form" name="reg_form" ng-submit="(registration_in_progress) ? registration(reg) : null">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Registration</h2>
@@ -27,6 +27,8 @@
                         <div ng-message="noHMorCalEmail">E-Mail does not end with @hm.edu or @calpoly.edu!</div>
                         <div ng-message="emailAlreadyTaken">This e-mail is already associated with another account.
                         If you forgot your password, press the ? in login.</div>
+                        <div ng-message="sendEmailFailed">Failed to send activation e-mail. Please try again.
+                            If it does not work, please contact IUA support.</div>
                     </div>
                 </md-input-container>
                 <md-input-container id="reg_input_container">
@@ -49,7 +51,8 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-raised md-accent" type="submit" tabindex="5">
+            <md-progress-circular ng-hide="registration_in_progress" ng-disabled="registration_in_progress" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+            <md-button ng-disabled="!registration_in_progress" class="md-raised md-accent" type="submit" tabindex="5">
                 Register
             </md-button>
         </md-dialog-actions>

@@ -292,7 +292,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }
             }).catch(function (error) {
                 var error_data = error.data;
-                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UserNotValidatedException") {
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.login.UserNotValidatedException") {
                     if (error_data.message !== "") {
                         $scope.login.timeTillUnlock = error_data.message;
                         $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', false);
@@ -303,12 +303,12 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', true);
                     $scope.login_form.login_email.$setValidity('accNotConfirmedWithResend', true);
                 }
-                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidPasswordException") {
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.login.InvalidPasswordException") {
                     $scope.login_form.login_password.$setValidity('wrongPassword', false);
                 } else {
                     $scope.login_form.login_password.$setValidity('wrongPassword', true);
                 }
-                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UserNotFoundException") {
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.login.UserNotFoundException") {
                     $scope.login_form.login_email.$setValidity('emailNotExists', false);
                 } else {
                     $scope.login_form.login_email.$setValidity('emailNotExists', true);
@@ -321,6 +321,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     }
 
     function registrationDialogCtrl($scope, $mdDialog, $mdToast) {
+        $scope.registration_in_progress = true;
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
@@ -343,9 +344,11 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     password: $scope.reg.password
                 }
             };
+            $scope.registration_in_progress = false;
             $http(postRequest).then(function (response) {
                 //...
             }).then(function () {
+                $scope.registration_in_progress = true;
                 $scope.cancel();
                 $mdToast.show(
                     $mdToast.simple()
@@ -355,7 +358,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 );
             }).catch(function (error) {
                 var error_data = error.data;
-                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.InvalidDataException") {
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.registration.InvalidDataException") {
                     if (error_data.message === "Email invalid.") {
                         $scope.reg_form.reg_email.$setValidity('noHMorCalEmail', false);
                     } else {
@@ -364,16 +367,22 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 } else {
                     $scope.reg_form.reg_email.$setValidity('noHMorCalEmail', true);
                 }
-                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.EmailAlreadyTakenException") {
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.registration.EmailAlreadyTakenException") {
                     $scope.reg_form.reg_email.$setValidity('emailAlreadyTaken', false);
                 } else {
                     $scope.reg_form.reg_email.$setValidity('emailAlreadyTaken', true);
                 }
-                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.UsernameAlreadyTakenException") {
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.registration.UsernameAlreadyTakenException") {
                     $scope.reg_form.reg_name.$setValidity('nameAlreadyTaken', false);
                 } else {
                     $scope.reg_form.reg_name.$setValidity('nameAlreadyTaken', true);
                 }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.registration.EmailTransmissionFailed") {
+                    $scope.reg_form.reg_email.$setValidity('sendEmailFailed', false)
+                } else {
+                    $scope.reg_form.reg_email.$setValidity('sendEmailFailed', true)
+                }
+                $scope.registration_in_progress = true;
             });
         };
     }
