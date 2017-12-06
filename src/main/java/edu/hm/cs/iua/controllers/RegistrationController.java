@@ -60,7 +60,7 @@ public class RegistrationController {
 
         if (input.getName() == null)
             throw new InvalidDataException("Name invalid.");
-        if (input.getEmail() == null && isValidEmail(input.getEmail()))
+        if (input.getEmail() == null || !isValidEmail(input.getEmail()))
             throw new InvalidDataException("Email invalid.");
         if (input.getPassword() == null)
             throw new InvalidDataException("Password invalid.");
