@@ -1,7 +1,12 @@
 package edu.hm.cs.iua.controllers;
 
+import edu.hm.cs.iua.exceptions.activity.ActivityNotFoundException;
+import edu.hm.cs.iua.exceptions.auth.InvalidTokenException;
+import edu.hm.cs.iua.exceptions.auth.InvalidUserException;
+import edu.hm.cs.iua.exceptions.auth.UnauthorizedException;
 import edu.hm.cs.iua.models.Activity;
 import edu.hm.cs.iua.repositories.ActivityRepository;
+import edu.hm.cs.iua.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,40 +19,61 @@ public class ActivityController {
   
     @Autowired
     private ActivityRepository activityRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     @GetMapping
     public List<Activity> listAll() {
-        List<Activity> activities = new ArrayList<>();
+        final List<Activity> activities = new ArrayList<>();
         activityRepository.findAll().forEach(activities::add);
         return activities;
     }
 
     @GetMapping("{id}")
-    public Activity find(@PathVariable Long id) {
+    public Activity find(@PathVariable Long id)
+            throws ActivityNotFoundException {
+
+        activityRepository.verify(id);
+
         return activityRepository.findOne(id);
     }
 
     @PostMapping
-    public Activity create(@RequestBody Activity input) {
-        return activityRepository.save(new Activity((long)0, input.getText(), input.getTags(), input.getTitle()));
+    public Activity create(@RequestParam Long user, @RequestParam String token,
+                           @RequestBody Activity input)
+            throws InvalidUserException, InvalidTokenException {
+
+        tokenRepository.verify(user, token);
+
+        return activityRepository.save(new Activity(user, input.getText(), input.getTags(), input.getTitle()));
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@RequestParam Long user, @RequestParam String token,
+                       @PathVariable Long id)
+            throws InvalidTokenException, InvalidUserException,
+            ActivityNotFoundException, UnauthorizedException {
+
+        tokenRepository.verify(user, token);
+        activityRepository.verify(id, user);
+
         activityRepository.delete(id);
     }
 
     @PutMapping("{id}")
-    public Activity update(@PathVariable Long id, @RequestBody Activity input) {
-        Activity activity = activityRepository.findOne(id);
-        if (activity == null) {
-            return null;
-        } else {
-            activity.setText(input.getText());
-            activity.setTags(input.getTags());
-            activity.setTitle(input.getTitle());
-            return activityRepository.save(activity);
-        }
+    public void update(@RequestParam Long user, @RequestParam String token,
+                           @PathVariable Long id, @RequestBody Activity input)
+            throws InvalidTokenException, InvalidUserException,
+            ActivityNotFoundException, UnauthorizedException {
+
+        tokenRepository.verify(user, token);
+        activityRepository.verify(id, user);
+
+        final Activity activity = activityRepository.findOne(id);
+        activity.setText(input.getText());
+        activity.setTags(input.getTags());
+        activity.setTitle(input.getTitle());
+        activityRepository.save(activity);
     }
 
 }

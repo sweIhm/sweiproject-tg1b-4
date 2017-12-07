@@ -3,19 +3,13 @@ package edu.hm.cs.iua.models;
 public class VisibleUserData {
 
     public static VisibleUserData getUserData(User user) {
-        return new VisibleUserData(user.getId(),user.getName());
+        return new VisibleUserData(user.getName());
     }
 
-    private final Long id;
     private final String name;
 
-    private VisibleUserData(Long id, String name) {
-        this.id = id;
+    private VisibleUserData(String name) {
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {

@@ -4,13 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-public class InvalidTokenException extends AuthException {
+public class UnauthorizedException extends AuthException {
 
-    public InvalidTokenException() {
+    public UnauthorizedException() {
         super();
     }
 
-    public InvalidTokenException(String message) {
+    public UnauthorizedException(String message) {
         super(message);
     }
+
 }
