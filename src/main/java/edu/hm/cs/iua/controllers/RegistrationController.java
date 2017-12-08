@@ -5,9 +5,9 @@ import edu.hm.cs.iua.exceptions.registration.EmailTransmissionFailed;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.registration.RegistrationException;
 import edu.hm.cs.iua.exceptions.registration.UsernameAlreadyTakenException;
-import edu.hm.cs.iua.models.User;
+import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.repositories.TokenRepository;
-import edu.hm.cs.iua.repositories.UserRepository;
+import edu.hm.cs.iua.repositories.IUAUserRepository;
 import edu.hm.cs.iua.utils.EmailClient;
 import edu.hm.cs.iua.utils.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class RegistrationController {
     }
 
     @Autowired
-    private UserRepository userRepository;
+    private IUAUserRepository userRepository;
     @Autowired
     private TokenRepository tokenRepository;
     @Value("${email.name}")
@@ -55,7 +55,7 @@ public class RegistrationController {
 
     @ResponseBody
     @PostMapping
-    public void create(@RequestBody User input)
+    public void create(@RequestBody IUAUser input)
             throws RegistrationException {
 
         if (input.getName() == null)
@@ -65,14 +65,14 @@ public class RegistrationController {
         if (input.getPassword() == null)
             throw new InvalidDataException("Password invalid.");
 
-        for (User user: userRepository.findAll()) {
+        for (IUAUser user: userRepository.findAll()) {
             if (user.getEmail().equals(input.getEmail()))
                 throw new EmailAlreadyTakenException();
             if (user.getName().equals(input.getName()))
                 throw new UsernameAlreadyTakenException();
         }
 
-        final User user = userRepository.save(new User(input.getName(), input.getEmail(), input.getPassword(), generator.nextToken()));
+        final IUAUser user = userRepository.save(new IUAUser(input.getName(), input.getEmail(), input.getPassword(), generator.nextToken()));
         try {
             sendAuthorisationCode(user.getEmail(), user.getId(), user.getConfirmationCode());
         } catch (MessagingException e) {
@@ -84,7 +84,7 @@ public class RegistrationController {
     @GetMapping
     public String activate(@RequestParam Long userId, @RequestParam String code) {
 
-        final User user = userRepository.findOne(userId);
+        final IUAUser user = userRepository.findOne(userId);
         if (user == null)
             return "activation/activationUserNotFound.html";
         if (user.getConfirmationCode().equals(code)) {

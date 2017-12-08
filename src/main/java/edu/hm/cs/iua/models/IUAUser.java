@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User {
+public class IUAUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,9 +17,9 @@ public class User {
     private boolean isValidated;
     private String confirmationCode;
 
-    public User() {}
+    public IUAUser() {}
 
-    public User(String name, String email, String password, String confirmationCode) {
+    public IUAUser(String name, String email, String password, String confirmationCode) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -31,7 +31,7 @@ public class User {
         return id;
     }
 
-    public User setId(Long id) {
+    public IUAUser setId(Long id) {
         this.id = id;
         return this;
     }
@@ -40,7 +40,7 @@ public class User {
         return email;
     }
 
-    public User setEmail(String email) {
+    public IUAUser setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -49,7 +49,7 @@ public class User {
         return name;
     }
 
-    public User setName(String name) {
+    public IUAUser setName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public class User {
         return password;
     }
 
-    public User setPassword(String password) {
+    public IUAUser setPassword(String password) {
         this.password = password;
         return this;
     }

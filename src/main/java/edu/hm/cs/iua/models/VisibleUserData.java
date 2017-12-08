@@ -2,7 +2,7 @@ package edu.hm.cs.iua.models;
 
 public class VisibleUserData {
 
-    public static VisibleUserData getUserData(User user) {
+    public static VisibleUserData getUserData(IUAUser user) {
         return new VisibleUserData(user.getName());
     }
 

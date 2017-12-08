@@ -1,9 +1,9 @@
 package edu.hm.cs.iua;
 
 import edu.hm.cs.iua.models.Token;
-import edu.hm.cs.iua.models.User;
+import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.repositories.TokenRepository;
-import edu.hm.cs.iua.repositories.UserRepository;
+import edu.hm.cs.iua.repositories.IUAUserRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,14 +35,14 @@ public class ActivityControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private UserRepository userRepository;
+    private IUAUserRepository userRepository;
     @Autowired
     private TokenRepository tokenRepository;
 
     @Before
     public void setTestUser() {
         if (!userRepository.exists(USER_ID)) {
-            final User user = new User("Testuser", "test@test.test", "test", "CONFIRMATION_CODE");
+            final IUAUser user = new IUAUser("Testuser", "test@test.test", "test", "CONFIRMATION_CODE");
             user.setValidated(true);
             userRepository.save(user);
         }
