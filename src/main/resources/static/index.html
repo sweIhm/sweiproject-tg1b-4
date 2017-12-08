@@ -30,7 +30,7 @@
     <md-toolbar class="md-primary" id="fixed-header">
         <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeftSidebar()">
-                <md-icon md-font-set="material-icons"> menu </md-icon>
+                <md-icon md-font-set="material-icons"> menu</md-icon>
             </md-button>
             <img src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
             <span flex></span>
@@ -43,12 +43,17 @@
                 </md-input-container>
             </form>
             <span flex></span>
-            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_registration_dialog($event)">Sign up</md-button>
-            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">Login</md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide"
+                       ng-click="open_registration_dialog($event)">Sign up
+            </md-button>
+            <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">
+                Login
+            </md-button>
             <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.name}}</h1>
             <md-menu>
                 <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
-                           background-image: url(assets/user_icon.png); background-size: cover;" ng-click="openUserMenu($mdMenu, $event)"
+                           background-image: url(assets/user_icon.png); background-size: cover;"
+                           ng-click="openUserMenu($mdMenu, $event)"
                            ng-show="loginButtonHide"></md-button>
                 <md-menu-content width="3">
                     <md-menu-item>
@@ -94,31 +99,37 @@
         </md-sidenav>
     </section>
     <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
-        <md-card style="max-width: 400px; margin-left: 20px; margin-bottom: 20px;"
+        <md-card style="max-width: 400px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
                  ng-repeat="activity in activities" ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar>
-                    <img class="md-user-avatar" src="assets/user_icon.png"/>
+                    <div style="padding-top: 6px">
+                        <img class="md-user-avatar" src="assets/user_icon.png"/>
+                    </div>
                 </md-card-avatar>
                 <md-card-header-text>
-                    <span class="md-title">User</span>
+                    <div style="padding-top: 6px">
+                        <span class="md-title">User</span>
+                    </div>
                     <span class="md-subhead">Student</span>
                 </md-card-header-text>
                 <span flex></span>
                 <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();">
                     <md-fab-trigger>
                         <md-button aria-label="menu" class="md-fab md-mini md-raised">
-                            <md-icon md-font-set="material-icons"> more_vert </md-icon>
+                            <md-icon md-font-set="material-icons"> more_vert</md-icon>
                         </md-button>
                     </md-fab-trigger>
                     <md-fab-actions style="height: 0px;">
-                        <md-button class="md-fab md-mini md-raised" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
+                        <md-button class="md-fab md-mini md-raised" aria-label="Edit"
+                                   ng-click="open_edit_activity_dialog(activity, $event)">
                             <md-tooltip md-direction="left">Edit</md-tooltip>
-                            <md-icon md-font-set="material-icons"> edit </md-icon>
+                            <md-icon md-font-set="material-icons"> edit</md-icon>
                         </md-button>
-                        <md-button class="md-fab md-mini md-raised" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
+                        <md-button class="md-fab md-mini md-raised" aria-label="Delete"
+                                   ng-click="confirm_delete_activity(activity, $event)">
                             <md-tooltip md-direction="left">Delete</md-tooltip>
-                            <md-icon md-font-set="material-icons"> delete </md-icon>
+                            <md-icon md-font-set="material-icons"> delete</md-icon>
                         </md-button>
                     </md-fab-actions>
                 </md-fab-speed-dial>
