@@ -45,11 +45,11 @@ function getCookie(cname) {
 app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToast) {
 
     // Check if user call's site from http and redirect to https if true.
-    /*if (location.protocol !== 'https:')
+    if (location.protocol !== 'https:')
     {
         alert("This site only works in https:. Click ok to get redirected to https:");
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-    }*/
+    }
 
     var userid = getCookie("userid");
     var usertoken = getCookie("usertoken");
@@ -76,10 +76,6 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 'http://localhost:8080/activity' :
                 heroku_address + '/activity')
         }).then(function (response) {
-            alert("here");
-            if (response.data === null) {
-                alert("Is null");
-            }
             if (response.data.length > $scope.activities.length) {
                 $mdToast.show(
                     $mdToast.simple()
