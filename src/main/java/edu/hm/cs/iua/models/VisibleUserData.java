@@ -2,8 +2,8 @@ package edu.hm.cs.iua.models;
 
 public class VisibleUserData {
 
-    public static VisibleUserData getUserData(Nutzer nutzer) {
-        return new VisibleUserData(nutzer.getId(), nutzer.getName());
+    public static VisibleUserData getUserData(IUAUser user) {
+        return new VisibleUserData(user.getId(), user.getName());
     }
 
     private final Long id;

@@ -5,9 +5,9 @@ import edu.hm.cs.iua.exceptions.registration.EmailTransmissionFailed;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.registration.RegistrationException;
 import edu.hm.cs.iua.exceptions.registration.UsernameAlreadyTakenException;
-import edu.hm.cs.iua.models.Nutzer;
+import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.repositories.TokenRepository;
-import edu.hm.cs.iua.repositories.NutzerRepository;
+import edu.hm.cs.iua.repositories.IUAUserRepository;
 import edu.hm.cs.iua.utils.EmailClient;
 import edu.hm.cs.iua.utils.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class RegistrationController {
     }
 
     @Autowired
-    private NutzerRepository nutzerRepository;
+    private IUAUserRepository userRepository;
     @Autowired
     private TokenRepository tokenRepository;
     @Value("${email.name}")
@@ -55,7 +55,7 @@ public class RegistrationController {
 
     @ResponseBody
     @PostMapping
-    public void create(@RequestBody Nutzer input)
+    public void create(@RequestBody IUAUser input)
             throws RegistrationException {
 
         if (input.getName() == null)
@@ -65,18 +65,18 @@ public class RegistrationController {
         if (input.getPassword() == null)
             throw new InvalidDataException("Password invalid.");
 
-        for (Nutzer nutzer : nutzerRepository.findAll()) {
-            if (nutzer.getEmail().equals(input.getEmail()))
+        for (IUAUser user : userRepository.findAll()) {
+            if (user.getEmail().equals(input.getEmail()))
                 throw new EmailAlreadyTakenException();
-            if (nutzer.getName().equals(input.getName()))
+            if (user.getName().equals(input.getName()))
                 throw new UsernameAlreadyTakenException();
         }
 
-        final Nutzer nutzer = nutzerRepository.save(new Nutzer(input.getName(), input.getEmail(), input.getPassword(), generator.nextToken()));
+        final IUAUser user = userRepository.save(new IUAUser(input.getName(), input.getEmail(), input.getPassword(), generator.nextToken()));
         try {
-            sendAuthorisationCode(nutzer.getEmail(), nutzer.getId(), nutzer.getConfirmationCode());
+            sendAuthorisationCode(user.getEmail(), user.getId(), user.getConfirmationCode());
         } catch (MessagingException e) {
-            nutzerRepository.delete(nutzer.getId());
+            userRepository.delete(user.getId());
             throw new EmailTransmissionFailed();
         }
     }
@@ -84,13 +84,13 @@ public class RegistrationController {
     @GetMapping
     public String activate(@RequestParam Long userId, @RequestParam String code) {
 
-        final Nutzer nutzer = nutzerRepository.findOne(userId);
-        if (nutzer == null)
+        final IUAUser user = userRepository.findOne(userId);
+        if (user == null)
             return "activation/activationUserNotFound.html";
-        if (nutzer.getConfirmationCode().equals(code)) {
-            nutzer.setValidated(true);
-            nutzer.setConfirmationCode(null);
-            nutzerRepository.save(nutzer);
+        if (user.getConfirmationCode().equals(code)) {
+            user.setValidated(true);
+            user.setConfirmationCode(null);
+            userRepository.save(user);
             return "activation/activationSuccessful.html";
         }
         return "activation/activationInvalidCode.html";
