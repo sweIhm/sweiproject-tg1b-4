@@ -32,7 +32,7 @@
             <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeftSidebar()">
                 <md-icon md-font-set="material-icons"> menu</md-icon>
             </md-button>
-            <img src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
+            <img hide-xs src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
             <span flex></span>
             <md-button class="md-icon-button" aria-label="Settings" form="search_form" type="submit">
                 <md-icon class="material-icons"> search</md-icon>
@@ -43,13 +43,13 @@
                 </md-input-container>
             </form>
             <span flex></span>
-            <md-button class="md-raised md-accent" ng-hide="loginButtonHide"
+            <md-button hide-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                        ng-click="open_registration_dialog($event)">Sign up
             </md-button>
             <md-button class="md-raised md-accent" ng-hide="loginButtonHide" ng-click="open_login_dialog($event)">
                 Login
             </md-button>
-            <h1 ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.name}}</h1>
+            <h1 hide-xs ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.name}}</h1>
             <md-menu>
                 <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
                            background-image: url(assets/user_icon.png); background-size: cover;"
@@ -93,13 +93,16 @@
                     E-Mail: information.iua@gmail.com
                     Password: test
                 </p>
+                <md-button hide-gt-xs class="md-raised md-accent" ng-hide="loginButtonHide"
+                           ng-click="open_registration_dialog($event)">Sign up
+                </md-button>
                 <md-button>Support</md-button>
                 <md-button>Imprint</md-button>
             </md-content>
         </md-sidenav>
     </section>
     <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
-        <md-card style="max-width: 400px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
+        <md-card style="max-width: 400px; min-width: 300px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
                  ng-repeat="activity in activities" ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar>
@@ -114,13 +117,14 @@
                     <span class="md-subhead">Student</span>
                 </md-card-header-text>
                 <span flex></span>
-                <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();">
+                <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();"
+                                   style="position: relative; z-index: 0;">
                     <md-fab-trigger>
                         <md-button aria-label="menu" class="md-fab md-mini md-raised">
                             <md-icon md-font-set="material-icons"> more_vert</md-icon>
                         </md-button>
                     </md-fab-trigger>
-                    <md-fab-actions style="height: 0px;">
+                    <md-fab-actions style="height: 0;">
                         <md-button class="md-fab md-mini md-raised" aria-label="Edit"
                                    ng-click="open_edit_activity_dialog(activity, $event)">
                             <md-tooltip md-direction="left">Edit</md-tooltip>

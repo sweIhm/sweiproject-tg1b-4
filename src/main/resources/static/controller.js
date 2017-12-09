@@ -107,6 +107,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     };
 
     $scope.search_form_submit = function() {
+        if ($scope.search_text_field === undefined) {
+            return;
+        }
         if ($scope.search_text_field.value !== "") {
             $scope.search_text_field = '';
         }
