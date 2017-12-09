@@ -1,6 +1,6 @@
 var app = angular.module('IUA_new', ['ngMaterial','ngMessages']);
 
-var heroku_address =  'https://iua.herokuapp.com';
+var heroku_address =  'https://iua-experimental.herokuapp.com';
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
@@ -77,6 +77,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 heroku_address + '/activity')
         }).then(function (response) {
             alert("here");
+            if (response.data === null) {
+                alert("Is null");
+            }
             if (response.data.length > $scope.activities.length) {
                 $mdToast.show(
                     $mdToast.simple()
