@@ -90,7 +90,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 });
             }
         });
-    }, 9000);
+    }, 60000);
 
     $scope.refresh_button = function () {
         loadActivities($scope, $http);
