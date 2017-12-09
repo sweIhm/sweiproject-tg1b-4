@@ -30,7 +30,7 @@ public class LoginController {
         for (IUAUser user: userRepository.findAll())
             if (user.getEmail().equals(email)) {
                 if (!user.isValidated())
-                    throw new UserNotValidatedException("User is not validated.");
+                    throw new UserNotValidatedException();
                 if (!user.getPassword().equals(password))
                     throw new InvalidPasswordException("Password is incorrect.");
                 if (tokenRepository.exists(user.getId()))
