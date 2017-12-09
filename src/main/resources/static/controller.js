@@ -69,6 +69,39 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     loadActivities($scope, $http);
 
+    setInterval(function check_for_new_activities () {
+        $http({
+            method : 'GET',
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/activity' :
+                heroku_address + '/activity')
+        }).then(function (response) {
+            if (response.data.length > $scope.activities.length) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('New activities are available.')
+                        .position('bottom right')
+                        .action('Refresh')
+                        .hideDelay(9000)
+                ).then(function (response){
+                    if (response === 'ok') {
+                        loadActivities($scope, $http);
+                    }
+                });
+            }
+        });
+    }, 90000);
+
+    $scope.refresh_button = function () {
+        loadActivities($scope, $http);
+        $mdToast.show(
+            $mdToast.simple()
+                .textContent('Refreshed activities.')
+                .position('bottom right')
+                .hideDelay(3000)
+        );
+    };
+
     $scope.toggleLeftSidebar = function() {
         $mdSidenav('left_Sidebar').toggle();
     };

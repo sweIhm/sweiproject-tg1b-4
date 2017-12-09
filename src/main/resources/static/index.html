@@ -129,7 +129,7 @@
                         <md-button class="md-fab md-mini md-raised" aria-label="Delete"
                                    ng-click="confirm_delete_activity(activity, $event)">
                             <md-tooltip md-direction="left">Delete</md-tooltip>
-                            <md-icon md-font-set="material-icons"> delete</md-icon>
+                            <md-icon md-font-set="material-icons"> delete </md-icon>
                         </md-button>
                     </md-fab-actions>
                 </md-fab-speed-dial>
@@ -150,6 +150,10 @@
             </md-card-content>
         </md-card>
     </div>
+    <md-button class="md-fab md-fab-bottom-right" aria-label="Refresh Activities" style="position: fixed !important;"
+               ng-click="refresh_button()">
+        <md-icon md-font-set="material-icons"> refresh </md-icon>
+    </md-button>
 </div>
 </body>
 </html>
