@@ -60,7 +60,7 @@
                         <md-button>Profile</md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="open_add_activity_dialog($event)">Add activity</md-button>
+                        <md-button ng-click="open_add_activity_dialog(current_user, $event)">Add activity</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button>My activities</md-button>
@@ -126,7 +126,7 @@
                     </md-fab-trigger>
                     <md-fab-actions style="height: 0;">
                         <md-button class="md-fab md-mini md-raised" aria-label="Edit"
-                                   ng-click="open_edit_activity_dialog(activity, $event)">
+                                   ng-click="open_edit_activity_dialog(activity, current_user, $event)">
                             <md-tooltip md-direction="left">Edit</md-tooltip>
                             <md-icon md-font-set="material-icons"> edit</md-icon>
                         </md-button>
