@@ -16,6 +16,23 @@ function loadActivities ($scope, $http){
             heroku_address + '/activity')
     }).then(function (response) {
         $scope.activities = response.data;
+        angular.forEach($scope.activities, function(value, key) {
+            getUserData($scope, $http, value.author).then(function(data){
+                value.authorName = data.name;
+            });
+        })
+    });
+}
+
+function getUserData ($scope, $http, userID) {
+    var getRequest = {
+        method : 'GET',
+        url: (window.location.hostname === 'localhost' ?
+            'http://localhost:8080/user/' + userID :
+            heroku_address + '/user/' + userID)
+    };
+    return $http(getRequest).then(function (response) {
+        return response.data;
     });
 }
 
@@ -195,14 +212,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             setCookie("usertoken", $scope.current_user.token, 1);
         }).finally(function() {
             if ($scope.current_user !== null) {
-                var getRequest = {
-                    method : 'GET',
-                    url: (window.location.hostname === 'localhost' ?
-                        'http://localhost:8080/user/' + $scope.current_user.id :
-                        heroku_address + '/user/' + $scope.current_user.id)
-                };
-                $http(getRequest).then(function (response) {
-                    $scope.current_user.name = response.data.name;
+                getUserData($scope, $http, $scope.current_user.id).then(function(data) {
+                    $scope.current_user.name = data.name;
                     setCookie("username", $scope.current_user.name, 1);
                 });
                 $scope.loginButtonHide = true;
