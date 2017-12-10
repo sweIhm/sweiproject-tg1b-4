@@ -1,6 +1,6 @@
 var app = angular.module('IUA_new', ['ngMaterial','ngMessages']);
 
-var heroku_address =  'https://iua-experimental.herokuapp.com';
+var heroku_address =  'https://iua.herokuapp.com';
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
