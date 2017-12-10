@@ -115,7 +115,7 @@
                 </md-card-header-text>
                 <span flex></span>
                 <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();"
-                                   ng-show="current_user.id === activity.author" style="position: relative; z-index: 0;">
+                                   ng-show="checkUser(activity);" style="position: relative; z-index: 0;">
                     <md-fab-trigger>
                         <md-button aria-label="menu" class="md-fab md-mini md-raised">
                             <md-icon md-font-set="material-icons"> more_vert</md-icon>

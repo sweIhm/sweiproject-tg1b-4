@@ -74,7 +74,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     if (userid !== "" && usertoken !== "" && username !== "") {
         $scope.current_user = {
-            id: userid,
+            id: parseInt(userid),
             token: usertoken,
             name: username
         };
@@ -134,6 +134,13 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     $scope.openUserMenu = function($mdMenu, ev) {
         $mdMenu.open(ev);
+    };
+
+    $scope.checkUser = function(activity) {
+        if ($scope.current_user === null) {
+            return false;
+        }
+        return $scope.current_user.id === activity.author;
     };
 
     $scope.logout = function() {
