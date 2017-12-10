@@ -17,8 +17,12 @@ public class Token {
     public Token() {}
 
     public Token(Long id) {
+        this(id, generator.nextToken());
+    }
+
+    public Token(Long id, String key) {
         this.id = id;
-        this.key = generator.nextToken();
+        this.key = key;
     }
 
     public Long getId() {

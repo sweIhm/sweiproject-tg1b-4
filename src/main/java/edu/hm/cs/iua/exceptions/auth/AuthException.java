@@ -1,8 +1,8 @@
 package edu.hm.cs.iua.exceptions.auth;
 
-import edu.hm.cs.iua.exceptions.IUAExceptions;
+import edu.hm.cs.iua.exceptions.IUAException;
 
-public abstract class AuthException extends IUAExceptions {
+public abstract class AuthException extends IUAException {
 
     public AuthException() {
         super();

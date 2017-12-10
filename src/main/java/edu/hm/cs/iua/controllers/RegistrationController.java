@@ -65,7 +65,7 @@ public class RegistrationController {
         if (input.getPassword() == null)
             throw new InvalidDataException("Password invalid.");
 
-        for (IUAUser user : userRepository.findAll()) {
+        for (IUAUser user: userRepository.findAll()) {
             if (user.getEmail().equals(input.getEmail()))
                 throw new EmailAlreadyTakenException();
             if (user.getName().equals(input.getName()))

@@ -4,8 +4,8 @@ import edu.hm.cs.iua.exceptions.login.InvalidPasswordException;
 import edu.hm.cs.iua.exceptions.login.LoginException;
 import edu.hm.cs.iua.exceptions.login.UserNotFoundException;
 import edu.hm.cs.iua.exceptions.login.UserNotValidatedException;
-import edu.hm.cs.iua.models.Token;
 import edu.hm.cs.iua.models.IUAUser;
+import edu.hm.cs.iua.models.Token;
 import edu.hm.cs.iua.repositories.TokenRepository;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ public class LoginController {
     public Token login(@RequestParam String email, @RequestParam String password)
             throws LoginException {
 
-        for (IUAUser user : userRepository.findAll())
+        for (IUAUser user: userRepository.findAll())
             if (user.getEmail().equals(email)) {
                 if (!user.isValidated())
-                    throw new UserNotValidatedException("User is not validated.");
+                    throw new UserNotValidatedException();
                 if (!user.getPassword().equals(password))
                     throw new InvalidPasswordException("Password is incorrect.");
                 if (tokenRepository.exists(user.getId()))

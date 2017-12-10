@@ -19,6 +19,7 @@ public class Activity {
     public Activity (){}
 
     public Activity(Long author, String text, String tags, String title) {
+        this.author = author;
         this.text = text;
         this.tags = tags;
         this.title = title;

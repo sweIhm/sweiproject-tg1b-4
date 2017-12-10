@@ -12,21 +12,18 @@
             <md-card layout-fill flex>
                 <md-card-header>
                     <md-card-avatar>
-                        <img class="md-user-avatar" src="../assets/user_icon.png"/>
+                        <div style="padding-top: 6px">
+                            <img class="md-user-avatar" src="../assets/user_icon.png"/>
+                        </div>
                     </md-card-avatar>
                     <md-card-header-text>
-                        <span class="md-title">User</span>
+                        <div style="padding-top: 6px">
+                            <span class="md-title">{{activity.authorName}}</span>
+                        </div>
                         <span class="md-subhead">Student</span>
                     </md-card-header-text>
-                    <span flex></span>
-                    <md-button class="md-icon-button" aria-label="Edit" ng-click="open_edit_activity_dialog(activity, $event)">
-                        <md-icon md-font-set="material-icons"> edit </md-icon>
-                    </md-button>
-                    <md-button class="md-icon-button" aria-label="Delete" ng-click="confirm_delete_activity(activity, $event)">
-                        <md-icon md-font-set="material-icons"> delete </md-icon>
-                    </md-button>
                 </md-card-header>
-                <img src="../assets/activity_background.png" class="md-card-image" alt="Washed Out">
+                <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">{{activity.title}}</span>
@@ -37,15 +34,9 @@
                         <md-button>#{{activity.tags}}</md-button>
                     </div>
                 </md-card-actions>
-                <md-card-content>
-                    <p>
-                        {{activity.text}}Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                    </p>
+                <md-card-content style="word-wrap: break-word;">
+                    {{activity.text}}
                 </md-card-content>
             </md-card>
         </md-dialog-content>
-        <md-dialog-actions layout="row">
-            <span flex></span>
-        </md-dialog-actions>
 </md-dialog>
