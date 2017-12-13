@@ -34,12 +34,10 @@ public class LoginTest {
         final String email = "information.iua@hm.edu";
         final String password = "test";
 
-//        mockMvc.perform(post("/register")
-//                .content("{\"name\":\"" + userName + "\",\"email\":\"" + email + "\",\"password\":\"" + password + "\"}")
-//                .contentType("application/json"))
-//                .andExpect(status().isOk());
-        final IUAUser presetUser = new IUAUser(userName, email, password, "CONFIRMATION_CODE");
-        userRepository.save(presetUser);
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"" + userName + "\",\"email\":\"" + email + "\",\"password\":\"" + password + "\"}")
+                .contentType("application/json"))
+                .andExpect(status().isOk());
 
         IUAUser user = userRepository.find(userName);
 
