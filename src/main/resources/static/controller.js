@@ -214,14 +214,15 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             targetEvent: ev,
             clickOutsideToClose:true
         }).then(function(result) {
-            $scope.current_user = result;
-            setCookie("userid", $scope.current_user.id, 1);
-            setCookie("usertoken", $scope.current_user.token, 1);
+            $scope.current_user = result.value;
+            var length = (result.boolean !== undefined) ? 30 : 1;
+            setCookie("userid", $scope.current_user.id, length);
+            setCookie("usertoken", $scope.current_user.token, length);
         }).finally(function() {
             if ($scope.current_user !== null) {
                 getUserData($scope, $http, $scope.current_user.id).then(function(data) {
                     $scope.current_user.name = data.name;
-                    setCookie("username", $scope.current_user.name, 1);
+                    setCookie("username", $scope.current_user.name, 30);
                 });
                 $scope.loginButtonHide = true;
             }
@@ -368,8 +369,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
-        $scope.hide = function(value) {
-            $mdDialog.hide(value);
+        $scope.hide = function(value, boolean) {
+            var result = {value: value,
+            boolean: boolean};
+            $mdDialog.hide(result);
         };
         $scope.current_user = null;
         $scope.login = function(login) {
@@ -389,7 +392,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 );
             }).then(function () {
                 if ($scope.current_user !== null) {
-                    $scope.hide($scope.current_user)
+                    $scope.hide($scope.current_user, login.staySignedIn)
                 } else {
                     $scope.cancel();
                 }
