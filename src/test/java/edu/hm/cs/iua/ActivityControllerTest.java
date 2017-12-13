@@ -122,7 +122,7 @@ public class ActivityControllerTest {
             want.setId(have.getId());
             Assert.assertEquals(want, have);
         }
-        Assert.assertEquals(activityRepository.count(), 1);
+        Assert.assertEquals(1, activityRepository.count());
     }
 
     @Test
