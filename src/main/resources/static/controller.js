@@ -1,6 +1,6 @@
 var app = angular.module('IUA', ['ngMaterial','ngMessages']);
 
-var heroku_address =  'https://iua.herokuapp.com';
+var heroku_address =  'https://iua-experimental.herokuapp.com';
 
 app.config(function($mdThemingProvider) {
     // Preparation for costume colors.
