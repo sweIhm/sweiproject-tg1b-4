@@ -1,6 +1,6 @@
 var app = angular.module('IUA_new', ['ngMaterial','ngMessages']);
 
-var heroku_address =  'https://iua.herokuapp.com';
+var heroku_address =  'https://iua-experimental.herokuapp.com';
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
@@ -124,7 +124,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 });
             }
         });
-    }, 90000);
+    }, 60000);
 
     $scope.refresh_button = function () {
         loadActivities($scope, $http);
