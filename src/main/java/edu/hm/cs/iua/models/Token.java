@@ -29,18 +29,16 @@ public class Token {
         return id;
     }
 
-    public Token setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
-    public String getToken() {
+    public String getKey() {
         return key;
     }
 
-    public Token setToken(String token) {
+    public void setKey(String token) {
         this.key = token;
-        return this;
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface TokenRepository extends CrudRepository<Token, Long> {
         final Token auth = this.findOne(id);
         if (auth == null)
             throw new InvalidUserException();
-        if (!auth.getToken().equals(token))
+        if (!auth.getKey().equals(token))
             throw new InvalidTokenException();
     }
 

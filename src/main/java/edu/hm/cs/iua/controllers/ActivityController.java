@@ -45,7 +45,7 @@ public class ActivityController {
 
         tokenRepository.verify(user, token);
 
-        return activityRepository.save(new Activity(user, input.getText(), input.getTags(), input.getTitle()));
+        return activityRepository.save(new Activity(user, input.getTitle(), input.getText(), input.getTags()));
     }
 
     @DeleteMapping("{id}")

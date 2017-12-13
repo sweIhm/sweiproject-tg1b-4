@@ -78,4 +78,30 @@ public class IUAUser {
     public UserProfile getProfile() {
         return new UserProfile(name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IUAUser iuaUser = (IUAUser) o;
+
+        return isValidated == iuaUser.isValidated
+                && (id != null ? id.equals(iuaUser.id) : iuaUser.id == null)
+                && (email != null ? email.equals(iuaUser.email) : iuaUser.email == null)
+                && (name != null ? name.equals(iuaUser.name) : iuaUser.name == null)
+                && (password != null ? password.equals(iuaUser.password) : iuaUser.password == null)
+                && (confirmationCode != null ? confirmationCode.equals(iuaUser.confirmationCode) : iuaUser.confirmationCode == null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (isValidated ? 1 : 0);
+        result = 31 * result + (confirmationCode != null ? confirmationCode.hashCode() : 0);
+        return result;
+    }
 }

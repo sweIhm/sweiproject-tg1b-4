@@ -24,7 +24,7 @@ public class UserControllerTest {
 
     private static final Long USER_ID = (long)1;
     private static final Token TOKEN = new Token(USER_ID, "TEST_TOKEN");
-    private static final String PARAM_STRING = "?user=" + USER_ID + "&token=" + TOKEN.getToken();
+    private static final String PARAM_STRING = "?user=" + USER_ID + "&token=" + TOKEN.getKey();
 
     @Autowired
     private MockMvc mockMvc;

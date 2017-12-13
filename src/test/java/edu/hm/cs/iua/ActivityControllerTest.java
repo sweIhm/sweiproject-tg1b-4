@@ -1,10 +1,13 @@
 package edu.hm.cs.iua;
 
+import edu.hm.cs.iua.models.Activity;
 import edu.hm.cs.iua.models.Token;
 import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.repositories.ActivityRepository;
 import edu.hm.cs.iua.repositories.TokenRepository;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,10 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ActivityControllerTest {
 
-    private static final Long USER_ID = (long)1;
-    private static final Token TOKEN = new Token(USER_ID, "TEST_TOKEN");
-    private static final String PARAM_STRING = "?user=" + USER_ID + "&token=" + TOKEN.getToken();
-
+    // environment vars
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -42,128 +41,177 @@ public class ActivityControllerTest {
     @Autowired
     private TokenRepository tokenRepository;
 
+    // test vars
+    private Long userID;
+    private String token;
+
     @Before
-    public void setTestUser() {
-        if (!userRepository.exists(USER_ID)) {
-            final IUAUser user = new IUAUser("Testuser", "test@test.test", "test", "CONFIRMATION_CODE");
-            user.setValidated(true);
-            userRepository.save(user);
+    public void setupRepositories() {
+        // add test user
+        final IUAUser user = new IUAUser("TestUser", "test@test.test", "test", "");
+        user.setValidated(true);
+        userID = userRepository.save(user).getId();
+        // add test token
+        token = "TOKEN";
+        tokenRepository.save(new Token(userID, token));
+    }
+
+    @After
+    public void clearRepositories() {
+        // check that user repository didn't change
+        final IUAUser wantUser = new IUAUser("TestUser", "test@test.test", "test", "");
+        wantUser.setValidated(true);
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser haveUser: userRepository.findAll()) {
+            userID = haveUser.getId();
+            wantUser.setId(userID);
+            Assert.assertEquals(wantUser, haveUser);
         }
-        if (!tokenRepository.exists(USER_ID))
-            tokenRepository.save(TOKEN);
+        // check that token repository didn't change
+        final Token wantToken = new Token(userID, "TOKEN");
+        Assert.assertEquals(1, tokenRepository.count());
+        for (Token haveToken: tokenRepository.findAll())
+            Assert.assertEquals(wantToken, haveToken);
+        // reset Repositories
+        activityRepository.deleteAll();
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
+    }
+
+    @Test
+    public void listAllEmptyTest() throws Exception {
+        mockMvc.perform(
+                get("/activity"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
     @Test
     public void listAllTest() throws Exception {
-        mockMvc.perform(get("/activity"))
+        activityRepository.save(new Activity(userID, "Title", "Text", "Tags"));
+        Long id = 0L;
+        for (Activity activity: activityRepository.findAll())
+            id = activity.getId();
+
+        mockMvc.perform(
+                get("/activity"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("[]"));
+                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID +
+                        ",\"text\":\"Text\",\"tags\":\"Tags\",\"title\":\"Title\"}]"));
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
     @Test
-    public void createTest() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(
-                post("/activity" + PARAM_STRING)
+    public void createActivityTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
                 .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
                 .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        char id = response.getContentAsString().charAt(6);
-        mockMvc.perform(delete("/activity/" + id + PARAM_STRING));
+                .andExpect(status().isOk());
+
+        final Activity want = new Activity(userID, "Test", "test test", "test");
+
+        for (Activity have: activityRepository.findAll()) {
+            want.setId(have.getId());
+            Assert.assertEquals(want, have);
+        }
+        Assert.assertEquals(activityRepository.count(), 1);
     }
 
     @Test
     public void createMultipleTest() throws Exception {
-        MockHttpServletResponse response1 = mockMvc.perform(post("/activity" + PARAM_STRING)
-                .content("{\"title\":\"Test1\",\"text\":\"test test1\",\"tags\":\"test1\"}")
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        MockHttpServletResponse response2 = mockMvc.perform(post("/activity" + PARAM_STRING)
-                .content("{\"title\":\"Test2\",\"text\":\"test test2\",\"tags\":\"test2\"}")
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"title\":\"Test1\",\"text\":\"test test1\",\"tags\":\"test1\"}")
+                        .contentType("application/json"))
+                .andExpect(status().isOk());
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"title\":\"Test2\",\"text\":\"test test2\",\"tags\":\"test2\"}")
+                        .contentType("application/json"))
+                .andExpect(status().isOk());
 
-        char id1 = response1.getContentAsString().charAt(6);
-        char id2 = response2.getContentAsString().charAt(6);
-        mockMvc.perform(delete("/activity/" + id1 + PARAM_STRING));
-        mockMvc.perform(delete("/activity/" + id2 + PARAM_STRING));
+        Assert.assertEquals(2, activityRepository.count());
     }
 
     @Test
     public void findTest() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(post("/activity" + PARAM_STRING)
-                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        char id = response.getContentAsString().charAt(6);
-        mockMvc.perform(get("/activity/" + id))
-                .andExpect(status().isOk());
-        mockMvc.perform(delete("/activity/" + id + PARAM_STRING));
-    }
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
 
-    @Test
-    public void findWithUnUsedParamTest() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(post("/activity" + PARAM_STRING)
-                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
-                .contentType("application/json"))
+        mockMvc.perform(
+                get("/activity/" + id))
                 .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        char id = response.getContentAsString().charAt(6);
-        mockMvc.perform(get("/activity/" + id + PARAM_STRING))
-                .andExpect(status().isOk());
-        mockMvc.perform(delete("/activity/" + id + PARAM_STRING));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json("{\"id\":" + id + ",\"author\":" + userID +
+                        ",\"title\":\"Title\",\"text\":\"Text\",\"tags\":\"Tags\"}"));
+
+        Assert.assertEquals(1, activityRepository.count());
     }
 
     @Test
     public void findTestFailed() throws Exception {
-        mockMvc.perform(get("/activity/1"))
+        mockMvc.perform(
+                get("/activity/9999"))
                 .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
     @Test
     public void deleteTest() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(post("/activity" + PARAM_STRING)
-                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        char id = response.getContentAsString().charAt(6);
-        mockMvc.perform(delete("/activity/" + id + PARAM_STRING))
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                delete("/activity/" + id)
+                        .param("user", userID.toString())
+                        .param("token", token))
                 .andExpect(status().isOk());
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
     @Test
     public void updateTest() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(post("/activity" + PARAM_STRING)
-                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        char id = response.getContentAsString().charAt(6);
-        mockMvc.perform(put("/activity/" + id + PARAM_STRING)
-                .content("{\"title\":\"TestTest\",\"text\":\"test test\",\"tags\":\"test\"}")
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                put("/activity/" + id)
+                        .param("user", userID.toString())
+                        .param("token", token)
+                .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":\"tag\"}")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
-        mockMvc.perform(delete("/activity/" + id + PARAM_STRING));
+
+        final Activity want = new Activity(userID, "Test", "test", "tag");
+        want.setId(id);
+        final Activity have = activityRepository.findOne(id);
+
+        Assert.assertEquals(1, activityRepository.count());
+        Assert.assertEquals(want, have);
     }
 
     @Test
     public void updateTestFailed() throws Exception {
-        mockMvc.perform(put("/activity/" + 0 + PARAM_STRING)
+        mockMvc.perform(
+                put("/activity/9999")
+                        .param("user", userID.toString())
+                        .param("token", token)
                 .content("{\"title\":\"TestTest\",\"text\":\"test test\",\"tags\":\"test\"}")
                 .contentType("application/json"))
                 .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
 }
