@@ -1,6 +1,7 @@
 package edu.hm.cs.iua.controllers;
 
 import edu.hm.cs.iua.models.IUAUser;
+import edu.hm.cs.iua.models.UserProfile;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

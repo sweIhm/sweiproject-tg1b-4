@@ -11,8 +11,8 @@ public class IUAUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
     private String email;
+    private String name;
     private String password;
     private boolean isValidated;
     private String confirmationCode;
@@ -31,36 +31,32 @@ public class IUAUser {
         return id;
     }
 
-    public IUAUser setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public IUAUser setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public IUAUser setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public IUAUser setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public boolean isValidated() {
@@ -79,4 +75,7 @@ public class IUAUser {
         this.confirmationCode = confirmationCode;
     }
 
+    public UserProfile getProfile() {
+        return new UserProfile(name);
+    }
 }
