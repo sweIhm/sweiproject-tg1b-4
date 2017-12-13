@@ -20,11 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
-
-    private static final Long USER_ID = (long)1;
-    private static final Token TOKEN = new Token(USER_ID, "TEST_TOKEN");
-    private static final String PARAM_STRING = "?user=" + USER_ID + "&token=" + TOKEN.getKey();
+public class TestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,23 +29,14 @@ public class UserControllerTest {
     @Autowired
     private TokenRepository tokenRepository;
 
-    @Before
-    public void setTestUser() {
-        if (!userRepository.exists(USER_ID)) {
-            final IUAUser user = new IUAUser("Testuser", "test@test.test", "test", "CONFIRMATION_CODE");
-            user.setValidated(true);
-            userRepository.save(user);
-        }
-        if (!tokenRepository.exists(USER_ID))
-            tokenRepository.save(TOKEN);
-    }
 
     @Test
-    public void checkId() throws Exception {
-        long userId = userRepository.find("Testuser").getId();
-        mockMvc.perform(get("/user/" + userId))
-                .andExpect(status().isOk())
-                .andExpect(content().string("{\"name\":\"Testuser\"}"));
+    public void checkUser() throws Exception {
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
+
+        mockMvc.perform(get("/test"))
+                .andExpect(status().isOk());
 
         userRepository.deleteAll();
         tokenRepository.deleteAll();

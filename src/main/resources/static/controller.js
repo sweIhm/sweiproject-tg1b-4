@@ -416,7 +416,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             }).catch(function (error) {
                 var error_data = error.data;
                 if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.login.UserNotValidatedException") {
-                    if (error_data.message !== "") {
+                    if (error_data.message !== "No message available") {
                         $scope.login.timeTillUnlock = error_data.message;
                         $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', false);
                     } else {
