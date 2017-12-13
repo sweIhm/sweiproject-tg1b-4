@@ -103,7 +103,7 @@ public class ActivityControllerTest {
                 .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID +
                         ",\"text\":\"Text\",\"tags\":\"Tags\",\"title\":\"Title\"}]"));
 
-        Assert.assertEquals(0, activityRepository.count());
+        Assert.assertEquals(1, activityRepository.count());
     }
 
     @Test
