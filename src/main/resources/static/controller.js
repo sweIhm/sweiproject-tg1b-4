@@ -8,6 +8,23 @@ app.config(function($mdThemingProvider) {
         .accentPalette('red');
 });
 
+app.filter('searchField', function() {
+    return function(items, search_text_field) {
+        if (search_text_field === undefined) {
+            return items;
+        }
+        var filtered = [];
+        var letterMatch = new RegExp(search_text_field, 'i');
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (letterMatch.test(item.title)) {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+    };
+});
+
 function loadActivities ($scope, $http){
     $http({
         method : 'GET',
