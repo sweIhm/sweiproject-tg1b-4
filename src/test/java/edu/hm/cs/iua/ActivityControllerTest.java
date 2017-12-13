@@ -2,6 +2,7 @@ package edu.hm.cs.iua;
 
 import edu.hm.cs.iua.models.Token;
 import edu.hm.cs.iua.models.IUAUser;
+import edu.hm.cs.iua.repositories.ActivityRepository;
 import edu.hm.cs.iua.repositories.TokenRepository;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
 import org.junit.Before;
@@ -34,6 +35,8 @@ public class ActivityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ActivityRepository activityRepository;
     @Autowired
     private IUAUserRepository userRepository;
     @Autowired

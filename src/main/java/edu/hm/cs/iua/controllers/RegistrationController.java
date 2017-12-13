@@ -58,7 +58,7 @@ public class RegistrationController {
     public void create(@RequestBody IUAUser input)
             throws RegistrationException {
 
-        if (input.getName() == null)
+        if (input.getName() == null || input.getName().trim().isEmpty())
             throw new InvalidDataException("Name invalid.");
         if (input.getEmail() == null || !isValidEmail(input.getEmail()))
             throw new InvalidDataException("Email invalid.");
