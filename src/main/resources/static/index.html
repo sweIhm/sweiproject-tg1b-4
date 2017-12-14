@@ -100,7 +100,7 @@
     </section>
     <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
         <md-card style="max-width: 400px; min-width: 300px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
-                 ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field" ng-click="open_activity_details_dialog(activity, $event)">
+                 ng-repeat="activity in activities | orderBy: reverse:true" ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar>
                     <div style="padding-top: 6px">
