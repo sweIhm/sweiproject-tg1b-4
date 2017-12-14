@@ -112,17 +112,43 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
-                .contentType("application/json"))
+                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                        .contentType("application/json"))
                 .andExpect(status().isOk());
 
         final Activity want = new Activity(userID, "Test", "test test", "test");
 
+        Assert.assertEquals(1, activityRepository.count());
         for (Activity have: activityRepository.findAll()) {
             want.setId(have.getId());
             Assert.assertEquals(want, have);
         }
-        Assert.assertEquals(1, activityRepository.count());
+    }
+
+    @Test
+    public void createActivityTestInvalidUserID() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", "9999")
+                        .param("token", token)
+                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void createActivityTestInvalidToken() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", "INVALID_TOKEN")
+                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
     @Test
@@ -160,7 +186,7 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void findTestFailed() throws Exception {
+    public void findTestActivityNotFound() throws Exception {
         mockMvc.perform(
                 get("/activity/9999"))
                 .andExpect(status().isBadRequest());
@@ -179,6 +205,55 @@ public class ActivityControllerTest {
                 .andExpect(status().isOk());
 
         Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void deleteTestActivityNotFound() throws Exception {
+        mockMvc.perform(
+                delete("/activity/9999")
+                        .param("user", userID.toString())
+                        .param("token", token))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void deleteTestInvalidUserId() throws Exception {
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                delete("/activity/" + id)
+                        .param("user", "9999")
+                        .param("token", token))
+                .andExpect(status().isUnauthorized());
+
+        final Activity want = new Activity(userID, "Title", "Text", "Tags");
+
+        Assert.assertEquals(1, activityRepository.count());
+        for (Activity have: activityRepository.findAll()) {
+            want.setId(have.getId());
+            Assert.assertEquals(want, have);
+        }
+    }
+
+    @Test
+    public void deleteTestInvalidToken() throws Exception {
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                delete("/activity/" + id)
+                        .param("user", userID.toString())
+                        .param("token", "INVALID_TOKEN"))
+                .andExpect(status().isUnauthorized());
+
+        final Activity want = new Activity(userID, "Title", "Text", "Tags");
+
+        Assert.assertEquals(1, activityRepository.count());
+        for (Activity have: activityRepository.findAll()) {
+            want.setId(have.getId());
+            Assert.assertEquals(want, have);
+        }
     }
 
     @Test
@@ -202,7 +277,7 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void updateTestFailed() throws Exception {
+    public void updateTestActivityNotFound() throws Exception {
         mockMvc.perform(
                 put("/activity/9999")
                         .param("user", userID.toString())
@@ -212,6 +287,46 @@ public class ActivityControllerTest {
                 .andExpect(status().isBadRequest());
 
         Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void updateTestInvalidUserId() throws Exception {
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                put("/activity/" + id)
+                        .param("user", "9999")
+                        .param("token", token)
+                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":\"tag\"}")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
+
+        final Activity want = new Activity(userID, "Title", "Text", "Tags");
+        want.setId(id);
+        final Activity have = activityRepository.findOne(id);
+
+        Assert.assertEquals(1, activityRepository.count());
+        Assert.assertEquals(want, have);
+    }
+
+    @Test
+    public void updateTestInvalidToken() throws Exception {
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                put("/activity/" + id)
+                        .param("user", userID.toString())
+                        .param("token", "INVALID_TOKEN")
+                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":\"tag\"}")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
+
+        final Activity want = new Activity(userID, "Title", "Text", "Tags");
+        want.setId(id);
+        final Activity have = activityRepository.findOne(id);
+
+        Assert.assertEquals(1, activityRepository.count());
+        Assert.assertEquals(want, have);
     }
 
 }
