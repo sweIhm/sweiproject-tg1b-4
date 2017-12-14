@@ -56,6 +56,52 @@ public class RegistrationControllerTest {
                 .andExpect(content().string("{\"name\":\"CreationTestName\"}"));
     }
 
+    // invalid name tests
+    @Test
+    public void invalidName_empty() throws Exception {
+        final String username = "";
+
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"" + username + "\",\"email\":\"information.iua@hm.edu\",\"password\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void invalidName_null() throws Exception {
+        mockMvc.perform(post("/register")
+                .content("{\"email\":\"information.iua@hm.edu\",\"password\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    // invalid email tests
+    @Test
+    public void invalidEmail_notValid() throws Exception {
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"CreationTestName\",\"email\":\"information.iua@gmail.com\",\"password\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void invalidEmail_null() throws Exception {
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"CreationTestName\",\"password\":\"test\"}")
+                .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    // invalid password test
+    @Test
+    public void invalidPassword_null() throws Exception {
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"CreationTestName\",\"email\":\"information.iua@gmail.com\"}")
+                .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    // activation test
     @Test
     public void activateUserTest() throws Exception {
         mockMvc.perform(post("/register")

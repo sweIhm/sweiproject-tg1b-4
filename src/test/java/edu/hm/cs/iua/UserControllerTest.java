@@ -54,4 +54,18 @@ public class UserControllerTest {
         userRepository.deleteAll();
         tokenRepository.deleteAll();
     }
+
+    @Test
+    public void checkIdUserNotFound() throws Exception {
+        final IUAUser wrongUser = new IUAUser("WrongUser", "information.iua@hm.edu", "test", "");
+        wrongUser.setValidated(false);
+        userRepository.save(wrongUser);
+
+        long userId = userRepository.find("WrongUser").getId();
+        mockMvc.perform(get("/user/" + userId))
+                .andExpect(status().isBadRequest());
+
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
+    }
 }
