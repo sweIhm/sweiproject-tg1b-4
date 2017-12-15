@@ -232,8 +232,6 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             clickOutsideToClose:true
         }).then(function(result) {
             $scope.current_user = result.value;
-            console.log($scope.current_user.id);
-            console.log($scope.current_user.key);
             var length = (result.boolean !== undefined) ? 30 : 1;
             setCookie("userid", $scope.current_user.id, length);
             setCookie("usertoken", $scope.current_user.key, length);
@@ -316,8 +314,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             .required(true)
             .ok('Enter')
             .cancel('Cancel');
-        $mdDialog.show(confirm).then(function(result) {
-            //send code to server and request confirmation
+        $mdDialog.show(confirm).then(function() {
+            //...
         });
     };
 
