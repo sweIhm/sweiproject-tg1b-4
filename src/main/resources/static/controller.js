@@ -92,7 +92,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     if (userid !== "" && usertoken !== "" && username !== "") {
         $scope.current_user = {
             id: parseInt(userid),
-            token: usertoken,
+            key: usertoken,
             name: username
         };
         $scope.loginButtonHide = true;
@@ -234,7 +234,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             $scope.current_user = result.value;
             var length = (result.boolean !== undefined) ? 30 : 1;
             setCookie("userid", $scope.current_user.id, length);
-            setCookie("usertoken", $scope.current_user.token, length);
+            setCookie("usertoken", $scope.current_user.key, length);
         }).finally(function() {
             if ($scope.current_user !== null) {
                 getUserData($scope, $http, $scope.current_user.id).then(function(data) {
@@ -250,8 +250,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         var deleteRequest = {
             method : 'DELETE',
             url: (window.location.hostname === 'localhost' ?
-                'http://localhost:8080/activity/'+activity.id + '?user=' + $scope.current_user.id + '&token=' + $scope.current_user.token :
-                heroku_address + '/activity/'+activity.id + '?user=' + $scope.current_user.id + '&token=' + $scope.current_user.token)
+                'http://localhost:8080/activity/'+activity.id + '?user=' + $scope.current_user.id + '&token=' + $scope.current_user.key :
+                heroku_address + '/activity/'+activity.id + '?user=' + $scope.current_user.id + '&token=' + $scope.current_user.key)
         };
         $http(deleteRequest).then(function() {
             loadActivities($scope, $http);
@@ -328,8 +328,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             var postRequest = {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
-                    'http://localhost:8080/activity?user=' + current_user.id + "&token=" + current_user.token :
-                    heroku_address + '/activity?user=' + current_user.id + "&token=" + current_user.token),
+                    'http://localhost:8080/activity?user=' + current_user.id + "&token=" + current_user.key :
+                    heroku_address + '/activity?user=' + current_user.id + "&token=" + current_user.key),
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
@@ -360,8 +360,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             var putRequest = {
                 method : 'PUT',
                 url: (window.location.hostname === 'localhost' ?
-                    'http://localhost:8080/activity/' + activity.id + '?user=' + current_user.id + '&token=' + current_user.token:
-                    heroku_address + '/activity/' + activity.id + '?user=' + current_user.id + '&token=' + current_user.token),
+                    'http://localhost:8080/activity/' + activity.id + '?user=' + current_user.id + '&token=' + current_user.key:
+                    heroku_address + '/activity/' + activity.id + '?user=' + current_user.id + '&token=' + current_user.key),
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
