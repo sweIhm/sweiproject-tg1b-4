@@ -3,6 +3,10 @@ var app = angular.module('IUA_new', ['ngMaterial','ngMessages']);
 var heroku_address =  'https://iua.herokuapp.com';
 
 app.config(function($mdThemingProvider) {
+    /*var calpoly_green = $mdThemingProvider.extendPalette('green', {
+        '500': '#459926'
+    });
+    $mdThemingProvider.definePalette('calpoly_green', calpoly_green);*/
     $mdThemingProvider.theme('default')
         .primaryPalette('blue')
         .accentPalette('red');
@@ -189,6 +193,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     .hideDelay(3000)
             );
         });
+    };
+
+    $scope.go_to_imprint = function() {
+        window.location.href = window.location + 'imprint.html';
     };
 
     $scope.open_add_activity_dialog = function(current_user, ev) {
