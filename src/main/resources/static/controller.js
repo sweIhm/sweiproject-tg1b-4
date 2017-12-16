@@ -107,7 +107,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     loadActivities($scope, $http);
 
-    setInterval(function check_for_new_activities () {
+    var refreshInterval = setInterval(function check_for_new_activities () {
         $http({
             method : 'GET',
             url: (window.location.hostname === 'localhost' ?
@@ -127,21 +127,63 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     }
                 });
             }
+        }).catch(function (reason) {
+            clearInterval(refreshInterval);
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('No connection to server possible.')
+                    .position('bottom right')
+                    .action('Refresh page')
+                    .hideDelay(0)
+            ).then(function (response) {
+                if (response === 'ok') {
+                    location.reload();
+                }
+            })
         });
     }, 90000);
 
     $scope.refresh_button = function () {
-        loadActivities($scope, $http);
-        $mdToast.show(
-            $mdToast.simple()
-                .textContent('Refreshed activities.')
-                .position('bottom right')
-                .hideDelay(3000)
-        );
+        $http({
+            method : 'GET',
+            url: (window.location.hostname === 'localhost' ?
+                'http://localhost:8080/activity' :
+                heroku_address + '/activity')
+        }).then(function (response) {
+            $scope.activities = response.data;
+            angular.forEach($scope.activities, function(value, key) {
+                getUserData($scope, $http, value.author).then(function(data){
+                    value.authorName = data.name;
+                });
+            });
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Refreshed activities.')
+                    .position('bottom right')
+                    .hideDelay(3000)
+            );
+        }).catch(function (reason) {
+            clearInterval(refreshInterval);
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('No connection to server possible.')
+                    .position('bottom right')
+                    .action('Refresh page')
+                    .hideDelay(0)
+            ).then(function (response) {
+                if (response === 'ok') {
+                    location.reload();
+                }
+            });
+        });
     };
 
     $scope.toggleLeftSidebar = function() {
         $mdSidenav('left_Sidebar').toggle();
+    };
+
+    $scope.toggleRightSidebar = function() {
+        $mdSidenav('right_Sidebar').toggle();
     };
 
     $scope.search_form_submit = function() {

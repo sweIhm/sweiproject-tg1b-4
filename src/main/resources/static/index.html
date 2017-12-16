@@ -26,7 +26,6 @@
 
 <body>
 <div ng-controller="IUACtrl" layout="column" layout-fill>
-    <!--Header toolbar-->
     <md-toolbar class="md-primary" id="fixed-header">
         <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeftSidebar()">
@@ -70,7 +69,7 @@
                            ng-show="loginButtonHide"></md-button>
                 <md-menu-content width="3">
                     <md-menu-item>
-                        <md-button>Profile</md-button>
+                        <md-button ng-click="toggleRightSidebar()">Profile</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_add_activity_dialog(current_user, $event)">Add activity</md-button>
@@ -122,10 +121,29 @@
                 <md-button ng-click="go_to_imprint()">Imprint</md-button>
             </md-content>
         </md-sidenav>
+        <md-sidenav class="md-sidenav-right" md-component-id="right_Sidebar" md-whiteframe="4" style="min-width: 250px;">
+            <md-toolbar class="md-primary" layout="row">
+                <div class="md-toolbar-tools">
+                    <h1>User profile</h1>
+                    <span flex></span>
+                    <md-button class="md-fab md-mini md-accent" aria-label="Edit Profile">
+                        <md-tooltip md-direction="left">Edit</md-tooltip>
+                        <md-icon md-font-set="material-icons"> edit </md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-content layout-padding layout="column">
+                <span style="text-align: center;">This is a user profile</span>
+                <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
+                margin-left: auto; margin-right: auto;"/>
+                <span style="text-align: center;">{{current_user.name}}</span>
+            </md-content>
+        </md-sidenav>
     </section>
     <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
         <md-card style="max-width: 400px; min-width: 300px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
-                 ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field" ng-click="open_activity_details_dialog(activity, $event)">
+                 ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
+                 ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar>
                     <div style="padding-top: 6px">
