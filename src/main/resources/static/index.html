@@ -34,14 +34,27 @@
             </md-button>
             <img hide-xs src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Settings" form="search_form" type="submit">
-                <md-icon class="material-icons"> search</md-icon>
+            <md-button class="md-icon-button" aria-label="Search" form="search_form" type="submit">
+                <md-icon class="material-icons"> search </md-icon>
             </md-button>
             <form id="search_form" name="search_form" ng-submit="search_form_submit()">
                 <md-input-container id="search_input_container">
                     <input type="text" id="search_input_field" placeholder="Search..." ng-model="search_text_field">
                 </md-input-container>
             </form>
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="Filter" ng-click="openFilterMenu($mdMenu, $event)">
+                    <md-icon class="material-icons"> sort </md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <md-switch class="md-primary" name="filter_include_users" style="padding-left: 5px;">
+                        Include Users
+                    </md-switch>
+                    <md-switch class="md-primary" name="filter_only_users" style="padding-left: 5px;">
+                        Only Users
+                    </md-switch>
+                </md-menu-content>
+            </md-menu>
             <span flex></span>
             <md-button hide-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                        ng-click="open_registration_dialog($event)">Sign up
@@ -93,6 +106,11 @@
                 <md-button hide-gt-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                            ng-click="open_registration_dialog($event)">Sign up
                 </md-button>
+                <md-divider><h3 style="margin-top: 5px; margin-bottom: 5px;">Feed filters</h3></md-divider>
+                <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
+                    Official posts only
+                </md-switch>
+                <md-divider></md-divider>
                 <md-button>Support</md-button>
                 <md-button ng-click="go_to_imprint()">Imprint</md-button>
             </md-content>

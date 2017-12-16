@@ -157,6 +157,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $mdMenu.open(ev);
     };
 
+    $scope.openFilterMenu = function ($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
     $scope.checkUser = function(activity) {
         if ($scope.current_user === null) {
             return false;
