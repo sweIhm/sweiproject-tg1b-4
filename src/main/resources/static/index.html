@@ -106,7 +106,14 @@
                 <md-button hide-gt-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                            ng-click="open_registration_dialog($event)">Sign up
                 </md-button>
-                <md-divider><h3 style="margin-top: 5px; margin-bottom: 5px;">Feed filters</h3></md-divider>
+                <md-divider style="display: flex">
+                    <h3 style="margin-top: 5px; margin-bottom: 5px;">Feed filters</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Restore Original Feed">
+                        <md-tooltip md-direction="left">Reset filters</md-tooltip>
+                        <md-icon class="material-icons"> restore </md-icon>
+                    </md-button>
+                </md-divider>
                 <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
                     Official posts only
                 </md-switch>
@@ -171,6 +178,7 @@
     </div>
     <md-button class="md-fab md-fab-bottom-right" aria-label="Refresh Activities" style="position: fixed !important;"
                ng-click="refresh_button()">
+        <md-tooltip md-direction="top">Refresh activities</md-tooltip>
         <md-icon md-font-set="material-icons"> refresh </md-icon>
     </md-button>
 </div>
