@@ -28,9 +28,13 @@
                 </md-card-title>
                 <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
                 <md-card-actions layout="row" layout-align="start center">
-                    <div style="color: deepskyblue">
-                        <md-button>#{{activity.tags}}</md-button>
-                    </div>
+                    <md-card-actions layout="row" layout-align="start center">
+                        <md-chips ng-model="activity.tags" readonly="true" >
+                            <md-chip-template>
+                                #{{$chip}}
+                            </md-chip-template>
+                        </md-chips>
+                    </md-card-actions>
                 </md-card-actions>
                 <md-card-content style="word-wrap: break-word;">
                     {{activity.text}}

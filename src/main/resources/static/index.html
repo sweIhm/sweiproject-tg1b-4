@@ -186,9 +186,11 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-actions layout="row" layout-align="start center">
-                <div style="color: deepskyblue">
-                    <md-button>#{{activity.tags}}</md-button>
-                </div>
+                <md-chips ng-model="activity.tags" readonly="true" >
+                    <md-chip-template>
+                        #{{$chip}}
+                    </md-chip-template>
+                </md-chips>
             </md-card-actions>
             <md-card-content style="word-wrap: break-word;">
                 {{activity.text}}

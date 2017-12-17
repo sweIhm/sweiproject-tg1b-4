@@ -36,3 +36,12 @@ md-toast {
 .md-chips .md-chip-input-container {
     height: 25px;
 }
+
+md-chips.md-default-theme md-chip, md-chips md-chip {
+    background-color: rgb(33,135,225);
+    color: white;
+}
+
+.md-chips md-chip .md-chip-remove md-icon {
+    color: rgb(97,97,97);
+}
