@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="IUA_new">
+<html lang="en" ng-app="IUA">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +26,6 @@
 
 <body>
 <div ng-controller="IUACtrl" layout="column" layout-fill>
-    <!--Header toolbar-->
     <md-toolbar class="md-primary" id="fixed-header">
         <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeftSidebar()">
@@ -34,14 +33,27 @@
             </md-button>
             <img hide-xs src="./assets/Logo.svg" alt="IUA Logo" style="width: 192px; height: 48px;">
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Settings" form="search_form" type="submit">
-                <md-icon class="material-icons"> search</md-icon>
+            <md-button class="md-icon-button" aria-label="Search" form="search_form" type="submit">
+                <md-icon class="material-icons"> search </md-icon>
             </md-button>
             <form id="search_form" name="search_form" ng-submit="search_form_submit()">
                 <md-input-container id="search_input_container">
                     <input type="text" id="search_input_field" placeholder="Search..." ng-model="search_text_field">
                 </md-input-container>
             </form>
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="Filter" ng-click="openFilterMenu($mdMenu, $event)">
+                    <md-icon class="material-icons"> sort </md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <md-switch class="md-primary" name="filter_include_users" style="padding-left: 5px;">
+                        Include Users
+                    </md-switch>
+                    <md-switch class="md-primary" name="filter_only_users" style="padding-left: 5px;">
+                        Only Users
+                    </md-switch>
+                </md-menu-content>
+            </md-menu>
             <span flex></span>
             <md-button hide-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                        ng-click="open_registration_dialog($event)">Sign up
@@ -57,7 +69,7 @@
                            ng-show="loginButtonHide"></md-button>
                 <md-menu-content width="3">
                     <md-menu-item>
-                        <md-button>Profile</md-button>
+                        <md-button ng-click="toggleRightSidebar()">Profile</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_add_activity_dialog(current_user, $event)">Add activity</md-button>
@@ -93,18 +105,50 @@
                 <md-button hide-gt-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                            ng-click="open_registration_dialog($event)">Sign up
                 </md-button>
+                <md-divider style="display: flex">
+                    <h3 style="margin-top: 5px; margin-bottom: 5px;">Feed filters</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Restore Original Feed">
+                        <md-tooltip md-direction="left">Reset filters</md-tooltip>
+                        <md-icon class="material-icons"> restore </md-icon>
+                    </md-button>
+                </md-divider>
+                <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
+                    Official posts only
+                </md-switch>
+                <md-divider></md-divider>
                 <md-button>Support</md-button>
-                <md-button>Imprint</md-button>
+                <md-button ng-click="go_to_imprint()">Imprint</md-button>
+            </md-content>
+        </md-sidenav>
+        <md-sidenav class="md-sidenav-right" md-component-id="right_Sidebar" md-whiteframe="4" style="min-width: 250px;">
+            <md-toolbar class="md-primary" layout="row">
+                <div class="md-toolbar-tools">
+                    <h1>User profile</h1>
+                    <span flex></span>
+                    <md-button class="md-fab md-mini md-accent" aria-label="Edit Profile">
+                        <md-tooltip md-direction="left">Edit</md-tooltip>
+                        <md-icon md-font-set="material-icons"> edit </md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-content layout-padding layout="column">
+                <span style="text-align: center;">This is a user profile</span>
+                <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
+                margin-left: auto; margin-right: auto;"/>
+                <span style="text-align: center;">{{current_user.name}}</span>
             </md-content>
         </md-sidenav>
     </section>
     <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
         <md-card style="max-width: 400px; min-width: 300px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
-                 ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field" ng-click="open_activity_details_dialog(activity, $event)">
+                 ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
+                 ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar>
                     <div style="padding-top: 6px">
-                        <img class="md-user-avatar" src="assets/user_icon.png"/>
+                        <img class="md-user-avatar" src="assets/user_icon.png"
+                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
@@ -153,6 +197,7 @@
     </div>
     <md-button class="md-fab md-fab-bottom-right" aria-label="Refresh Activities" style="position: fixed !important;"
                ng-click="refresh_button()">
+        <md-tooltip md-direction="top">Refresh activities</md-tooltip>
         <md-icon md-font-set="material-icons"> refresh </md-icon>
     </md-button>
 </div>

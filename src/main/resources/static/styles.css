@@ -8,7 +8,8 @@
 }
 
 #search_input_field {
-    background-color: rgba(205, 205, 205, 0.51);
+    border-radius: 3px;
+    background-color: rgb(33,135,225);
     color: inherit;
 }
 
@@ -30,4 +31,8 @@ md-backdrop, md-sidenav {
 
 md-toast {
     position: fixed !important;
+}
+
+.md-chips .md-chip-input-container {
+    height: 25px;
 }
