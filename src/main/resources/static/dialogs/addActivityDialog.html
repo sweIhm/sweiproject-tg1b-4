@@ -19,8 +19,17 @@
                     <textarea ng-model="activity.text" rows="3" max-rows="6" md-no-resize placeholder="Text:" tabindex="2" required
                               md-maxlength="255" maxlength="255"></textarea>
                 </md-input-container>
-                <md-input-container id="add_activity_input_container">
-                    <input ng-model="activity.tags" type="text" placeholder="Tags:" tabindex="3" required>
+                <!--<md-input-container id="add_activity_input_container">
+                    <input ng-model="activity.tagsOld" type="text" placeholder="Tags:" tabindex="3" required>
+                </md-input-container>-->
+                <md-input-container>
+                    <label>Tags:</label>
+                    <md-chips ng-model="activity.tags" md-separator-keys="keys" md-max-chips="5"
+                              placeholder="Enter a tag" secondary-placeholder="+Tag">
+                        <md-chip-template>
+                            #{{$chip}}
+                        </md-chip-template>
+                    </md-chips>
                 </md-input-container>
                 <md-input-container>
                     <label>Category:</label>

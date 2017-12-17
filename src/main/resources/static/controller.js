@@ -374,8 +374,11 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         });
     };
 
-    function addActivityDialogCtrl($scope, $mdDialog, $http, current_user) {
+    function addActivityDialogCtrl($scope, $mdDialog, $mdConstant, $http, current_user) {
         $scope.current_user = current_user;
+        $scope.activity = {title: "", text: "", tags: []};
+        $scope.keys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.SPACE];
+
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
