@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Arrays;
 
 @Entity
 public class Activity {
@@ -13,12 +14,12 @@ public class Activity {
     private Long id;
     private Long author;
     private String text;
-    private String tags;
+    private String[] tags;
     private String title;
 
     public Activity (){}
 
-    public Activity(Long author, String title, String text, String tags) {
+    public Activity(Long author, String title, String text, String... tags) {
         this.author = author;
         this.text = text;
         this.tags = tags;
@@ -50,11 +51,11 @@ public class Activity {
         this.text = text;
     }
     
-    public String getTags() {
+    public String[] getTags() {
       return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(String[] tags) {
       this.tags = tags;
     }
 
@@ -76,7 +77,7 @@ public class Activity {
         return (id != null ? id.equals(activity.id) : activity.id == null)
                 && (author != null ? author.equals(activity.author) : activity.author == null)
                 && (text != null ? text.equals(activity.text) : activity.text == null)
-                && (tags != null ? tags.equals(activity.tags) : activity.tags == null)
+                && (tags != null ? Arrays.equals(tags, activity.tags) : activity.tags == null)
                 && (title != null ? title.equals(activity.title) : activity.title == null);
     }
 
@@ -85,7 +86,7 @@ public class Activity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + (text != null ? text.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (tags != null ? Arrays.hashCode(tags) : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
     }

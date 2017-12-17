@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -103,14 +106,20 @@ public class RegistrationController {
             emailUserName = System.getenv("EMAIL_USERNAME");
         if (System.getenv("EMAIL_PASSWORD") != null)
             emailPassword = System.getenv("EMAIL_PASSWORD");
+
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
         final String link = "http://" + hostAddress + "/register?userId=" + userId + "&code=" + code;
-        String content;
-        try {
-            content = new String(Files.readAllBytes(Paths.get("static/activation/confirmationEmail.html"))).replace("{{link}}", link);
-        } catch (IOException e) {
+        final InputStream resource = this.getClass().getResourceAsStream("/static/activation/confirmationEmail.html");
+        final String content;
+
+        if (resource != null) {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+            final StringBuilder emailContent = new StringBuilder("");
+            reader.lines().forEach(emailContent::append);
+            content = emailContent.toString().replace("{{link}}", link);
+        } else
             content = "Click <a href=\"" + link + "\">here</a> to activate your IUA Account.";
-        }
+
         client.sendMail(email, "Confirm your IUA Account", content);
     }
 

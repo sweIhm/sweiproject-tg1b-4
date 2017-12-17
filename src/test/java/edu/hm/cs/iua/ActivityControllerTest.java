@@ -101,7 +101,7 @@ public class ActivityControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID +
-                        ",\"text\":\"Text\",\"tags\":\"Tags\",\"title\":\"Title\"}]"));
+                        ",\"text\":\"Text\",\"tags\":[\"Tags\"],\"title\":\"Title\"}]"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -112,11 +112,11 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":[\"test1\",\"test2\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
-        final Activity want = new Activity(userID, "Test", "test test", "test");
+        final Activity want = new Activity(userID, "Test", "test test", "test1", "test2");
 
         Assert.assertEquals(1, activityRepository.count());
         for (Activity have: activityRepository.findAll()) {
@@ -131,7 +131,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", "9999")
                         .param("token", token)
-                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":[\"test\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -144,7 +144,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", "INVALID_TOKEN")
-                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":\"test\"}")
+                        .content("{\"title\":\"Test\",\"text\":\"test test\",\"tags\":[\"test1\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -157,14 +157,14 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"title\":\"Test1\",\"text\":\"test test1\",\"tags\":\"test1\"}")
+                        .content("{\"title\":\"Test1\",\"text\":\"test test1\",\"tags\":[\"test\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
         mockMvc.perform(
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"title\":\"Test2\",\"text\":\"test test2\",\"tags\":\"test2\"}")
+                        .content("{\"title\":\"Test2\",\"text\":\"test test2\",\"tags\":[\"test\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -180,7 +180,7 @@ public class ActivityControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json("{\"id\":" + id + ",\"author\":" + userID +
-                        ",\"title\":\"Title\",\"text\":\"Text\",\"tags\":\"Tags\"}"));
+                        ",\"title\":\"Title\",\"text\":\"Text\",\"tags\":[\"Tags\"]}"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -264,7 +264,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":\"tag\"}")
+                .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":[\"tag\"]}")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -282,7 +282,7 @@ public class ActivityControllerTest {
                 put("/activity/9999")
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"title\":\"TestTest\",\"text\":\"test test\",\"tags\":\"test\"}")
+                .content("{\"title\":\"TestTest\",\"text\":\"test test\",\"tags\":[\"test\"]}")
                 .contentType("application/json"))
                 .andExpect(status().isBadRequest());
 
@@ -297,7 +297,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", "9999")
                         .param("token", token)
-                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":\"tag\"}")
+                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":[\"tag\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -317,7 +317,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", userID.toString())
                         .param("token", "INVALID_TOKEN")
-                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":\"tag\"}")
+                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":[\"tag\"]}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
