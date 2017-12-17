@@ -1,8 +1,9 @@
-var app = angular.module('IUA_new', ['ngMaterial','ngMessages']);
+var app = angular.module('IUA', ['ngMaterial','ngMessages']);
 
 var heroku_address =  'https://iua.herokuapp.com';
 
 app.config(function($mdThemingProvider) {
+    // Preparation for costume colors.
     /*var calpoly_green = $mdThemingProvider.extendPalette('green', {
         '500': '#459926'
     });
@@ -566,6 +567,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     function activityDetailsDialogCtrl($scope, $mdDialog, activity) {
         $scope.activity = activity;
+        $scope.toggleRightSidebar = function () {
+            $mdSidenav('right_Sidebar').toggle();
+        };
         $scope.cancel = function() {
             $mdDialog.cancel();
         };

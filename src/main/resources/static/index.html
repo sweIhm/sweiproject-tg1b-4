@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="IUA_new">
+<html lang="en" ng-app="IUA">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,7 +147,8 @@
             <md-card-header>
                 <md-card-avatar>
                     <div style="padding-top: 6px">
-                        <img class="md-user-avatar" src="assets/user_icon.png"/>
+                        <img class="md-user-avatar" src="assets/user_icon.png"
+                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
