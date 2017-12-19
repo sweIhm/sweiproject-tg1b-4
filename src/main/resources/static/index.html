@@ -89,7 +89,7 @@
         </div>
     </md-toolbar>
     <!--Site body content-->
-    <section layout="row" flex>
+    <section layout="row" flex style="max-height: 0">
         <md-sidenav class="md-sidenav-left" md-component-id="left_Sidebar" md-whiteframe="4" style="min-width: 250px">
             <md-toolbar class="md-primary">
                 <h1 class="md-toolbar-tools">IUA - Sidebar</h1>
@@ -140,8 +140,65 @@
             </md-content>
         </md-sidenav>
     </section>
-    <div class="cards" layout="row" layout-wrap style="margin-top: 5%; margin-left: 1%">
-        <md-card style="max-width: 400px; min-width: 300px; margin-left: 20px; margin-bottom: 20px; min-height: 500px;"
+    <div hide-xs class="cards" layout="row" layout-wrap style="margin-top: 56px; padding-top: 0.5%;">
+        <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px; min-height: 500px;"
+                 ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
+                 ng-click="open_activity_details_dialog(activity, $event)">
+            <md-card-header>
+                <md-card-avatar>
+                    <div style="padding-top: 6px">
+                        <img class="md-user-avatar" src="assets/user_icon.png"
+                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
+                    </div>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <div style="padding-top: 6px">
+                        <span class="md-title">{{activity.authorName}}</span>
+                    </div>
+                    <span class="md-subhead">Student</span>
+                </md-card-header-text>
+                <span flex></span>
+                <md-fab-speed-dial md-direction="down" ng-class="'md-scale'" ng-click="$event.stopPropagation();"
+                                   ng-show="checkUser(activity);" style="position: relative; z-index: 0;">
+                    <md-fab-trigger>
+                        <md-button aria-label="menu" class="md-fab md-mini md-raised">
+                            <md-icon md-font-set="material-icons"> more_vert</md-icon>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions style="height: 0;">
+                        <md-button class="md-fab md-mini md-raised" aria-label="Edit"
+                                   ng-click="open_edit_activity_dialog(activity, current_user, $event)">
+                            <md-tooltip md-direction="left">Edit</md-tooltip>
+                            <md-icon md-font-set="material-icons"> edit</md-icon>
+                        </md-button>
+                        <md-button class="md-fab md-mini md-raised" aria-label="Delete"
+                                   ng-click="confirm_delete_activity(activity, $event)">
+                            <md-tooltip md-direction="left">Delete</md-tooltip>
+                            <md-icon md-font-set="material-icons"> delete </md-icon>
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+            </md-card-header>
+            <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+            <md-card-title>
+                <md-card-title-text style="max-width: 100%">
+                    <span class="md-headline" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{activity.title}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="start center">
+                <md-chips ng-model="activity.tags" readonly="true" >
+                    <md-chip-template>
+                        #{{$chip}}
+                    </md-chip-template>
+                </md-chips>
+            </md-card-actions>
+            <md-card-content md-truncate>
+                {{activity.text}}
+            </md-card-content>
+        </md-card>
+    </div>
+    <div hide-gt-xs class="cards" layout="row" layout-wrap style="margin-top: 56px; padding-top: 0.5%; margin-left: auto; margin-right: auto;">
+        <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 0; min-height: 500px; margin-left: auto; margin-right: auto;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
