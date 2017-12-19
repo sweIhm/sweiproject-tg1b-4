@@ -181,8 +181,8 @@
             </md-card-header>
             <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
             <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">{{activity.title}}</span>
+                <md-card-title-text style="max-width: 100%">
+                    <span class="md-headline" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{activity.title}}</span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-actions layout="row" layout-align="start center">
@@ -192,7 +192,7 @@
                     </md-chip-template>
                 </md-chips>
             </md-card-actions>
-            <md-card-content style="word-wrap: break-word;">
+            <md-card-content md-truncate style="word-wrap: break-word;">
                 {{activity.text}}
             </md-card-content>
         </md-card>
