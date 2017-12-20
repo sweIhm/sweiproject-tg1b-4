@@ -140,7 +140,7 @@
             </md-content>
         </md-sidenav>
     </section>
-    <div hide-xs class="cards" layout="row" layout-wrap style="margin-top: 56px; padding-top: 0.5%;">
+    <div hide-xs class="cards" layout="row" layout-wrap style="margin-top: 64px;">
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px; min-height: 500px;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
@@ -197,7 +197,8 @@
             </md-card-content>
         </md-card>
     </div>
-    <div hide-gt-xs class="cards" layout="row" layout-wrap style="margin-top: 56px; padding-top: 0.5%; margin-left: auto; margin-right: auto;">
+    <div hide-gt-xs class="cards" layout="row" layout-wrap style="margin-top: 56px;">
+        <!--layout="row" can be removed to make the cards fit the whole screen on mobile-->
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 0; min-height: 500px; margin-left: auto; margin-right: auto;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
