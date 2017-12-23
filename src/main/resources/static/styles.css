@@ -45,3 +45,7 @@ md-chips.md-default-theme md-chip, md-chips md-chip {
 .md-chips md-chip .md-chip-remove md-icon {
     color: white;
 }
+
+.md-chips .md-chip-input-container {
+    width: 100%;
+}

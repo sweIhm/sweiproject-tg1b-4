@@ -1,0 +1,10 @@
+{
+  "name": "IUA",
+  "authors": [
+    "OnYx9"
+  ],
+  "description": "International University App",
+  "main": "Application.java",
+  "license": "MIT",
+  "homepage": "https://iua.herokuapp.com"
+}
