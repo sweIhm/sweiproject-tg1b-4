@@ -10,12 +10,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private IUAUserRepository userRepository;
+
+    @GetMapping()
+    public List<UserProfile> listAll() {
+        final List<UserProfile> users = new ArrayList<>((int)userRepository.count());
+        userRepository.findAll().forEach(user -> users.add(user.getProfile()));
+        return users;
+    }
 
     @GetMapping("{id}")
     public UserProfile find(@PathVariable Long id) throws UserNotFoundException {
