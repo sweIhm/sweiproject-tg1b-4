@@ -13,7 +13,7 @@ app.config(function($mdThemingProvider) {
         .accentPalette('red');
 });
 
-app.filter('searchField', function() {
+app.filter('searchFieldActivities', function() {
     return function(items, search_text_field) {
         if (search_text_field === undefined) {
             return items;
@@ -23,6 +23,26 @@ app.filter('searchField', function() {
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
             if (letterMatch.test(item.title)) {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+    };
+});
+
+app.filter('searchFieldUsers', function() {
+    return function(items, search_text_field) {
+        if (search_text_field === undefined) {
+            return items;
+        }
+        if (items === undefined) {
+            return items;
+        }
+        var filtered = [];
+        var letterMatch = new RegExp(search_text_field, 'i');
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (letterMatch.test(item.name)) {
                 filtered.push(item);
             }
         }
@@ -55,6 +75,17 @@ function getUserData ($scope, $http, userID) {
     };
     return $http(getRequest).then(function (response) {
         return response.data;
+    });
+}
+
+function getUsers ($scope, $http) {
+    $http({
+        method: 'GET',
+        url: (window.location.hostname === 'localhost' ?
+            'http://localhost:8080/user' :
+            heroku_address + '/user')
+    }).then(function (response) {
+        $scope.users = response.data;
     });
 }
 
@@ -584,18 +615,24 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     }
 });
 
-app.controller('FilterMenuCtrl', function($scope) {
+app.controller('FilterMenuCtrl', function($scope, $http) {
     $scope.search_type_act = $scope.$parent.search_type_act;
     $scope.search_type_user = $scope.$parent.search_type_user;
     $scope.search_type_act_change = function () {
         $scope.$parent.search_type_user = !$scope.search_type_act;
         $scope.$parent.search_type_act = $scope.search_type_act;
         $scope.search_type_user = !$scope.search_type_act;
+        if ($scope.search_type_user) {
+            getUsers($scope.$parent, $http);
+        }
     };
 
     $scope.search_type_user_change = function () {
         $scope.$parent.search_type_act = !$scope.search_type_user;
         $scope.$parent.search_type_user = $scope.search_type_user;
         $scope.search_type_act = !$scope.search_type_user;
+        if ($scope.search_type_user) {
+            getUsers($scope.$parent, $http);
+        }
     };
 });
