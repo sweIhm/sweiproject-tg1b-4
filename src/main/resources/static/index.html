@@ -43,15 +43,17 @@
                     <input type="text" id="search_input_field" placeholder="Search..." ng-model="search_text_field">
                 </md-input-container>
             </form>
-            <md-menu>
+            <md-menu ng-controller="FilterMenuCtrl">
                 <md-button class="md-icon-button" aria-label="Filter" ng-click="openFilterMenu($mdMenu, $event)">
                     <md-icon class="material-icons"> sort </md-icon>
                 </md-button>
                 <md-menu-content width="3">
-                    <md-switch class="md-primary" name="filter_include_users" style="padding-left: 5px;">
-                        Include Users
+                    <md-switch class="md-primary" name="filter_only_activities" ng-model="search_type_act" style="padding-left: 5px;"
+                               ng-change="search_type_act_change()">
+                        Only Activities
                     </md-switch>
-                    <md-switch class="md-primary" name="filter_only_users" style="padding-left: 5px;">
+                    <md-switch class="md-primary" name="filter_only_users" ng-model="search_type_user" style="padding-left: 5px;"
+                               ng-change="search_type_user_change()">
                         Only Users
                     </md-switch>
                 </md-menu-content>
@@ -142,7 +144,23 @@
             </md-content>
         </md-sidenav>
     </section>
-    <div hide-xs class="cards" layout="row" layout-wrap style="margin-top: 64px;">
+    <div hide-xs ng-hide="search_type_act" class="cards" layout="row" layout-wrap style="margin-top: 64px;">
+        <md-content class="md-padding autocomplete" layout="column">
+            <md-subheader class="md-no-sticky">Users</md-subheader>
+            <md-contact-chips
+                    ng-model="user"
+                    md-contacts="users"
+                    md-contact-name="name"
+                    md-contact-image="image"
+                    md-contact-email="email"
+                    md-require-match="true"
+                    md-highlight-flags="i"
+                    filter-selected=""
+                    placeholder="To">
+            </md-contact-chips>
+        </md-content>
+    </div>
+    <div hide-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 64px;">
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px; min-height: 500px;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
@@ -199,7 +217,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div hide-gt-xs class="cards" layout="row" layout-wrap style="margin-top: 56px;">
+    <div hide-gt-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 56px;">
         <!--layout="row" can be removed to make the cards fit the whole screen on mobile-->
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 0; min-height: 500px; margin-left: auto; margin-right: auto;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchField: search_text_field"

@@ -106,6 +106,9 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $scope.current_user = null;
     }
 
+    $scope.search_type_act = true;
+    $scope.search_type_user = false;
+
     loadActivities($scope, $http);
 
     var refreshInterval = setInterval(function check_for_new_activities () {
@@ -579,4 +582,20 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             $mdDialog.cancel();
         };
     }
+});
+
+app.controller('FilterMenuCtrl', function($scope) {
+    $scope.search_type_act = $scope.$parent.search_type_act;
+    $scope.search_type_user = $scope.$parent.search_type_user;
+    $scope.search_type_act_change = function () {
+        $scope.$parent.search_type_user = !$scope.search_type_act;
+        $scope.$parent.search_type_act = $scope.search_type_act;
+        $scope.search_type_user = !$scope.search_type_act;
+    };
+
+    $scope.search_type_user_change = function () {
+        $scope.$parent.search_type_act = !$scope.search_type_user;
+        $scope.$parent.search_type_user = $scope.search_type_user;
+        $scope.search_type_act = !$scope.search_type_user;
+    };
 });
