@@ -280,6 +280,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         window.location.href = window.location + 'imprint.html';
     };
 
+    $scope.open_support_dialog = function(ev) {
+        $mdDialog.show({
+            controller: supportDialogCtrl,
+            templateUrl: './dialogs/supportDialog.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true
+        });
+    };
+
     $scope.open_add_activity_dialog = function(current_user, ev) {
         $mdDialog.show({
             controller: addActivityDialogCtrl,
@@ -611,6 +621,15 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         };
         $scope.cancel = function() {
             $mdDialog.cancel();
+        };
+    }
+
+    function supportDialogCtrl($scope, $mdDialog) {
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+        $scope.send_message = function () {
+            //...
         };
     }
 });

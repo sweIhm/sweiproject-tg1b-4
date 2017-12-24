@@ -121,7 +121,7 @@
                     Official posts only
                 </md-switch>
                 <md-divider></md-divider>
-                <md-button>Support</md-button>
+                <md-button ng-click="open_support_dialog($event)">Support</md-button>
                 <md-button ng-click="go_to_imprint()">Imprint</md-button>
             </md-content>
         </md-sidenav>
@@ -141,6 +141,9 @@
                 <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
                 margin-left: auto; margin-right: auto;"/>
                 <span style="text-align: center;">{{current_user.name}}</span>
+                <md-button class="md-raised md-accent">
+                    Send message
+                </md-button>
             </md-content>
         </md-sidenav>
     </section>
