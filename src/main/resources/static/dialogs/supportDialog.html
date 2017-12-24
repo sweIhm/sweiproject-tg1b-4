@@ -16,7 +16,8 @@
                     feel free to use this form to send us a message.
                 </p>
                 <md-input-container>
-                    <input ng-model="support.email" name="support_email" type="email" placeholder="E-Mail:" md-autofocus tabindex="1" required>
+                    <input ng-model="support.email" name="support_email" type="email" md-autofocus placeholder="E-Mail:"
+                           tabindex="1" required>
                     <div ng-messages="support_form.support_email.$error" role="alert">
                         <div ng-message="required">This is required!</div>
                     </div>
@@ -36,7 +37,7 @@
                     <span>Select a category that fits your subject.</span>
                 </md-input-container>
                 <md-input-container id="add_activity_input_container">
-                    <input ng-model="support.title" type="text" placeholder="Title:" md-autofocus tabindex="3" required>
+                    <input ng-model="support.title" type="text" placeholder="Title:" tabindex="3" required>
                     <span>Use this field to describe your subject shorty.</span>
                 </md-input-container>
                 <md-input-container>
