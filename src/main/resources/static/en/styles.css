@@ -1,0 +1,51 @@
+#search_input_container {
+    display: flex;
+}
+
+#search_input_container label {
+    padding-left: 10px;
+    color: white;
+}
+
+#search_input_field {
+    border-radius: 3px;
+    background-color: rgb(33,135,225);
+    color: inherit;
+}
+
+#fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%  !important;
+}
+
+md-backdrop, md-sidenav {
+    position: fixed;
+}
+
+.md-fab.md-mini:hover, .md-fab.md-mini.md-focused {
+    background-color: #b9b9b9 !important;
+}
+
+md-toast {
+    position: fixed !important;
+}
+
+.md-chips .md-chip-input-container {
+    height: 25px;
+}
+
+md-chips.md-default-theme md-chip, md-chips md-chip {
+    background-color: rgb(33,135,225);
+    color: white;
+}
+
+.md-chips md-chip .md-chip-remove md-icon {
+    color: white;
+}
+
+.md-chips .md-chip-input-container {
+    width: 100%;
+}

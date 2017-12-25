@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Decide Lang.</title>
+</head>
+<body>
+
+</body>
+<script>
+    window.addEventListener("load", function(){
+        switch (navigator.language) {
+            case "en":
+                window.location.href = window.location + 'en/';
+                break;
+            case "de":
+                window.location.href = window.location + 'de/';
+                break;
+            default:
+                window.location.href = window.location + 'en/';
+        }
+    });
+</script>
+</html>
