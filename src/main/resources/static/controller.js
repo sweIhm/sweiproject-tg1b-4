@@ -124,12 +124,14 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     var userid = getCookie("userid");
     var usertoken = getCookie("usertoken");
     var username = getCookie("username");
+    var useremail = getCookie("useremail");
 
-    if (userid !== "" && usertoken !== "" && username !== "") {
+    if (userid !== "" && usertoken !== "" && username !== "" && useremail !== "") {
         $scope.current_user = {
             id: parseInt(userid),
             key: usertoken,
-            name: username
+            name: username,
+            email: useremail
         };
         $scope.loginButtonHide = true;
     } else {
@@ -249,6 +251,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         setCookie("userid", "", -1);
         setCookie("usertoken", "", -1);
         setCookie("username", "", -1);
+        setCookie("useremail", "", -1);
         $scope.loginButtonHide = false;
         $scope.current_user = null;
         $mdToast.show(
@@ -280,11 +283,14 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         window.location.href = window.location + 'imprint.html';
     };
 
-    $scope.open_support_dialog = function(ev) {
+    $scope.open_support_dialog = function(current_user, ev) {
         $mdDialog.show({
             controller: supportDialogCtrl,
             templateUrl: './dialogs/supportDialog.html',
             parent: angular.element(document.body),
+            locals: {
+                current_user: current_user
+            },
             targetEvent: ev,
             clickOutsideToClose:true
         });
@@ -334,6 +340,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             var length = (result.boolean !== undefined) ? 30 : 1;
             setCookie("userid", $scope.current_user.id, length);
             setCookie("usertoken", $scope.current_user.key, length);
+            setCookie("useremail", $scope.current_user.email, length);
         }).finally(function() {
             if ($scope.current_user !== null) {
                 getUserData($scope, $http, $scope.current_user.id).then(function(data) {
@@ -513,6 +520,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 );
             }).then(function () {
                 if ($scope.current_user !== null) {
+                    $scope.current_user.email = login.email;
                     $scope.hide($scope.current_user, login.staySignedIn)
                 } else {
                     $scope.cancel();
@@ -624,7 +632,11 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         };
     }
 
-    function supportDialogCtrl($scope, $mdDialog) {
+    function supportDialogCtrl($scope, $mdDialog, current_user) {
+        if (current_user !== null) {
+            $scope.support = {email: ""};
+            $scope.support.email = current_user.email;
+        }
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
