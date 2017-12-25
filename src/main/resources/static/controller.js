@@ -120,6 +120,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         alert("This site only works in https:. Click ok to get redirected to https:");
         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
     }
+    // Later used for localization
+    // console.log(navigator.language);
 
     var userid = getCookie("userid");
     var usertoken = getCookie("usertoken");
