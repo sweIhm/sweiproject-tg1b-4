@@ -25,7 +25,7 @@
                 </md-input-container>
                 <md-input-container>
                     <label>Category:</label>
-                    <md-select ng-model="support.category" tabindex="2" required>
+                    <md-select ng-model="support.category" name="support_category" tabindex="2" required>
                         <md-option value="Something else"><em>Something else</em></md-option>
                         <md-option value="Login">Login</md-option>
                         <md-option value="Sign up">Sign up</md-option>
@@ -34,15 +34,22 @@
                         <md-option value="Delete activity">Delete activity</md-option>
                         <md-option value="Improvement">Improvement</md-option>
                     </md-select>
+                    <div ng-messages="support_form.support_category.$error" role="alert">
+                        <div ng-message="required">This is required!</div>
+                    </div>
                     <span>Select a category that fits your subject.</span>
                 </md-input-container>
                 <md-input-container id="add_activity_input_container">
-                    <input ng-model="support.title" type="text" placeholder="Title:" tabindex="3" required>
+                    <input ng-model="support.title" name="support_title" type="text" placeholder="Title:"
+                           tabindex="3" required>
+                    <div ng-messages="support_form.support_title.$error" role="alert">
+                        <div ng-message="required">This is required!</div>
+                    </div>
                     <span>Use this field to describe your subject shorty.</span>
                 </md-input-container>
                 <md-input-container>
-                    <textarea ng-model="support.message" name="support_message" rows="5" max-rows="7" md-no-resize placeholder="Message:" tabindex="4" required
-                              md-maxlength="255" maxlength="255"></textarea>
+                    <textarea ng-model="support.message" name="support_message" rows="5" max-rows="7" md-no-resize
+                              placeholder="Message:" tabindex="4" required md-maxlength="255" maxlength="255"></textarea>
                     <div ng-messages="support_form.support_message.$error" role="alert">
                         <div ng-message="required">This is required!</div>
                     </div>

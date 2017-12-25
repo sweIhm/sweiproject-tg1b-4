@@ -296,6 +296,19 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         });
     };
 
+    $scope.open_message_dialog = function(current_user, ev) {
+        $mdDialog.show({
+            controller: contactUserDialogCtrl,
+            templateUrl: './dialogs/contactUserDialog.html',
+            parent: angular.element(document.body),
+            locals: {
+                current_user: current_user
+            },
+            targetEvent: ev,
+            clickOutsideToClose:true
+        });
+    };
+
     $scope.open_add_activity_dialog = function(current_user, ev) {
         $mdDialog.show({
             controller: addActivityDialogCtrl,
@@ -637,6 +650,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             $scope.support = {email: ""};
             $scope.support.email = current_user.email;
         }
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+        $scope.send_message = function () {
+            //...
+        };
+    }
+
+    function contactUserDialogCtrl($scope, $mdDialog, current_user) {
+        $scope.current_user = current_user;
         $scope.cancel = function() {
             $mdDialog.cancel();
         };

@@ -141,7 +141,7 @@
                 <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
                 margin-left: auto; margin-right: auto;"/>
                 <span style="text-align: center;">{{current_user.name}}</span>
-                <md-button class="md-raised md-accent">
+                <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)" ng-show="loginButtonHide">
                     Send message
                 </md-button>
             </md-content>
@@ -151,7 +151,8 @@
         <md-content class="md-padding autocomplete" layout="column">
             <md-list class="fixedRows">
                 <md-subheader class="md-no-sticky">Users</md-subheader>
-                <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field">
+                <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
+                              ng-click="toggleRightSidebar()">
                     <img ng-src="assets/user_icon.png" class="md-avatar" alt="{{user.name}}" />
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
@@ -222,8 +223,9 @@
         <md-content class="md-padding autocomplete" layout="column">
             <md-list class="fixedRows">
                 <md-subheader class="md-no-sticky">Users</md-subheader>
-                <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field">
-                    <img ng-src="assets/user_icon.png" class="md-avatar" alt="{{user.name}}" />
+                <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
+                              ng-click="toggleRightSidebar()">
+                    <img ng-src="assets/user_icon.png" class="md-avatar"/>
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
                         <p>E-Mail...</p>
