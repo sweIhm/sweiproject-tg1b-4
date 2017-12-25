@@ -86,14 +86,14 @@ public class RegistrationController {
 
         final IUAUser user = userRepository.findOne(userId);
         if (user == null)
-            return "activation/activationUserNotFound.html";
+            return "activationUserNotFound";
         if (user.getConfirmationCode().equals(code)) {
             user.setValidated(true);
             user.setConfirmationCode(null);
             userRepository.save(user);
-            return "activation/activationSuccessful.html";
+            return "activationSuccessful";
         }
-        return "activation/activationInvalidCode.html";
+        return "activationInvalidCode";
     }
 
     private void sendAuthorisationCode(String email, Long userId, String code)
@@ -106,14 +106,14 @@ public class RegistrationController {
 
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
         final String link = "http://" + hostAddress + "/register?userId=" + userId + "&code=" + code;
-        final InputStream resource = this.getClass().getResourceAsStream("/static/activation/confirmationEmail.html");
+        final InputStream resource = this.getClass().getResourceAsStream("/templates/confirmationEmail.html");
         final String content;
 
         if (resource != null) {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
             final StringBuilder emailContent = new StringBuilder("");
             reader.lines().forEach(emailContent::append);
-            content = emailContent.toString().replace("{{link}}", link);
+            content = emailContent.toString().replace("{link}", link);
         } else
             content = "Click <a href=\"" + link + "\">here</a> to activate your IUA Account.";
 
