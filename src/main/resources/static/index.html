@@ -148,7 +148,8 @@
                 <div class="md-toolbar-tools">
                     <h1>User profile</h1>
                     <span flex></span>
-                    <md-button class="md-fab md-mini md-accent" aria-label="Edit Profile">
+                    <md-button class="md-fab md-mini md-accent" aria-label="Edit Profile"
+                               ng-click="open_edit_profile_dialog(current_user, $event)">
                         <md-tooltip md-direction="left">Edit</md-tooltip>
                         <md-icon md-font-set="material-icons"> edit </md-icon>
                     </md-button>

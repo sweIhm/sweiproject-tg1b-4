@@ -426,17 +426,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         });
     };
 
-    $scope.open_registration_code_dialog = function (user, ev) {
-        var confirm = $mdDialog.prompt()
-            .title('Please enter the code we send to your e-mail:')
-            .placeholder('Confirmation code:')
-            .ariaLabel('Confirmation code:')
-            .targetEvent(ev)
-            .required(true)
-            .ok('Enter')
-            .cancel('Cancel');
-        $mdDialog.show(confirm).then(function() {
-            //...
+    $scope.open_edit_profile_dialog = function(current_user, ev) {
+        $mdDialog.show({
+            controller: editProfileDialogCtrl,
+            templateUrl: './dialogs/editProfileDialog.html',
+            locals: {
+                current_user: current_user
+            },
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true
         });
     };
 
@@ -666,6 +665,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             $mdDialog.cancel();
         };
         $scope.send_message = function () {
+            //...
+        };
+    }
+
+    function editProfileDialogCtrl($scope, $mdDialog, current_user) {
+        $scope.profile = current_user;
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
+        $scope.edit = function(current_user) {
             //...
         };
     }
