@@ -78,6 +78,7 @@ public class LoginControllerTest {
                         "}"));
     }
 
+    @Test
     public void loginLoggedInUserTest() throws Exception {
         tokenRepository.save(new Token(userID, "TOKEN"));
         mockMvc.perform(
@@ -92,6 +93,7 @@ public class LoginControllerTest {
             Assert.assertEquals(new Token(userID, "TOKEN"), token);
     }
 
+    @Test
     public void loginInvalidPasswordTest() throws Exception {
         mockMvc.perform(
                 get("/login")
@@ -101,6 +103,7 @@ public class LoginControllerTest {
         Assert.assertEquals(0, tokenRepository.count());
     }
 
+    @Test
     public void loginInvalidEmailTest() throws Exception {
         mockMvc.perform(
                 get("/login")
@@ -110,13 +113,18 @@ public class LoginControllerTest {
         Assert.assertEquals(0, tokenRepository.count());
     }
 
+    @Test
     public void loginNotValidatedUserTest() throws Exception {
-        userRepository.findOne(userID).setValidated(false);
+        // create unvalidated user
+        final Long user2Id = userRepository.save(new IUAUser("TestUser2", "test2@test.test", "test", "VALIDATION_CODE")).getId();
+        // actual test
         mockMvc.perform(
                 get("/login")
-                        .param("email", "test@test.test")
+                        .param("email", "test2@test.test")
                         .param("password", "test"))
                 .andExpect(status().isBadRequest());
         Assert.assertEquals(0, tokenRepository.count());
+        // delete unvalidated user
+        userRepository.delete(user2Id);
     }
 }
