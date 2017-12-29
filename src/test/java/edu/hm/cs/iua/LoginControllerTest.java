@@ -67,7 +67,7 @@ public class LoginControllerTest {
                         .param("password", "test"))
                 .andExpect(status().isOk())
                 .andExpect(mvcResult -> {
-                    Assert.assertEquals(tokenRepository.count(), 1);
+                    Assert.assertEquals(1, tokenRepository.count());
                     for (Token token: tokenRepository.findAll())
                         Assert.assertEquals(token.getId(), userID);
                 })
@@ -87,9 +87,9 @@ public class LoginControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json("{\"id\":" + userID + ",\"key\":\"TOKEN\"}"));
-        Assert.assertEquals(tokenRepository.count(), 1);
+        Assert.assertEquals(1, tokenRepository.count());
         for (Token token: tokenRepository.findAll())
-            Assert.assertEquals(token, new Token(userID, "TOKEN"));
+            Assert.assertEquals(new Token(userID, "TOKEN"), token);
     }
 
     public void loginInvalidPasswordTest() throws Exception {
@@ -98,7 +98,7 @@ public class LoginControllerTest {
                         .param("email", "test@test.test")
                         .param("password", "invalid"))
                 .andExpect(status().isBadRequest());
-        Assert.assertEquals(tokenRepository.count(), 0);
+        Assert.assertEquals(0, tokenRepository.count());
     }
 
     public void loginInvalidEmailTest() throws Exception {
@@ -107,7 +107,7 @@ public class LoginControllerTest {
                         .param("email", "invalid@test.test")
                         .param("password", "test"))
                 .andExpect(status().isBadRequest());
-        Assert.assertEquals(tokenRepository.count(), 0);
+        Assert.assertEquals(0, tokenRepository.count());
     }
 
     public void loginNotValidatedUserTest() throws Exception {
@@ -117,6 +117,6 @@ public class LoginControllerTest {
                         .param("email", "test@test.test")
                         .param("password", "test"))
                 .andExpect(status().isBadRequest());
-        Assert.assertEquals(tokenRepository.count(), 0);
+        Assert.assertEquals(0, tokenRepository.count());
     }
 }
