@@ -31,13 +31,14 @@ import java.util.List;
 @RequestMapping("/register")
 public class RegistrationController {
 
-    private static String CONFIRMATION_EMAIL = "/templates/confirmationEmail.html";
     private static final TokenGenerator generator = new TokenGenerator();
     private static final List<String> validDomains = new LinkedList<>();
     static {
         validDomains.add("hm.edu");
         validDomains.add("calpoly.edu");
     }
+
+    private static String confirmationEmail = "/templates/confirmationEmail.html";
 
     @Autowired
     private IUAUserRepository userRepository;
@@ -101,7 +102,7 @@ public class RegistrationController {
         final String emailPassword = System.getenv("EMAIL_PASSWORD");
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
         final String link = "http://" + hostAddress + "/register?userId=" + userId + "&code=" + code;
-        final InputStream resource = this.getClass().getResourceAsStream(CONFIRMATION_EMAIL);
+        final InputStream resource = this.getClass().getResourceAsStream(confirmationEmail);
         final String content;
 
         if (resource != null) {
@@ -109,8 +110,9 @@ public class RegistrationController {
             final StringBuilder emailContent = new StringBuilder("");
             reader.lines().forEach(emailContent::append);
             content = emailContent.toString().replace("{link}", link);
-        } else
+        } else {
             content = "Click <a href=\"" + link + "\">here</a> to activate your IUA Account.";
+        }
 
         client.sendMail(email, "Confirm your IUA Account", content);
     }

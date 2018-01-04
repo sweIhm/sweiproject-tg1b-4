@@ -323,14 +323,14 @@ public class RegistrationControllerTest {
 
     @Test
     public void registerUserFallBackMail() throws Exception {
-        // Let's do again something evil, so we can test the fallback email send successfully
-        final Field field = RegistrationController.class.getDeclaredField("CONFIRMATION_EMAIL");
+        // Let's do a bit more evil stuff, so we can test the confirmation email fallback
+        final Field field = RegistrationController.class.getDeclaredField("confirmationEmail");
         field.setAccessible(true);
         // store the old value, because we will need it later
         final Object oldValue = field.get(RegistrationController.class);
-        field.set(null, "");
+        field.set(null, "/not/found");
 
-        // now lets do the testing
+        // Now we register a user and expect everything to be fine
         mockMvc.perform(post("/register")
                 .content("{\"name\":\"TestUser\",\"email\":\"test@hm.edu\",\"password\":\"test\"}")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -345,7 +345,7 @@ public class RegistrationControllerTest {
         }
         Assert.assertEquals(0, tokenRepository.count());
 
-        // Finally we make the evil shit undone again
+        // Finally we make the evil shit undone
         field.set(RegistrationController.class, oldValue);
         field.setAccessible(false);
     }
