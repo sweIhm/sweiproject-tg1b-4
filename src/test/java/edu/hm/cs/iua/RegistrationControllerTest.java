@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -317,6 +318,41 @@ public class RegistrationControllerTest {
 
         // Finally we make the evil shit undone
         field.set(controller, oldValue);
+        field.setAccessible(false);
+    }
+
+    @Test
+    public void registerUserFallBackMail() throws Exception {
+        // Let's do again something evil, so we can test the fallback email send successfully
+        final RegistrationController controller = context.getBean(RegistrationController.class);
+        final Field field = controller.getClass().getDeclaredField("CONFIRMATION_EMAIL");
+        final Field modifiers = Field.class.getDeclaredField("modifiers");
+        modifiers.setAccessible(true);
+        field.setAccessible(true);
+        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        // store the old value, because we will need it later
+        final Object oldValue = field.get(controller);
+        field.set(controller, "");
+
+        // now lets do the testing
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"TestUser\",\"email\":\"test@hm.edu\",\"password\":\"test\"}")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@hm.edu", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals(false, user.isValidated());
+        }
+        Assert.assertEquals(0, tokenRepository.count());
+
+        // Finally we make the evil shit undone again
+        field.set(controller, oldValue);
+        modifiers.setInt(field, field.getModifiers() | Modifier.FINAL);
+        modifiers.setAccessible(false);
         field.setAccessible(false);
     }
 
