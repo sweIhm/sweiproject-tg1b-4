@@ -80,7 +80,7 @@ public class UserControllerTest {
 
     @Test
     public void getUserNotFoundTest() throws Exception {
-        mockMvc.perform(get("/user/" + userID + 1))
+        mockMvc.perform(get("/user/9999"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -91,7 +91,7 @@ public class UserControllerTest {
         user.setValidated(false);
         userRepository.save(user);
 
-        mockMvc.perform(get("/user/" + userID + 1))
+        mockMvc.perform(get("/user/" + userID))
                 .andExpect(status().isBadRequest());
 
         // set test user to validated
