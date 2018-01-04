@@ -1,5 +1,6 @@
 package edu.hm.cs.iua;
 
+import edu.hm.cs.iua.controllers.RegistrationController;
 import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
 import edu.hm.cs.iua.repositories.TokenRepository;
@@ -10,9 +11,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,6 +38,8 @@ public class RegistrationControllerTest {
     private IUAUserRepository userRepository;
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    private ApplicationContext context;
 
     @After
     public void clearRepository() {
@@ -271,6 +281,30 @@ public class RegistrationControllerTest {
             Assert.assertEquals("CODE", user.getConfirmationCode());
             Assert.assertEquals(false, user.isValidated());
         }
+    }
+
+    @Test
+    public void emailTransmissionFailedTest() throws Exception {
+        // Let's do something evil, so we can test for the EmailTransmissionFailed exception
+        final RegistrationController controller = context.getBean(RegistrationController.class);
+        final Field field = controller.getClass().getDeclaredField("emailServer");
+        field.setAccessible(true);
+        // store the old value, because we will need it later
+        final Object oldValue = field.get(controller);
+        field.set(controller, "");
+
+        // Now our test will fail, because we removed the email server address
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"TestUser\",\"email\":\"test@hm.edu\",\"password\":\"test\"}")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, userRepository.count());
+        Assert.assertEquals(0, tokenRepository.count());
+
+        // Finally we make the evil shit undone
+        field.set(controller, oldValue);
+        field.setAccessible(false);
     }
 
 }

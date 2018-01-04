@@ -12,6 +12,7 @@ import edu.hm.cs.iua.utils.EmailClient;
 import edu.hm.cs.iua.utils.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +43,7 @@ public class RegistrationController {
     private IUAUserRepository userRepository;
     @Autowired
     private TokenRepository tokenRepository;
+
     @Value("${email.name}")
     private String emailUserName;
     @Value("${email.password}")
