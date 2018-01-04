@@ -67,8 +67,4 @@ public class Activity {
         this.title = title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        throw new RuntimeException("NOPE");
-    }
 }
