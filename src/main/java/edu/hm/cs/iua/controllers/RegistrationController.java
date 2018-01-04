@@ -123,7 +123,7 @@ public class RegistrationController {
     private boolean isValidEmail(String email) {
         final int firstAt = email.indexOf('@');
         final int lastAt = email.lastIndexOf('@');
-        return firstAt >= 0 && lastAt != email.length() - 1
+        return firstAt > 0 && lastAt != email.length() - 1
                 && firstAt == lastAt
                 && validDomains.contains(email.substring(firstAt + 1));
     }

@@ -11,4 +11,5 @@ public abstract class RegistrationException extends IUAException {
     public RegistrationException(String message) {
         super(message);
     }
+
 }

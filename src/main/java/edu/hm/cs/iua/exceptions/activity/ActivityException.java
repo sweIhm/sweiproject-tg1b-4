@@ -11,8 +11,4 @@ public class ActivityException extends IUAException {
         super();
     }
 
-    public ActivityException(String message) {
-        super(message);
-    }
-
 }

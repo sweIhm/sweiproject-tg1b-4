@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EmailTransmissionFailed extends RegistrationException {
 
     public EmailTransmissionFailed() {
-    }
-
-    public EmailTransmissionFailed(String message) {
-        super(message);
+        super();
     }
 
 }

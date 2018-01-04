@@ -119,12 +119,12 @@ public class ActivityControllerTest {
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
-        final Activity want = new Activity(userID, "Test", "test test", "test1", "test2");
-
         Assert.assertEquals(1, activityRepository.count());
-        for (Activity have: activityRepository.findAll()) {
-            want.setId(have.getId());
-            Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Test", activity.getTitle());
+            Assert.assertEquals("test test", activity.getText());
+            String[] want = {"test1", "test2"};
+            Assert.assertArrayEquals(want, activity.getTags());
         }
     }
 
@@ -231,12 +231,12 @@ public class ActivityControllerTest {
                         .param("token", token))
                 .andExpect(status().isUnauthorized());
 
-        final Activity want = new Activity(userID, "Title", "Text", "Tags");
-
         Assert.assertEquals(1, activityRepository.count());
-        for (Activity have: activityRepository.findAll()) {
-            want.setId(have.getId());
-            Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Title", activity.getTitle());
+            Assert.assertEquals("Text", activity.getText());
+            String[] want = {"Tags"};
+            Assert.assertArrayEquals(want, activity.getTags());
         }
     }
 
@@ -250,12 +250,12 @@ public class ActivityControllerTest {
                         .param("token", "INVALID_TOKEN"))
                 .andExpect(status().isUnauthorized());
 
-        final Activity want = new Activity(userID, "Title", "Text", "Tags");
-
         Assert.assertEquals(1, activityRepository.count());
-        for (Activity have: activityRepository.findAll()) {
-            want.setId(have.getId());
-            Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Title", activity.getTitle());
+            Assert.assertEquals("Text", activity.getText());
+            String[] want = {"Tags"};
+            Assert.assertArrayEquals(want, activity.getTags());
         }
     }
 
@@ -271,12 +271,13 @@ public class ActivityControllerTest {
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
-        final Activity want = new Activity(userID, "Test", "test", "tag");
-        want.setId(id);
-        final Activity have = activityRepository.findOne(id);
-
         Assert.assertEquals(1, activityRepository.count());
-        Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Test", activity.getTitle());
+            Assert.assertEquals("test", activity.getText());
+            String[] want = {"tag"};
+            Assert.assertArrayEquals(want, activity.getTags());
+        }
     }
 
     @Test
@@ -304,12 +305,13 @@ public class ActivityControllerTest {
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
-        final Activity want = new Activity(userID, "Title", "Text", "Tags");
-        want.setId(id);
-        final Activity have = activityRepository.findOne(id);
-
         Assert.assertEquals(1, activityRepository.count());
-        Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Title", activity.getTitle());
+            Assert.assertEquals("Text", activity.getText());
+            String[] want = {"Tags"};
+            Assert.assertArrayEquals(want, activity.getTags());
+        }
     }
 
     @Test
@@ -324,12 +326,13 @@ public class ActivityControllerTest {
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
-        final Activity want = new Activity(userID, "Title", "Text", "Tags");
-        want.setId(id);
-        final Activity have = activityRepository.findOne(id);
-
         Assert.assertEquals(1, activityRepository.count());
-        Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Title", activity.getTitle());
+            Assert.assertEquals("Text", activity.getText());
+            String[] want = {"Tags"};
+            Assert.assertArrayEquals(want, activity.getTags());
+        }
     }
 
     @Test
@@ -348,12 +351,13 @@ public class ActivityControllerTest {
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
-        final Activity want = new Activity(userID, "Title", "Text", "Tags");
-        want.setId(id);
-        final Activity have = activityRepository.findOne(id);
-
         Assert.assertEquals(1, activityRepository.count());
-        Assert.assertEquals(want, have);
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Title", activity.getTitle());
+            Assert.assertEquals("Text", activity.getText());
+            String[] want = {"Tags"};
+            Assert.assertArrayEquals(want, activity.getTags());
+        }
 
         // delete unauthorized user
         userRepository.delete(user.getId());

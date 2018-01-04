@@ -10,7 +10,4 @@ public class UserNotValidatedException extends LoginException {
         super();
     }
 
-    public UserNotValidatedException(String message) {
-        super(message);
-    }
 }

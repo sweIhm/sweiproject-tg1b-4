@@ -7,11 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class InvalidUserException extends AuthException {
 
     public InvalidUserException() {
-
-    }
-
-    public InvalidUserException(String message) {
-        super(message);
+        super();
     }
 
 }

@@ -10,7 +10,4 @@ public class UsernameAlreadyTakenException extends RegistrationException {
         super();
     }
 
-    public UsernameAlreadyTakenException(String message) {
-        super(message);
-    }
 }

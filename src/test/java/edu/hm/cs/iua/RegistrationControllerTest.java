@@ -14,8 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,17 +35,6 @@ public class RegistrationControllerTest {
     public void clearRepository() {
         userRepository.deleteAll();
         tokenRepository.deleteAll();
-    }
-
-    @Test
-    public void registerUserInvalidEmailTest() throws Exception {
-        mockMvc.perform(post("/register")
-                .content("{\"name\":\"TestUser\",\"email\":\"invalid@test.edu\",\"password\":\"test\"}")
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest());
-
-        Assert.assertEquals(0, userRepository.count());
-        Assert.assertEquals(0, tokenRepository.count());
     }
 
     @Test
@@ -83,6 +74,28 @@ public class RegistrationControllerTest {
     public void registerUserInvalidEmailTest4() throws Exception {
         mockMvc.perform(post("/register")
                 .content("{\"name\":\"TestUser\",\"email\":\"invalid@invalid@hm.edu\",\"password\":\"test\"}")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, userRepository.count());
+        Assert.assertEquals(0, tokenRepository.count());
+    }
+
+    @Test
+    public void registerUserInvalidEmailTest5() throws Exception {
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"TestUser\",\"email\":\"invalid@\",\"password\":\"test\"}")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, userRepository.count());
+        Assert.assertEquals(0, tokenRepository.count());
+    }
+
+    @Test
+    public void registerUserInvalidEmailTest6() throws Exception {
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"TestUser\",\"email\":\"invalid@test.edu\",\"password\":\"test\"}")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest());
 
@@ -198,6 +211,66 @@ public class RegistrationControllerTest {
             Assert.assertEquals(false, user.isValidated());
         }
         Assert.assertEquals(0, tokenRepository.count());
+    }
+
+    @Test
+    public void activateUserTest() throws Exception {
+        final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
+
+        mockMvc.perform(get("/register")
+                    .param("userId", userID.toString())
+                    .param("code", "CODE"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("activationSuccessful"));
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@hm.edu", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals(null, user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+        }
+    }
+
+    @Test
+    public void activateUserNotFoundTest() throws Exception {
+        final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
+
+        mockMvc.perform(get("/register")
+                .param("userId", "9999")
+                .param("code", "CODE"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("activationUserNotFound"));
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@hm.edu", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(false, user.isValidated());
+        }
+    }
+
+    @Test
+    public void activateUserInvalidCodeTest() throws Exception {
+        final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
+
+        mockMvc.perform(get("/register")
+                .param("userId", userID.toString())
+                .param("code", "INVALID"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("activationInvalidCode"));
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@hm.edu", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(false, user.isValidated());
+        }
     }
 
 }

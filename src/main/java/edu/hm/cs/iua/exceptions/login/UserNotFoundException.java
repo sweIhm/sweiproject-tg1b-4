@@ -10,7 +10,4 @@ public class UserNotFoundException extends LoginException {
         super();
     }
 
-    public UserNotFoundException(String message) {
-        super(message);
-    }
 }

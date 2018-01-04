@@ -10,7 +10,4 @@ public class InvalidPasswordException extends LoginException {
         super();
     }
 
-    public InvalidPasswordException(String message) {
-        super(message);
-    }
 }

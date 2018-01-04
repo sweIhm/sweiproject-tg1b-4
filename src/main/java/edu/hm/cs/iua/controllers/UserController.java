@@ -31,7 +31,7 @@ public class UserController {
     public UserProfile find(@PathVariable Long id) throws UserNotFoundException {
         final IUAUser user = userRepository.findOne(id);
         if (user == null || !user.isValidated())
-            throw new UserNotFoundException("User not found.");
+            throw new UserNotFoundException();
         return user.getProfile();
     }
 

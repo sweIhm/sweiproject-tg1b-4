@@ -8,7 +8,4 @@ public abstract class AuthException extends IUAException {
         super();
     }
 
-    public AuthException(String message) {
-        super(message);
-    }
 }

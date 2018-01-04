@@ -85,6 +85,21 @@ public class UserControllerTest {
     }
 
     @Test
+    public void getUserNotValidatedTest() throws Exception {
+        // set test user to unvalidated
+        final IUAUser user = userRepository.findOne(userID);
+        user.setValidated(false);
+        userRepository.save(user);
+
+        mockMvc.perform(get("/user/" + userID + 1))
+                .andExpect(status().isBadRequest());
+
+        // set test user to validated
+        user.setValidated(true);
+        userRepository.save(user);
+    }
+
+    @Test
     public void getAllUsersTest() throws Exception {
         mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())

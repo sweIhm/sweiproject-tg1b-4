@@ -32,12 +32,12 @@ public class LoginController {
                 if (!user.isValidated())
                     throw new UserNotValidatedException();
                 if (!user.getPassword().equals(password))
-                    throw new InvalidPasswordException("Password is incorrect.");
+                    throw new InvalidPasswordException();
                 if (tokenRepository.exists(user.getId()))
                     return tokenRepository.findOne(user.getId());
                 return tokenRepository.save(new Token(user.getId()));
             }
-        throw new UserNotFoundException("No user with the specified email address could be found.");
+        throw new UserNotFoundException();
     }
 
 }

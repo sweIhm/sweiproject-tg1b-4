@@ -10,7 +10,4 @@ public class InvalidTokenException extends AuthException {
         super();
     }
 
-    public InvalidTokenException(String message) {
-        super(message);
-    }
 }

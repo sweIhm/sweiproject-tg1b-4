@@ -10,8 +10,4 @@ public class ActivityNotFoundException extends ActivityException {
         super();
     }
 
-    public ActivityNotFoundException(String message) {
-        super(message);
-    }
-
 }

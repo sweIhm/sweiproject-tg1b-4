@@ -13,4 +13,5 @@ public class InvalidDataException extends RegistrationException {
     public InvalidDataException(String message) {
         super(message);
     }
+
 }

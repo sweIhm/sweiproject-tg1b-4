@@ -8,7 +8,4 @@ public abstract class LoginException extends IUAException {
         super();
     }
 
-    public LoginException(String message) {
-        super(message);
-    }
 }

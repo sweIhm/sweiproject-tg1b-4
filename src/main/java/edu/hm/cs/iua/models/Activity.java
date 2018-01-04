@@ -69,25 +69,6 @@ public class Activity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Activity activity = (Activity) o;
-
-        return (id != null ? id.equals(activity.id) : activity.id == null)
-                && (author != null ? author.equals(activity.author) : activity.author == null)
-                && (text != null ? text.equals(activity.text) : activity.text == null)
-                && (tags != null ? Arrays.equals(tags, activity.tags) : activity.tags == null)
-                && (title != null ? title.equals(activity.title) : activity.title == null);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
-        result = 31 * result + (tags != null ? Arrays.hashCode(tags) : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        return result;
+        throw new RuntimeException("NOPE");
     }
 }
