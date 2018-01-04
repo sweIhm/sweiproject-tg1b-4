@@ -31,7 +31,7 @@ import java.util.List;
 @RequestMapping("/register")
 public class RegistrationController {
 
-    private static final String CONFIRMATION_EMAIL = "/templates/confirmationEmail.html";
+    private static String CONFIRMATION_EMAIL = "/templates/confirmationEmail.html";
     private static final TokenGenerator generator = new TokenGenerator();
     private static final List<String> validDomains = new LinkedList<>();
     static {

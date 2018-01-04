@@ -324,15 +324,11 @@ public class RegistrationControllerTest {
     @Test
     public void registerUserFallBackMail() throws Exception {
         // Let's do again something evil, so we can test the fallback email send successfully
-        final RegistrationController controller = context.getBean(RegistrationController.class);
-        final Field field = controller.getClass().getDeclaredField("CONFIRMATION_EMAIL");
-        final Field modifiers = Field.class.getDeclaredField("modifiers");
-        modifiers.setAccessible(true);
+        final Field field = RegistrationController.class.getDeclaredField("CONFIRMATION_EMAIL");
         field.setAccessible(true);
-        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         // store the old value, because we will need it later
-        final Object oldValue = field.get(controller);
-        field.set(controller, "");
+        final Object oldValue = field.get(RegistrationController.class);
+        field.set(null, "");
 
         // now lets do the testing
         mockMvc.perform(post("/register")
@@ -350,9 +346,7 @@ public class RegistrationControllerTest {
         Assert.assertEquals(0, tokenRepository.count());
 
         // Finally we make the evil shit undone again
-        field.set(controller, oldValue);
-        modifiers.setInt(field, field.getModifiers() | Modifier.FINAL);
-        modifiers.setAccessible(false);
+        field.set(RegistrationController.class, oldValue);
         field.setAccessible(false);
     }
 
