@@ -37,22 +37,26 @@ public class LoginControllerTest {
 
     @Before
     public void setupRepository() {
+        // reset Repositories
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
         // add test user
-        final IUAUser user = new IUAUser("TestUser", "test@test.test", "test", "");
+        final IUAUser user = new IUAUser("TestUser", "test@test.test", "test", "CODE");
         user.setValidated(true);
         userID = userRepository.save(user).getId();
     }
 
     @After
-    public void clearRepository() {
+    public void clearRepositories() {
         // check that user repository didn't change
-        final IUAUser wantUser = new IUAUser("TestUser", "test@test.test", "test", "");
-        wantUser.setValidated(true);
         Assert.assertEquals(1, userRepository.count());
-        for (IUAUser haveUser: userRepository.findAll()) {
-            userID = haveUser.getId();
-            wantUser.setId(userID);
-            Assert.assertEquals(wantUser, haveUser);
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals(userID, user.getId());
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@test.test", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
         }
         // reset Repositories
         userRepository.deleteAll();
@@ -89,8 +93,10 @@ public class LoginControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json("{\"id\":" + userID + ",\"key\":\"TOKEN\"}"));
         Assert.assertEquals(1, tokenRepository.count());
-        for (Token token: tokenRepository.findAll())
-            Assert.assertEquals(new Token(userID, "TOKEN"), token);
+        for (Token token: tokenRepository.findAll()) {
+            Assert.assertEquals(userID, token.getId());
+            Assert.assertEquals("TOKEN", token.getKey());
+        }
     }
 
     @Test

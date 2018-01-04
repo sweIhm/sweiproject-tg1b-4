@@ -62,7 +62,7 @@ public class RegistrationController {
             throw new InvalidDataException("Name invalid.");
         if (input.getEmail() == null || !isValidEmail(input.getEmail()))
             throw new InvalidDataException("Email invalid.");
-        if (input.getPassword() == null)
+        if (input.getPassword() == null || input.getPassword().trim().isEmpty())
             throw new InvalidDataException("Password invalid.");
 
         for (IUAUser user: userRepository.findAll()) {

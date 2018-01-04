@@ -4,7 +4,10 @@ import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.models.Token;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
 import edu.hm.cs.iua.repositories.TokenRepository;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class UserControllerTest {
 
-    private static final Long USER_ID = (long)1;
-    private static final Token TOKEN = new Token(USER_ID, "TEST_TOKEN");
-    private static final String PARAM_STRING = "?user=" + USER_ID + "&token=" + TOKEN.getKey();
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -33,39 +32,63 @@ public class UserControllerTest {
     @Autowired
     private TokenRepository tokenRepository;
 
+    // test vars
+    private Long userID;
+    private String token;
+
     @Before
-    public void setTestUser() {
-        if (!userRepository.exists(USER_ID)) {
-            final IUAUser user = new IUAUser("Testuser", "test@test.test", "test", "CONFIRMATION_CODE");
-            user.setValidated(true);
-            userRepository.save(user);
+    public void setupRepositories() {
+        // reset Repositories
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
+        // add test user
+        final IUAUser user = new IUAUser("TestUser", "test@test.test", "test", "CODE");
+        user.setValidated(true);
+        userID = userRepository.save(user).getId();
+        // add test token
+        token = "TOKEN";
+        tokenRepository.save(new Token(userID, token));
+    }
+
+    @After
+    public void clearRepositories() {
+        // check that user repository didn't change
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals(userID, user.getId());
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@test.test", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
         }
-        if (!tokenRepository.exists(USER_ID))
-            tokenRepository.save(TOKEN);
+        // check that token repository didn't change
+        Assert.assertEquals(1, tokenRepository.count());
+        for (Token token: tokenRepository.findAll())
+            Assert.assertEquals("TOKEN", token.getKey());
+        // reset Repositories
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
     }
 
     @Test
-    public void checkId() throws Exception {
-        long userId = userRepository.find("Testuser").getId();
-        mockMvc.perform(get("/user/" + userId))
+    public void getUserTest() throws Exception {
+        mockMvc.perform(get("/user/" + userID))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"name\":\"Testuser\"}"));
-
-        userRepository.deleteAll();
-        tokenRepository.deleteAll();
+                .andExpect(content().string("{\"name\":\"TestUser\"}"));
     }
 
     @Test
-    public void checkIdUserNotFound() throws Exception {
-        final IUAUser wrongUser = new IUAUser("WrongUser", "information.iua@hm.edu", "test", "");
-        wrongUser.setValidated(false);
-        userRepository.save(wrongUser);
-
-        long userId = userRepository.find("WrongUser").getId();
-        mockMvc.perform(get("/user/" + userId))
+    public void getUserNotFoundTest() throws Exception {
+        mockMvc.perform(get("/user/" + userID + 1))
                 .andExpect(status().isBadRequest());
-
-        userRepository.deleteAll();
-        tokenRepository.deleteAll();
     }
+
+    @Test
+    public void getAllUsersTest() throws Exception {
+        mockMvc.perform(get("/user"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"name\":\"TestUser\"}]"));
+    }
+
 }

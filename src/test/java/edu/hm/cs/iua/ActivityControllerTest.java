@@ -47,8 +47,11 @@ public class ActivityControllerTest {
 
     @Before
     public void setupRepositories() {
+        // reset Repositories
+        userRepository.deleteAll();
+        tokenRepository.deleteAll();
         // add test user
-        final IUAUser user = new IUAUser("TestUser", "test@test.test", "test", "");
+        final IUAUser user = new IUAUser("TestUser", "test@test.test", "test", "CODE");
         user.setValidated(true);
         userID = userRepository.save(user).getId();
         // add test token
@@ -59,19 +62,19 @@ public class ActivityControllerTest {
     @After
     public void clearRepositories() {
         // check that user repository didn't change
-        final IUAUser wantUser = new IUAUser("TestUser", "test@test.test", "test", "");
-        wantUser.setValidated(true);
         Assert.assertEquals(1, userRepository.count());
-        for (IUAUser haveUser: userRepository.findAll()) {
-            userID = haveUser.getId();
-            wantUser.setId(userID);
-            Assert.assertEquals(wantUser, haveUser);
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals(userID, user.getId());
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@test.test", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
         }
         // check that token repository didn't change
-        final Token wantToken = new Token(userID, "TOKEN");
         Assert.assertEquals(1, tokenRepository.count());
-        for (Token haveToken: tokenRepository.findAll())
-            Assert.assertEquals(wantToken, haveToken);
+        for (Token token: tokenRepository.findAll())
+            Assert.assertEquals("TOKEN", token.getKey());
         // reset Repositories
         activityRepository.deleteAll();
         userRepository.deleteAll();
@@ -327,6 +330,34 @@ public class ActivityControllerTest {
 
         Assert.assertEquals(1, activityRepository.count());
         Assert.assertEquals(want, have);
+    }
+
+    @Test
+    public void updateTestUnauthorizedUser() throws Exception {
+        // create unauthorized user
+        final IUAUser user = userRepository.save(new IUAUser("Name", "mail@mail.mail", "test", ""));
+        tokenRepository.save(new Token(user.getId(), "TEST_TOKEN"));
+        // create activity with authorized user
+        final Long id = activityRepository.save(new Activity(userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(
+                put("/activity/" + id)
+                        .param("user", user.getId().toString())
+                        .param("token", "TEST_TOKEN")
+                        .content("{\"title\":\"Test\",\"text\":\"test\",\"tags\":[\"tag\"]}")
+                        .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
+
+        final Activity want = new Activity(userID, "Title", "Text", "Tags");
+        want.setId(id);
+        final Activity have = activityRepository.findOne(id);
+
+        Assert.assertEquals(1, activityRepository.count());
+        Assert.assertEquals(want, have);
+
+        // delete unauthorized user
+        userRepository.delete(user.getId());
+        tokenRepository.delete(user.getId());
     }
 
 }

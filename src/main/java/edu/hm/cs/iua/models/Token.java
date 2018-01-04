@@ -41,19 +41,4 @@ public class Token {
         this.key = token;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Token token1 = (Token) o;
-
-        return key.equals(token1.key);
-    }
-
-    @Override
-    public int hashCode() {
-        return key.hashCode();
-    }
-
 }
