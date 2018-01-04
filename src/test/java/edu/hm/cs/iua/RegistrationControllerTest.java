@@ -224,6 +224,19 @@ public class RegistrationControllerTest {
     }
 
     @Test
+    public void registerUserWithExistingUserTest() throws Exception {
+        userRepository.save(new IUAUser("Tester", "tester@hm.edu", "test", "CODE"));
+
+        mockMvc.perform(post("/register")
+                .content("{\"name\":\"TestUser\",\"email\":\"test@hm.edu\",\"password\":\"test\"}")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+
+        Assert.assertEquals(2, userRepository.count());
+        Assert.assertEquals(0, tokenRepository.count());
+    }
+
+    @Test
     public void activateUserTest() throws Exception {
         final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
 

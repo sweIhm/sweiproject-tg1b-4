@@ -12,7 +12,6 @@ import edu.hm.cs.iua.utils.EmailClient;
 import edu.hm.cs.iua.utils.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +31,7 @@ import java.util.List;
 @RequestMapping("/register")
 public class RegistrationController {
 
+    private static final String CONFIRMATION_EMAIL = "/templates/confirmationEmail.html";
     private static final TokenGenerator generator = new TokenGenerator();
     private static final List<String> validDomains = new LinkedList<>();
     static {
@@ -44,10 +44,6 @@ public class RegistrationController {
     @Autowired
     private TokenRepository tokenRepository;
 
-    @Value("${email.name}")
-    private String emailUserName;
-    @Value("${email.password}")
-    private String emailPassword;
     @Value("${email.server}")
     private String emailServer;
     @Value("${email.port}")
@@ -101,14 +97,11 @@ public class RegistrationController {
     private void sendAuthorisationCode(String email, Long userId, String code)
             throws MessagingException {
 
-        if (System.getenv("EMAIL_USERNAME") != null)
-            emailUserName = System.getenv("EMAIL_USERNAME");
-        if (System.getenv("EMAIL_PASSWORD") != null)
-            emailPassword = System.getenv("EMAIL_PASSWORD");
-
+        final String emailUserName = System.getenv("EMAIL_USERNAME");
+        final String emailPassword = System.getenv("EMAIL_PASSWORD");
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
         final String link = "http://" + hostAddress + "/register?userId=" + userId + "&code=" + code;
-        final InputStream resource = this.getClass().getResourceAsStream("/templates/confirmationEmail.html");
+        final InputStream resource = this.getClass().getResourceAsStream(CONFIRMATION_EMAIL);
         final String content;
 
         if (resource != null) {
