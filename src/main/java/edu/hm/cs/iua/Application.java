@@ -15,9 +15,7 @@ public class Application {
 
     @Bean
     CommandLineRunner init(StorageService storageService) {
-        return (args) -> {
-            storageService.init();
-        };
+        return args -> storageService.init();
     }
 
 }

@@ -1,18 +1,20 @@
 package edu.hm.cs.iua.controllers;
 
+import edu.hm.cs.iua.exceptions.auth.InvalidTokenException;
+import edu.hm.cs.iua.exceptions.auth.InvalidUserException;
 import edu.hm.cs.iua.exceptions.login.UserNotFoundException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
 import edu.hm.cs.iua.exceptions.storage.StorageFileNotFoundException;
 import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.models.UserProfile;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
+import edu.hm.cs.iua.repositories.TokenRepository;
 import edu.hm.cs.iua.utils.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,8 @@ public class UserController {
 
     @Autowired
     private IUAUserRepository userRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     @GetMapping @ResponseBody
     public List<UserProfile> listAll() {
@@ -56,25 +60,22 @@ public class UserController {
     public ResponseEntity<Resource> getProfilePicture(@PathVariable Long id)
             throws StorageFileNotFoundException {
 
-        final Resource file = storageService.loadAsResource(id.toString());
+        final Resource file = storageService.loadAsResource("user_" + id.toString());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
 
-    @PostMapping("{id}/picture")
-    public void uploadProfilePicture(@PathVariable Long id,
+    @PostMapping("{id}/picture") @ResponseBody
+    public ResponseEntity<Resource> uploadProfilePicture(@PathVariable Long id, @RequestParam String token,
                                        @RequestParam("file") MultipartFile file,
                                        RedirectAttributes redirectAttributes)
-            throws StorageException {
+            throws StorageException, InvalidTokenException, InvalidUserException {
 
+        tokenRepository.verify(id, token);
         storageService.store(file, "user_" + id.toString());
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
-    }
-
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return ResponseEntity.notFound().build();
+        return getProfilePicture(id);
     }
 
 }
