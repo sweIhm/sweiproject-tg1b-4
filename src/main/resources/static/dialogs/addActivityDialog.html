@@ -47,11 +47,16 @@
                 <md-checkbox ng-model="activity.allowComments" aria-label="Add Activity Checkbox">
                     Disable comments
                 </md-checkbox>
-                <div flow-init="{target: '/upload'}" flow-files-submitted="$flow.upload()"
-                     flow-file-success="$file.msg = $message" layout-gt-xs="row">
-                    <md-button class="md-raised md-accent" type="file" flow-btn>Upload image</md-button>
-                    <p ng-repeat="file in $flow.files">{{$index+1}} {{file.name}} {{file.msg}}</p>
-                </div>
+                <md-input-container>
+                    <input type="file" file-model="activity_picture" aria-label="activity_picture_upload">
+                    <md-button class="md-raised md-accent" ng-click="upload_pic()">
+                        Add picture
+                    </md-button>
+                    <md-progress-circular ng-hide="upload_in_progress" ng-disabled="upload_in_progress"
+                                          class="md-hue-2" md-diameter="20px">
+                    </md-progress-circular>
+                    <img aria-label="Picture">
+                </md-input-container>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">

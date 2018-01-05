@@ -1,5 +1,5 @@
 <md-dialog aria-label="Edit Profile" style="min-width: 35%;">
-    <form id="edit_profile_form" ng-submit="edit(profile)">
+    <form id="edit_profile_form" ng-submit="edit()">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Edit profile</h2>
@@ -13,12 +13,15 @@
             <div class="md-dialog-content" layout="column">
                 <img src="../assets/user_icon.png" style="border-radius: 75px; height: 150px; width: 150px; display: block;
                 margin-left: auto; margin-right: auto;"/>
-                    <md-input-container>
-                        <input type="file" file-model="uploadedFile" aria-label="profile_pic_upload">
-                    </md-input-container>
+                <md-input-container>
+                    <input type="file" file-model="profile_picture_upload" aria-label="profile_pic_upload">
                     <md-button class="md-raised md-accent" ng-click="edit_pic()">
                         Edit
                     </md-button>
+                    <md-progress-circular ng-hide="upload_in_progress" ng-disabled="upload_in_progress"
+                                          class="md-hue-2" md-diameter="20px">
+                    </md-progress-circular>
+                </md-input-container>
                 <md-input-container>
                     <input ng-model="profile.name" name="profile_name" type="text" placeholder="Name:" md-autofocus tabindex="1" required
                            ng-trim="false" pattern="^[A-Za-z0-9_]+" ng-pattern=/^[A-Za-z0-9_]+$/>
