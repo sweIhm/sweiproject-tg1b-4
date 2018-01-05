@@ -50,6 +50,22 @@ app.filter('searchFieldUsers', function() {
     };
 });
 
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
 function loadActivities ($scope, $http){
     $http({
         method : 'GET',
@@ -676,6 +692,21 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         };
         $scope.edit = function(current_user) {
             //...
+        };
+        $scope.edit_pic = function() {
+            var url = "/user/" + current_user.id + "/picture?token=" + current_user.key;
+
+            var data = new FormData();
+            data.append('file', $scope.uploadedFile);
+
+            var config = {
+                transformRequest: angular.identity,
+                transformResponse: angular.identity,
+                headers : {
+                    'Content-Type': undefined
+                }};
+
+            $http.post(url, data, config);
         };
     }
 });

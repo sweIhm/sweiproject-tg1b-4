@@ -13,9 +13,12 @@
             <div class="md-dialog-content" layout="column">
                 <img src="../assets/user_icon.png" style="border-radius: 75px; height: 150px; width: 150px; display: block;
                 margin-left: auto; margin-right: auto;"/>
-                <md-button class="md-raised md-accent">
-                    Edit
-                </md-button>
+                    <md-input-container>
+                        <input type="file" file-model="uploadedFile" aria-label="profile_pic_upload">
+                    </md-input-container>
+                    <md-button class="md-raised md-accent" ng-click="edit_pic()">
+                        Edit
+                    </md-button>
                 <md-input-container>
                     <input ng-model="profile.name" name="profile_name" type="text" placeholder="Name:" md-autofocus tabindex="1" required
                            ng-trim="false" pattern="^[A-Za-z0-9_]+" ng-pattern=/^[A-Za-z0-9_]+$/>
