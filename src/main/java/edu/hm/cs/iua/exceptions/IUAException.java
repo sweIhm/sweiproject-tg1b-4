@@ -10,4 +10,8 @@ public abstract class IUAException extends Exception {
         super(message);
     }
 
+    public IUAException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }
