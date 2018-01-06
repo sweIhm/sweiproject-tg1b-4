@@ -3,6 +3,7 @@ package edu.hm.cs.iua.controllers;
 import edu.hm.cs.iua.exceptions.auth.InvalidTokenException;
 import edu.hm.cs.iua.exceptions.auth.InvalidUserException;
 import edu.hm.cs.iua.exceptions.login.UserNotFoundException;
+import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
 import edu.hm.cs.iua.exceptions.storage.StorageFileNotFoundException;
 import edu.hm.cs.iua.models.IUAUser;
@@ -13,6 +14,7 @@ import edu.hm.cs.iua.utils.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,21 +62,28 @@ public class UserController {
     public ResponseEntity<Resource> getProfilePicture(@PathVariable Long id)
             throws StorageFileNotFoundException {
 
-        final Resource file = storageService.loadAsResource("user_" + id.toString());
+        final Resource file = storageService.loadAsResource("user_" + id.toString() + ".png");
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .contentType(MediaType.IMAGE_PNG)
                 .body(file);
     }
 
     @PostMapping("{id}/picture") @ResponseBody
     public ResponseEntity<Resource> uploadProfilePicture(@PathVariable Long id, @RequestParam String token,
-                                       @RequestParam("file") MultipartFile file,
-                                       RedirectAttributes redirectAttributes)
-            throws StorageException, InvalidTokenException, InvalidUserException {
+                                       @RequestParam("file") MultipartFile file)
+            throws StorageException, InvalidTokenException, InvalidUserException, InvalidDataException {
 
         tokenRepository.verify(id, token);
-        storageService.store(file, "user_" + id.toString());
-        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        final int fileTypeStartIndex = file.getOriginalFilename().lastIndexOf(".");
+        if (fileTypeStartIndex < 0)
+            throw new InvalidDataException("No file type specified in: " + file.getOriginalFilename());
+        final String fileType = file.getOriginalFilename().substring(fileTypeStartIndex).toUpperCase();
+        if (!fileType.equals(".PNG"))
+            throw new InvalidDataException("Invalid file type: " + fileType);
+
+        storageService.store(file, "user_" + id.toString() + ".png");
         return getProfilePicture(id);
     }
 

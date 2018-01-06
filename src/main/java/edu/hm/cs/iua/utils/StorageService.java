@@ -33,12 +33,10 @@ public class StorageService {
 
     public void store(MultipartFile file, String filename) throws StorageException {
         try {
-            if (file.isEmpty()) {
+            if (file.isEmpty())
                 throw new StorageFileEmptyException("Failed to store empty file " + filename);
-            }
-            if (filename.contains("..")) {
+            if (filename.contains(".."))
                 throw new StorageAccessException("Cannot store file with relative path outside current directory " + filename);
-            }
             Files.copy(file.getInputStream(), rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new StorageOperationException(" Failed to store file " + filename, e);
