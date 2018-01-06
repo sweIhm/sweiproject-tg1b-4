@@ -50,6 +50,22 @@ app.filter('searchFieldUsers', function() {
     };
 });
 
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
 function loadActivities ($scope, $http){
     $http({
         method : 'GET',
@@ -443,10 +459,37 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $scope.current_user = current_user;
         $scope.activity = {title: "", text: "", tags: []};
         $scope.keys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.SPACE];
+        /*$scope.upload_in_progress = true;*/
 
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
+       /* $scope.upload_pic = function() {
+            if ($scope.activity_picture_upload === undefined) {
+                return;
+            }
+            var url = "/user/" + current_user.id + "/picture?token=" + current_user.key;
+            var data = new FormData();
+            data.append('file', $scope.profile_picture_upload);
+            var config = {
+                transformRequest: angular.identity,
+                transformResponse: angular.identity,
+                headers : {
+                    'Content-Type': undefined
+                }};
+            $scope.upload_in_progress = false;
+            $http.post(url, data, config).then(function (response) {
+                $scope.profile.picture = response.data;
+            }).then(function () {
+                $scope.upload_in_progress = true;
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Profile picture changed.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
+            });
+        };*/
         $scope.add = function(activity) {
             var postRequest = {
                 method : 'POST',
@@ -671,11 +714,38 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     function editProfileDialogCtrl($scope, $mdDialog, current_user) {
         $scope.profile = current_user;
+        $scope.upload_in_progress = true;
         $scope.cancel = function () {
             $mdDialog.cancel();
         };
-        $scope.edit = function(current_user) {
+        $scope.edit = function() {
             //...
+        };
+        $scope.edit_pic = function() {
+            if ($scope.profile_picture_upload === undefined) {
+                return;
+            }
+            var url = "/user/" + current_user.id + "/picture?token=" + current_user.key;
+            var data = new FormData();
+            data.append('file', $scope.profile_picture_upload);
+            var config = {
+                transformRequest: angular.identity,
+                transformResponse: angular.identity,
+                headers : {
+                    'Content-Type': undefined
+                }};
+            $scope.upload_in_progress = false;
+            $http.post(url, data, config).then(function (response) {
+                $scope.profile.picture = response.data;
+            }).then(function () {
+                $scope.upload_in_progress = true;
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Profile picture changed.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
+            });
         };
     }
 });
