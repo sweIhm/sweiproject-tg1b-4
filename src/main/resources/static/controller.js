@@ -77,6 +77,7 @@ function loadActivities ($scope, $http){
         angular.forEach($scope.activities, function(value, key) {
             getUserData($scope, $http, value.author).then(function(data){
                 value.authorName = data.name;
+                value.authorPictureURL = window.location.href + 'user/' + value.author + '/picture';
             });
         })
     });
@@ -102,6 +103,9 @@ function getUsers ($scope, $http) {
             heroku_address + '/user')
     }).then(function (response) {
         $scope.users = response.data;
+        angular.forEach($scope.users, function(value, key) {
+            value.picture_url = window.location.href + 'user/' + value.id + '/picture';
+        })
     });
 }
 
@@ -149,7 +153,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             id: parseInt(userid),
             key: usertoken,
             name: username,
-            email: useremail
+            email: useremail,
+            picture_url: window.location.href + "user/" + userid + "/picture"
         };
         $scope.loginButtonHide = true;
     } else {
@@ -241,6 +246,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $scope.profile = {name: "ERROR", userID: userID};
         getUserData($scope, $http, userID).then(function(data){
             $scope.profile.name = data.name;
+            $scope.profile.picture_url = window.location.href + 'user/' + userID + '/picture';
         });
         if ($scope.current_user !== null) {
             $scope.isSignedInUser = userID === $scope.current_user.id;
@@ -387,6 +393,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     $scope.current_user.name = data.name;
                     setCookie("username", $scope.current_user.name, 30);
                 });
+                $scope.current_user.picture_url = window.location.href + "user/" + $scope.current_user.id + "/picture";
                 $scope.loginButtonHide = true;
             }
         });
@@ -747,16 +754,19 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     'Content-Type': undefined
                 }};
             $scope.upload_in_progress = false;
-            $http.post(url, data, config).then(function (response) {
-                /*$scope.profile.picture = response;*/
-            }).then(function () {
+            $http.post(url, data, config).then(function () {
                 $scope.upload_in_progress = true;
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Profile picture changed.')
+                        .textContent('Profile picture changed. Refresh the page to see the change.')
                         .position('bottom right')
-                        .hideDelay(3000)
-                );
+                        .action('Refresh')
+                        .hideDelay(0)
+                ).then(function (response){
+                    if (response === 'ok') {
+                        location.reload();
+                    }
+                });
             });
         };
     }

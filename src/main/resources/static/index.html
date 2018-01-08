@@ -86,7 +86,7 @@
             <h1 hide-xs ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.name}}</h1>
             <md-menu>
                 <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
-                           background-image: url(assets/user_icon.png); background-size: cover;"
+                           background: gray center; background-size: cover;" ng-style="{'background-image':'url('+current_user.picture_url+')'}"
                            ng-click="openUserMenu($mdMenu, $event)"
                            ng-show="loginButtonHide"></md-button>
                 <md-menu-content width="3">
@@ -122,7 +122,6 @@
                 </md-button>
                 <p>
                     E-Mail: information.iua@gmail.com
-                    Password: test
                 </p>
                 <md-button hide-gt-xs class="md-raised md-accent" ng-hide="loginButtonHide"
                            ng-click="open_registration_dialog($event)">Sign up
@@ -168,8 +167,10 @@
             </md-toolbar>
             <md-content layout-padding layout="column">
                 <span style="text-align: center;">This is a user profile</span>
-                <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
-                margin-left: auto; margin-right: auto;"/>
+                <div style="height: 200px; width: 200px; display: block; margin-left: auto; margin-right: auto;
+                background: gray center; background-size: cover; border-radius: 100px; padding: 0;"
+                     ng-style="{'background-image':'url('+profile.picture_url+')'}">
+                </div>
                 <span style="text-align: center;">{{profile.name}}</span>
                 <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)"
                            ng-show="loginButtonHide && !isSignedInUser">
@@ -184,7 +185,9 @@
                 <md-subheader class="md-no-sticky">Users</md-subheader>
                 <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
                               ng-click="toggleRightSidebar(user.id)">
-                    <img ng-src="assets/user_icon.png" class="md-avatar" alt="{{user.name}}" />
+                    <div class="md-avatar" style="background: gray center; background-size: cover;"
+                         ng-style="{'background-image':'url('+user.picture_url+')'}">
+                    </div>
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
                         <p>E-Mail...</p>
@@ -198,10 +201,10 @@
                  ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
-                <md-card-avatar>
-                    <div style="padding-top: 6px">
-                        <img class="md-user-avatar" src="assets/user_icon.png"
-                             ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);"/>
+                <md-card-avatar style="padding-top: 6px;">
+                    <div class="md-user-avatar" style=" background: gray center; background-size: cover;
+                         height: inherit; width: inherit;" ng-style="{'background-image':'url('+activity.authorPictureURL+')'}"
+                         ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);">
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
@@ -256,7 +259,9 @@
                 <md-subheader class="md-no-sticky">Users</md-subheader>
                 <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
                               ng-click="toggleRightSidebar(user.id)">
-                    <img ng-src="assets/user_icon.png" class="md-avatar"/>
+                    <div class="md-avatar" style="background: gray center; background-size: cover;"
+                         ng-style="{'background-image':'url('+user.picture_url+')'}">
+                    </div>
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
                         <p>E-Mail...</p>
@@ -271,10 +276,10 @@
                  ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
-                <md-card-avatar>
-                    <div style="padding-top: 6px">
-                        <img class="md-user-avatar" src="assets/user_icon.png"
-                             ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);"/>
+                <md-card-avatar style="padding-top: 6px;">
+                    <div class="md-user-avatar" style=" background: gray center; background-size: cover;
+                         height: inherit; width: inherit;" ng-style="{'background-image':'url('+activity.authorPictureURL+')'}"
+                         ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);">
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
