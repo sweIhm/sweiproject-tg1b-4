@@ -31,11 +31,11 @@ public class UserProfileTest {
         PojoClass activityPojo = PojoClassFactory.getPojoClass(UserProfile.class);
 
         Validator validator = ValidatorBuilder.create()
-                // Lets make sure that we have a getter and a setter for every field defined.
-                .with(new SetterMustExistRule()).with(new GetterMustExistRule())
+                // Lets make sure that we have a getter for every field defined.
+                .with(new GetterMustExistRule())
 
                 // Lets also validate that they are behaving as expected
-                .with(new SetterTester()).with(new GetterTester()).build();
+                .with(new GetterTester()).build();
 
         // Start the Test
         validator.validate(activityPojo);

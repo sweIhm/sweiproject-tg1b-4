@@ -3,18 +3,21 @@ package edu.hm.cs.iua.models;
 
 public class UserProfile {
 
-    private String name;
+    private final Long id;
 
-    public UserProfile(String name) {
+    private final String name;
+
+    public UserProfile(Long id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
 }

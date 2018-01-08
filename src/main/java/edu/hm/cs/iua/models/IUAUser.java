@@ -76,7 +76,7 @@ public class IUAUser {
     }
 
     public UserProfile getProfile() {
-        return new UserProfile(name);
+        return new UserProfile(id, name);
     }
 
 }

@@ -75,7 +75,7 @@ public class UserControllerTest {
     public void getUserTest() throws Exception {
         mockMvc.perform(get("/user/" + userID))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"name\":\"TestUser\"}"));
+                .andExpect(content().string("{\"id\":" + userID + ",\"name\":\"TestUser\"}"));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class UserControllerTest {
     public void getAllUsersTest() throws Exception {
         mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"name\":\"TestUser\"}]"));
+                .andExpect(content().string("[{\"id\":" + userID + ",\"name\":\"TestUser\"}]"));
     }
 
 }

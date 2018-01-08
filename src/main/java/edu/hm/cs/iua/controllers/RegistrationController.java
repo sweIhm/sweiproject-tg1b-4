@@ -86,6 +86,8 @@ public class RegistrationController {
         final IUAUser user = userRepository.findOne(userId);
         if (user == null)
             return "activationUserNotFound";
+        if (user.isValidated())
+            return "activationSuccessful";
         if (user.getConfirmationCode().equals(code)) {
             user.setValidated(true);
             user.setConfirmationCode(null);
