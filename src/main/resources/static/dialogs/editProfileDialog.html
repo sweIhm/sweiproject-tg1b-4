@@ -11,17 +11,19 @@
         </md-toolbar>
         <md-dialog-content style="min-width: 100px">
             <div class="md-dialog-content" layout="column">
-                <img src="../assets/user_icon.png" style="border-radius: 75px; height: 150px; width: 150px; display: block;
-                margin-left: auto; margin-right: auto;"/>
-                <md-input-container>
-                    <input type="file" file-model="profile_picture_upload" aria-label="profile_pic_upload">
+                <div style="height: 150px; width: 150px; display: block; margin-left: auto; margin-right: auto;
+                background: gray center; background-size: cover; border-radius: 75px;"
+                     ng-style="{'background-image':'url('+profile.picture_url+')'}">
+                </div>
+                <div style="display: flow-root;">
+                    <input type="file" file-model="profile_picture_upload" aria-label="profile_pic_upload" accept="image/png">
                     <md-button class="md-raised md-accent" ng-click="edit_pic()">
                         Edit
                     </md-button>
                     <md-progress-circular ng-hide="upload_in_progress" ng-disabled="upload_in_progress"
                                           class="md-hue-2" md-diameter="20px">
                     </md-progress-circular>
-                </md-input-container>
+                </div>
                 <md-input-container>
                     <input ng-model="profile.name" name="profile_name" type="text" placeholder="Name:" md-autofocus tabindex="1" required
                            ng-trim="false" pattern="^[A-Za-z0-9_]+" ng-pattern=/^[A-Za-z0-9_]+$/>

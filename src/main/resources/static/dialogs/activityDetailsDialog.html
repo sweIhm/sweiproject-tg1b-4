@@ -5,7 +5,9 @@
                          ng-click="toggleRightSidebar(activity.author);">
                     <md-card-header style="padding-top: 10px; margin-left: -20px">
                         <md-card-avatar>
-                            <img class="md-user-avatar" src="../assets/user_icon.png"/>
+                            <div class="md-user-avatar" style=" background: gray center; background-size: cover; height: inherit;
+                                 width: inherit;" ng-style="{'background-image':'url('+activity.authorPictureURL+')'}">
+                            </div>
                         </md-card-avatar>
                         <md-card-header-text>
                             <span class="md-title">{{activity.authorName}}</span>
