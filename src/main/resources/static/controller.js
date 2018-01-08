@@ -436,13 +436,12 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         });
     };
 
-    $scope.open_activity_details_dialog = function(activity, current_user, ev) {
+    $scope.open_activity_details_dialog = function(activity, ev) {
         $mdDialog.show({
             controller: activityDetailsDialogCtrl,
             templateUrl: './dialogs/activityDetailsDialog.html',
             locals: {
                 activity: activity,
-                current_user: current_user,
                 toggleUserProfile: function (userID) {
                     $scope.toggleRightSidebar(userID);
                 }
@@ -692,9 +691,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         };
     }
 
-    function activityDetailsDialogCtrl($scope, $mdDialog, activity, current_user, toggleUserProfile) {
+    function activityDetailsDialogCtrl($scope, $mdDialog, activity, toggleUserProfile) {
         $scope.activity = activity;
-        $scope.current_user = current_user;
         $scope.toggleRightSidebar = function () {
             toggleUserProfile(activity.author);
         };
