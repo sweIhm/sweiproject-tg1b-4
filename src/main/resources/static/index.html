@@ -21,7 +21,9 @@
     <!---AngularJS Material script-->
     <script src="bower_components/angular-material/angular-material.min.js"></script>
     <!--Flow.js-->
-    <script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>
+    <!--<script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>-->
+    <!--Chart.js-->
+    <script src="bower_components/chart.js/dist/Chart.bundle.min.js"></script>
     <!--Custom scripts-->
     <script src="controller.js"></script>
 
@@ -137,6 +139,17 @@
                 </md-divider>
                 <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
                     Official posts only
+                </md-switch>
+                <md-divider style="display: flex">
+                    <h3 style="margin-top: 5px; margin-bottom: 5px;">Visualization of activities</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Restore Original Feed">
+                        <md-tooltip md-direction="left">Reset filters</md-tooltip>
+                        <md-icon class="material-icons"> restore </md-icon>
+                    </md-button>
+                </md-divider>
+                <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
+                    Visualization view
                 </md-switch>
                 <md-divider></md-divider>
                 <md-button ng-click="open_support_dialog(current_user, $event)">Support</md-button>

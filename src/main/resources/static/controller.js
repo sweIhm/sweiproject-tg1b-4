@@ -1,4 +1,4 @@
-var app = angular.module('IUA', ['ngMaterial','ngMessages','flow']);
+var app = angular.module('IUA', ['ngMaterial','ngMessages']);
 
 var heroku_address =  'https://iua.herokuapp.com';
 
