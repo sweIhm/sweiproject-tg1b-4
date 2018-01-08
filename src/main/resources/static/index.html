@@ -20,8 +20,6 @@
     <script src="bower_components/angular-messages/angular-messages.min.js"></script>
     <!---AngularJS Material script-->
     <script src="bower_components/angular-material/angular-material.min.js"></script>
-    <!--Flow.js-->
-    <!--<script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>-->
     <!--Chart.js-->
     <script src="bower_components/chart.js/dist/Chart.bundle.min.js"></script>
     <!--Custom scripts-->
@@ -185,7 +183,7 @@
             <md-list class="fixedRows">
                 <md-subheader class="md-no-sticky">Users</md-subheader>
                 <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
-                              ng-click="toggleRightSidebar()">
+                              ng-click="toggleRightSidebar(user.id)">
                     <img ng-src="assets/user_icon.png" class="md-avatar" alt="{{user.name}}" />
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
@@ -257,7 +255,7 @@
             <md-list class="fixedRows">
                 <md-subheader class="md-no-sticky">Users</md-subheader>
                 <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
-                              ng-click="toggleRightSidebar()">
+                              ng-click="toggleRightSidebar(user.id)">
                     <img ng-src="assets/user_icon.png" class="md-avatar"/>
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
