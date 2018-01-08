@@ -21,7 +21,9 @@
     <!---AngularJS Material script-->
     <script src="bower_components/angular-material/angular-material.min.js"></script>
     <!--Flow.js-->
-    <script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>
+    <!--<script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>-->
+    <!--Chart.js-->
+    <script src="bower_components/chart.js/dist/Chart.bundle.min.js"></script>
     <!--Custom scripts-->
     <script src="controller.js"></script>
 
@@ -91,7 +93,7 @@
                            ng-show="loginButtonHide"></md-button>
                 <md-menu-content width="3">
                     <md-menu-item>
-                        <md-button ng-click="toggleRightSidebar()">Profile</md-button>
+                        <md-button ng-click="toggleRightSidebar(current_user.id)">Profile</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_add_activity_dialog(current_user, $event)">Add activity</md-button>
@@ -138,6 +140,17 @@
                 <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
                     Official posts only
                 </md-switch>
+                <md-divider style="display: flex">
+                    <h3 style="margin-top: 5px; margin-bottom: 5px;">Visualization of activities</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Restore Original Feed">
+                        <md-tooltip md-direction="left">Reset filters</md-tooltip>
+                        <md-icon class="material-icons"> restore </md-icon>
+                    </md-button>
+                </md-divider>
+                <md-switch class="md-primary" style="padding-left: 5px; margin-top: 0; margin-bottom: 5px;">
+                    Visualization view
+                </md-switch>
                 <md-divider></md-divider>
                 <md-button ng-click="open_support_dialog(current_user, $event)">Support</md-button>
                 <md-button ng-click="go_to_imprint()">Imprint</md-button>
@@ -148,7 +161,7 @@
                 <div class="md-toolbar-tools">
                     <h1>User profile</h1>
                     <span flex></span>
-                    <md-button class="md-fab md-mini md-accent" aria-label="Edit Profile"
+                    <md-button ng-show="isSignedInUser" class="md-fab md-mini md-accent" aria-label="Edit Profile"
                                ng-click="open_edit_profile_dialog(current_user, $event)">
                         <md-tooltip md-direction="left">Edit</md-tooltip>
                         <md-icon md-font-set="material-icons"> edit </md-icon>
@@ -159,8 +172,9 @@
                 <span style="text-align: center;">This is a user profile</span>
                 <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
                 margin-left: auto; margin-right: auto;"/>
-                <span style="text-align: center;">{{current_user.name}}</span>
-                <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)" ng-show="loginButtonHide">
+                <span style="text-align: center;">{{profile.name}}</span>
+                <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)"
+                           ng-show="loginButtonHide && !isSignedInUser">
                     Send message
                 </md-button>
             </md-content>
@@ -189,7 +203,7 @@
                 <md-card-avatar>
                     <div style="padding-top: 6px">
                         <img class="md-user-avatar" src="assets/user_icon.png"
-                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
+                             ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);"/>
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
@@ -262,7 +276,7 @@
                 <md-card-avatar>
                     <div style="padding-top: 6px">
                         <img class="md-user-avatar" src="assets/user_icon.png"
-                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
+                             ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);"/>
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
