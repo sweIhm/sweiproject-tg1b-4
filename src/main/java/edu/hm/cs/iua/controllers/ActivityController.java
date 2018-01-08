@@ -51,7 +51,7 @@ public class ActivityController {
     @DeleteMapping("{id}")
     public void delete(@RequestParam Long user, @RequestParam String token,
                        @PathVariable Long id)
-            throws InvalidTokenException, InvalidUserException,
+            throws InvalidTokenException,
             ActivityNotFoundException, UnauthorizedException {
 
         tokenRepository.verify(user, token);
@@ -63,7 +63,7 @@ public class ActivityController {
     @PutMapping("{id}")
     public void update(@RequestParam Long user, @RequestParam String token,
                            @PathVariable Long id, @RequestBody Activity input)
-            throws InvalidTokenException, InvalidUserException,
+            throws InvalidTokenException,
             ActivityNotFoundException, UnauthorizedException {
 
         tokenRepository.verify(user, token);
