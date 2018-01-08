@@ -237,7 +237,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         $mdSidenav('left_Sidebar').toggle();
     };
 
-    $scope.toggleRightSidebar = function() {
+    $scope.toggleRightSidebar = function(userID) {
+        $scope.profile = {name: "ERROR", userID: userID};
+        getUserData($scope, $http, userID).then(function(data){
+            $scope.profile.name = data.name;
+        });
+        if ($scope.current_user !== null) {
+            $scope.isSignedInUser = userID === $scope.current_user.id;
+        } else {
+            $scope.isSignedInUser = false;
+        }
         $mdSidenav('right_Sidebar').toggle();
     };
 
@@ -427,12 +436,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         });
     };
 
-    $scope.open_activity_details_dialog = function(activity, ev) {
+    $scope.open_activity_details_dialog = function(activity, current_user, ev) {
         $mdDialog.show({
             controller: activityDetailsDialogCtrl,
             templateUrl: './dialogs/activityDetailsDialog.html',
             locals: {
-                activity: activity
+                activity: activity,
+                current_user: current_user,
+                toggleUserProfile: function (userID) {
+                    $scope.toggleRightSidebar(userID);
+                }
             },
             parent: angular.element(document.body),
             targetEvent: ev,
@@ -679,10 +692,11 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
         };
     }
 
-    function activityDetailsDialogCtrl($scope, $mdDialog, activity) {
+    function activityDetailsDialogCtrl($scope, $mdDialog, activity, current_user, toggleUserProfile) {
         $scope.activity = activity;
+        $scope.current_user = current_user;
         $scope.toggleRightSidebar = function () {
-            $mdSidenav('right_Sidebar').toggle();
+            toggleUserProfile(activity.author);
         };
         $scope.cancel = function() {
             $mdDialog.cancel();
@@ -736,7 +750,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }};
             $scope.upload_in_progress = false;
             $http.post(url, data, config).then(function (response) {
-                $scope.profile.picture = response.data;
+                /*$scope.profile.picture = response;*/
             }).then(function () {
                 $scope.upload_in_progress = true;
                 $mdToast.show(

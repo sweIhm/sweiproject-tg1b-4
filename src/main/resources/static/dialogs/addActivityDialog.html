@@ -11,15 +11,15 @@
         </md-toolbar>
         <md-dialog-content style="min-width: 100px">
             <div class="md-dialog-content" layout="column">
-                <md-input-container id="add_activity_input_container">
+                <md-input-container>
                     <input ng-model="activity.title" type="text" placeholder="Title:" md-autofocus tabindex="1" required
                            md-maxlength="60" maxlength="60">
                 </md-input-container>
-                <md-input-container id="add_activity_input_container">
+                <md-input-container>
                     <textarea ng-model="activity.text" rows="3" max-rows="6" md-no-resize placeholder="Text:" tabindex="2" required
                               md-maxlength="255" maxlength="255"></textarea>
                 </md-input-container>
-                <md-input-container id="add_activity_input_container">
+                <md-input-container>
                     <label>Tags:</label>
                     <md-chips ng-model="activity.tags" md-separator-keys="keys" md-max-chips="5"
                               placeholder="Enter a tag" secondary-placeholder="+Tag">

@@ -91,7 +91,7 @@
                            ng-show="loginButtonHide"></md-button>
                 <md-menu-content width="3">
                     <md-menu-item>
-                        <md-button ng-click="toggleRightSidebar()">Profile</md-button>
+                        <md-button ng-click="toggleRightSidebar(current_user.id)">Profile</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_add_activity_dialog(current_user, $event)">Add activity</md-button>
@@ -148,7 +148,7 @@
                 <div class="md-toolbar-tools">
                     <h1>User profile</h1>
                     <span flex></span>
-                    <md-button class="md-fab md-mini md-accent" aria-label="Edit Profile"
+                    <md-button ng-show="isSignedInUser" class="md-fab md-mini md-accent" aria-label="Edit Profile"
                                ng-click="open_edit_profile_dialog(current_user, $event)">
                         <md-tooltip md-direction="left">Edit</md-tooltip>
                         <md-icon md-font-set="material-icons"> edit </md-icon>
@@ -159,8 +159,9 @@
                 <span style="text-align: center;">This is a user profile</span>
                 <img src="assets/user_icon.png" style="border-radius: 100px; height: 200px; width: 200px; display: block;
                 margin-left: auto; margin-right: auto;"/>
-                <span style="text-align: center;">{{current_user.name}}</span>
-                <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)" ng-show="loginButtonHide">
+                <span style="text-align: center;">{{profile.name}}</span>
+                <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)"
+                           ng-show="loginButtonHide && !isSignedInUser">
                     Send message
                 </md-button>
             </md-content>
@@ -184,12 +185,12 @@
     <div hide-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 64px;">
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px; min-height: 500px;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
-                 ng-click="open_activity_details_dialog(activity, $event)">
+                 ng-click="open_activity_details_dialog(activity, current_user, $event)">
             <md-card-header>
                 <md-card-avatar>
                     <div style="padding-top: 6px">
                         <img class="md-user-avatar" src="assets/user_icon.png"
-                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
+                             ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);"/>
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
@@ -262,7 +263,7 @@
                 <md-card-avatar>
                     <div style="padding-top: 6px">
                         <img class="md-user-avatar" src="assets/user_icon.png"
-                             ng-click="$event.stopPropagation(); toggleRightSidebar();"/>
+                             ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);"/>
                     </div>
                 </md-card-avatar>
                 <md-card-header-text>
