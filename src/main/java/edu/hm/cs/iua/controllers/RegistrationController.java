@@ -75,6 +75,7 @@ public class RegistrationController {
         try {
             sendAuthorisationCode(user.getEmail(), user.getId(), user.getConfirmationCode());
         } catch (MessagingException e) {
+            e.printStackTrace();
             userRepository.delete(user.getId());
             throw new EmailTransmissionFailed();
         }
