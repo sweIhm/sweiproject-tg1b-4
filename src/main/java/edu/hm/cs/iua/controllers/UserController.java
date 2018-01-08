@@ -63,13 +63,7 @@ public class UserController {
             throws StorageFileNotFoundException, StorageOperationException {
 
         final Resource file = storageService.loadAsResource("user_" + id.toString() + ".png");
-        try {
-            response.setContentType(MediaType.IMAGE_PNG_VALUE);
-            response.setContentLengthLong(file.contentLength());
-            StreamUtils.copy(file.getInputStream(), response.getOutputStream());
-        } catch (IOException e) {
-            throw new StorageOperationException("Failed to read file.", e);
-        }
+        storageService.serveFile(response, file, MediaType.IMAGE_PNG_VALUE);
     }
 
     @PostMapping(value = "{id}/picture", produces =  MediaType.IMAGE_PNG_VALUE)
@@ -81,12 +75,7 @@ public class UserController {
             throw new UnauthorizedException();
         tokenRepository.verify(user, token);
 
-        final int fileTypeStartIndex = file.getOriginalFilename().lastIndexOf('.');
-        if (fileTypeStartIndex < 0)
-            throw new InvalidDataException("No file type specified in: " + file.getOriginalFilename());
-        final String fileType = file.getOriginalFilename().substring(fileTypeStartIndex).toUpperCase();
-        if (!fileType.equals(".PNG"))
-            throw new InvalidDataException("Invalid file type: " + fileType);
+        storageService.verify(file);
 
         storageService.store(file, "user_" + id.toString() + ".png");
         getProfilePicture(id, response);

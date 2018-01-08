@@ -1,5 +1,6 @@
 package edu.hm.cs.iua.utils;
 
+import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageAccessException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
 import edu.hm.cs.iua.exceptions.storage.StorageFileEmptyException;
@@ -9,8 +10,10 @@ import edu.hm.cs.iua.exceptions.storage.StorageOperationException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -58,6 +61,27 @@ public class StorageService {
         }
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + filename);
+        }
+    }
+
+    public void verify(MultipartFile file) throws InvalidDataException {
+        final int fileTypeStartIndex = file.getOriginalFilename().lastIndexOf('.');
+        if (fileTypeStartIndex < 0)
+            throw new InvalidDataException("No file type specified in: " + file.getOriginalFilename());
+        final String fileType = file.getOriginalFilename().substring(fileTypeStartIndex).toUpperCase();
+        if (!fileType.equals(".PNG"))
+            throw new InvalidDataException("Invalid file type: " + fileType);
+    }
+
+    public void serveFile(HttpServletResponse response, Resource file, String contentType)
+            throws StorageOperationException {
+
+        try {
+            response.setContentType(contentType);
+            response.setContentLengthLong(file.contentLength());
+            StreamUtils.copy(file.getInputStream(), response.getOutputStream());
+        } catch (IOException e) {
+            throw new StorageOperationException("Failed to read file.", e);
         }
     }
 

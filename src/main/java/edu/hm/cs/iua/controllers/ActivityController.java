@@ -55,7 +55,7 @@ public class ActivityController {
     @PostMapping
     public Activity create(@RequestParam Long user, @RequestParam String token,
                            @RequestBody Activity input)
-            throws InvalidUserException, InvalidTokenException {
+            throws InvalidTokenException {
 
         tokenRepository.verify(user, token);
 
@@ -95,13 +95,7 @@ public class ActivityController {
             throws StorageFileNotFoundException, StorageOperationException {
 
         final Resource file = storageService.loadAsResource("activity_" + id.toString() + ".png");
-        try {
-            response.setContentType(MediaType.IMAGE_PNG_VALUE);
-            response.setContentLengthLong(file.contentLength());
-            StreamUtils.copy(file.getInputStream(), response.getOutputStream());
-        } catch (IOException e) {
-            throw new StorageOperationException("Failed to read file.", e);
-        }
+        storageService.serveFile(response, file, MediaType.IMAGE_PNG_VALUE);
     }
 
     @PostMapping(value = "{id}/picture", produces = MediaType.IMAGE_PNG_VALUE)
@@ -113,12 +107,7 @@ public class ActivityController {
         tokenRepository.verify(user, token);
         activityRepository.verify(id, user);
 
-        final int fileTypeStartIndex = file.getOriginalFilename().lastIndexOf('.');
-        if (fileTypeStartIndex < 0)
-            throw new InvalidDataException("No file type specified in: " + file.getOriginalFilename());
-        final String fileType = file.getOriginalFilename().substring(fileTypeStartIndex).toUpperCase();
-        if (!fileType.equals(".PNG"))
-            throw new InvalidDataException("Invalid file type: " + fileType);
+        storageService.verify(file);
 
         storageService.store(file, "activity_" + id.toString() + ".png");
         getProfilePicture(id, response);
