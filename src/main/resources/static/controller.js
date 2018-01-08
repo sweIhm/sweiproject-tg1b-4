@@ -196,7 +196,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }
             })
         });
-    }, 90000);
+    }, 60000);
 
     $scope.refresh_button = function () {
         $http({
