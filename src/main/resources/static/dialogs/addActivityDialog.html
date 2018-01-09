@@ -47,16 +47,16 @@
                 <md-checkbox ng-model="activity.allowComments" aria-label="Add Activity Checkbox">
                     Disable comments
                 </md-checkbox>
-                <md-input-container>
-                    <input type="file" file-model="activity_picture" aria-label="activity_picture_upload">
-                    <md-button class="md-raised md-accent" ng-click="upload_pic()">
+                <div style="display: flow-root;">
+                    <input type="file" file-model="activity_picture_upload" aria-label="activity_picture_upload" accept="image/png">
+                    <md-button class="md-raised md-accent" ng-click="add_pic()">
                         Add picture
                     </md-button>
+                    <md-icon ng-hide="upload_finished" class="material-icons" aria-label="Upload finished"> check </md-icon>
                     <md-progress-circular ng-hide="upload_in_progress" ng-disabled="upload_in_progress"
                                           class="md-hue-2" md-diameter="20px">
                     </md-progress-circular>
-                    <img aria-label="Picture">
-                </md-input-container>
+                </div>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
