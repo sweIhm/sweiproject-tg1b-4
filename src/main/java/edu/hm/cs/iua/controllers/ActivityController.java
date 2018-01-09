@@ -2,7 +2,6 @@ package edu.hm.cs.iua.controllers;
 
 import edu.hm.cs.iua.exceptions.activity.ActivityNotFoundException;
 import edu.hm.cs.iua.exceptions.auth.InvalidTokenException;
-import edu.hm.cs.iua.exceptions.auth.InvalidUserException;
 import edu.hm.cs.iua.exceptions.auth.UnauthorizedException;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
@@ -15,12 +14,18 @@ import edu.hm.cs.iua.utils.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
