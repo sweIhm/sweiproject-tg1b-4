@@ -476,20 +476,28 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     function addActivityDialogCtrl($scope, $mdDialog, $mdConstant, $http, current_user) {
         $scope.current_user = current_user;
-        $scope.activity = {title: "", text: "", tags: []};
+        $scope.activity = {title: "", text: "", tags: [], pic: undefined};
         $scope.keys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.SPACE];
-        /*$scope.upload_in_progress = true;*/
+        $scope.upload_in_progress = true;
+        $scope.upload_finished = true;
 
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
-       /* $scope.upload_pic = function() {
+        $scope.add_pic = function() {
             if ($scope.activity_picture_upload === undefined) {
                 return;
             }
-            var url = "/user/" + current_user.id + "/picture?token=" + current_user.key;
             var data = new FormData();
-            data.append('file', $scope.profile_picture_upload);
+            data.append('file', $scope.activity_picture_upload);
+            $scope.activity.pic = data;
+            $scope.upload_finished = false;
+        };
+        $scope.upload_pic = function(activity_id) {
+            if ($scope.activity.pic === undefined) {
+                return;
+            }
+            var url = "/activity/" + activity_id + "/picture?user=" + current_user.id + "&token=" + current_user.key;
             var config = {
                 transformRequest: angular.identity,
                 transformResponse: angular.identity,
@@ -497,18 +505,16 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     'Content-Type': undefined
                 }};
             $scope.upload_in_progress = false;
-            $http.post(url, data, config).then(function (response) {
-                $scope.profile.picture = response.data;
-            }).then(function () {
+            $http.post(url, data, config).then(function () {
                 $scope.upload_in_progress = true;
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Profile picture changed.')
+                        .textContent('Activity picture uploaded.')
                         .position('bottom right')
                         .hideDelay(3000)
                 );
             });
-        };*/
+        };
         $scope.add = function(activity) {
             var postRequest = {
                 method : 'POST',
@@ -522,7 +528,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }
             };
             $http(postRequest).then(function (response) {
-                $scope.activities = response.data;
+                $scope.activity = response.data;
+                $scope.upload_pic($scope.activity.id);
             }).then(function () {
                 $scope.cancel();
                 $mdToast.show(
@@ -734,6 +741,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
     function editProfileDialogCtrl($scope, $mdDialog, current_user) {
         $scope.profile = current_user;
         $scope.upload_in_progress = true;
+        $scope.upload_finished = true;
         $scope.cancel = function () {
             $mdDialog.cancel();
         };
@@ -744,7 +752,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             if ($scope.profile_picture_upload === undefined) {
                 return;
             }
-            var url = "/user/" + current_user.id + "/picture?token=" + current_user.key;
+            var url = "/user/" + current_user.id + "/picture?user=" + current_user.id + "&token=" + current_user.key;
             var data = new FormData();
             data.append('file', $scope.profile_picture_upload);
             var config = {
@@ -756,6 +764,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             $scope.upload_in_progress = false;
             $http.post(url, data, config).then(function () {
                 $scope.upload_in_progress = true;
+                $scope.upload_finished = false;
                 $mdToast.show(
                     $mdToast.simple()
                         .textContent('Profile picture changed. Refresh the page to see the change.')
