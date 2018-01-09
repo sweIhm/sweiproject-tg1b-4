@@ -6,7 +6,6 @@ import edu.hm.cs.iua.exceptions.auth.UnauthorizedException;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
 import edu.hm.cs.iua.exceptions.storage.StorageFileNotFoundException;
-import edu.hm.cs.iua.exceptions.storage.StorageOperationException;
 import edu.hm.cs.iua.models.Activity;
 import edu.hm.cs.iua.repositories.ActivityRepository;
 import edu.hm.cs.iua.repositories.TokenRepository;
@@ -14,6 +13,7 @@ import edu.hm.cs.iua.utils.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,17 +94,17 @@ public class ActivityController {
         activityRepository.save(activity);
     }
 
-    @GetMapping(value = "{id}/picture", produces =  MediaType.IMAGE_PNG_VALUE)
-    public void getProfilePicture(@PathVariable Long id, HttpServletResponse response)
-            throws StorageFileNotFoundException, StorageOperationException {
+    @GetMapping("{id}/picture")
+    public ResponseEntity<Resource> getActivityPicture(@PathVariable Long id)
+            throws StorageFileNotFoundException {
 
         final Resource file = storageService.loadAsResource("activity_" + id.toString() + ".png");
-        storageService.serveFile(response, file, MediaType.IMAGE_PNG_VALUE);
+        return ResponseEntity.ok().header("Content-Type", "image/png").body(file);
     }
 
     @PostMapping(value = "{id}/picture", produces = MediaType.IMAGE_PNG_VALUE)
-    public void uploadActivityPicture(@PathVariable Long id, @RequestParam Long user, @RequestParam String token,
-                                      @RequestParam("file") MultipartFile file, HttpServletResponse response)
+    public ResponseEntity<Resource> uploadActivityPicture(@PathVariable Long id, @RequestParam Long user, @RequestParam String token,
+                                      @RequestParam("file") MultipartFile file)
             throws InvalidTokenException, ActivityNotFoundException,
             UnauthorizedException, InvalidDataException, StorageException {
 
@@ -115,7 +114,7 @@ public class ActivityController {
         storageService.verify(file);
 
         storageService.store(file, "activity_" + id.toString() + ".png");
-        getProfilePicture(id, response);
+        return getActivityPicture(id);
     }
 
 }

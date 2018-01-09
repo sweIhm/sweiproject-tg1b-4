@@ -10,10 +10,8 @@ import edu.hm.cs.iua.exceptions.storage.StorageOperationException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -40,7 +38,7 @@ public class StorageService {
                 throw new StorageFileEmptyException("Failed to store empty file " + filename);
             if (filename.contains(".."))
                 throw new StorageAccessException("Cannot store file with relative path outside current directory " + filename);
-            Files.copy(file.getInputStream(), rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new StorageOperationException(" Failed to store file " + filename, e);
         }
@@ -71,18 +69,6 @@ public class StorageService {
         final String fileType = file.getOriginalFilename().substring(fileTypeStartIndex).toUpperCase();
         if (!fileType.equals(".PNG"))
             throw new InvalidDataException("Invalid file type: " + fileType);
-    }
-
-    public void serveFile(HttpServletResponse response, Resource file, String contentType)
-            throws StorageOperationException {
-
-        try {
-            response.setContentType(contentType);
-            response.setContentLengthLong(file.contentLength());
-            StreamUtils.copy(file.getInputStream(), response.getOutputStream());
-        } catch (IOException e) {
-            throw new StorageOperationException("Failed to read file.", e);
-        }
     }
 
 }
