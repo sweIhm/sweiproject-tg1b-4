@@ -22,6 +22,8 @@
     <script src="bower_components/angular-material/angular-material.min.js"></script>
     <!--Chart.js-->
     <script src="bower_components/chart.js/dist/Chart.bundle.min.js"></script>
+    <!--Moment.js-->
+    <script src="bower_components/moment.js/moment.min.js"></script>
     <!--Custom scripts-->
     <script src="controller.js"></script>
 
@@ -241,7 +243,8 @@
                     <span class="md-headline" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{activity.title}}</span>
                 </md-card-title-text>
             </md-card-title>
-            <span ng-hide="activity.capacity<=0" style="margin-left: 16px;">Capacity:  ? / {{activity.capacity}}</span>
+            <span ng-hide="activity.capacity<=0" style="margin-left: 16px; margin-right: 16px;">Capacity: ? / {{activity.capacity}}</span>
+            <span style="margin-left: 16px; margin-right: 16px;">Due Date: {{activity.dueDate}}</span>
             <md-card-actions layout="row" layout-align="start center" ng-hide="activity.tags.length==0">
                 <md-chips ng-model="activity.tags" readonly="true" >
                     <md-chip-template>
@@ -317,7 +320,8 @@
                     <span class="md-headline" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{activity.title}}</span>
                 </md-card-title-text>
             </md-card-title>
-            <span ng-hide="activity.capacity<=0" style="margin-left: 16px;">Capacity:  ? / {{activity.capacity}}</span>
+            <span ng-hide="activity.capacity<=0" style="margin-left: 16px; margin-right: 16px;">Capacity: ? / {{activity.capacity}}</span>
+            <span style="margin-left: 16px; margin-right: 16px;">Due Date: {{activity.dueDate}}</span>
             <md-card-actions layout="row" layout-align="start center" ng-hide="activity.tags.length==0">
                 <md-chips ng-model="activity.tags" readonly="true" >
                     <md-chip-template>

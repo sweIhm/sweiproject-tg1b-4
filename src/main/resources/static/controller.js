@@ -79,6 +79,7 @@ function loadActivities ($scope, $http){
                 value.authorName = data.name;
                 value.authorPictureURL = window.location.href + 'user/' + value.author + '/picture';
                 value.picture_url = window.location.href + 'activity/' + value.id + '/picture';
+                value.dueDate = moment(new Date(value.dueDate)).format('Do MMM YYYY');
             });
         })
     });
@@ -517,6 +518,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             });
         };
         $scope.add = function(activity) {
+            if ($scope.activity.dueDate === undefined) {
+                return;
+            }
+            $scope.activity.dueDate = moment($scope.activity.dueDate).add(1, 'hour'); //Fix timezone
             var postRequest = {
                 method : 'POST',
                 url: (window.location.hostname === 'localhost' ?
@@ -532,8 +537,6 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             };
             $http(postRequest).then(function (response) {
                 $scope.activity.id = response.data.id;
-                /*console.log(new Date("2018-01-10T23:00"));
-                console.log($scope.activity.dueDate);*/
                 $scope.upload_pic($scope.activity.id);
             }).then(function () {
                 $scope.cancel();
