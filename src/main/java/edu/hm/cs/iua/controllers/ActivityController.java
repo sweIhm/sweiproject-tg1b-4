@@ -62,8 +62,9 @@ public class ActivityController {
             throws InvalidTokenException {
 
         tokenRepository.verify(user, token);
-
-        return activityRepository.save(new Activity(input.getDay(), input.getMonth(), input.getYear(), input.getCapacity(), user, input.getTitle(), input.getText(), input.getTags()));
+        final Activity activity = new Activity(input.getDay(), input.getMonth(), input.getYear(), user, input.getTitle(), input.getText(), input.getTags());
+        activity.setCapacity(input.getCapacity());
+        return activityRepository.save(activity);
     }
 
     @DeleteMapping("{id}")

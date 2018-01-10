@@ -94,7 +94,7 @@ public class ActivityControllerTest {
 
     @Test
     public void listAllTest() throws Exception {
-        activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tag1", "Tag2"));
+        activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tag1", "Tag2"));
         Long id = 0L;
         for (Activity activity: activityRepository.findAll())
             id = activity.getId();
@@ -103,7 +103,7 @@ public class ActivityControllerTest {
                 get("/activity"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}]"));
+                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":-1}]"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -179,7 +179,9 @@ public class ActivityControllerTest {
 
     @Test
     public void findTest() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tag1", "Tag2")).getId();
+        final Activity activity = new Activity(27, 1, 2004, userID, "Title", "Text", "Tag1", "Tag2");
+        activity.setCapacity(16);
+        final Long id = activityRepository.save(activity).getId();
 
         mockMvc.perform(
                 get("/activity/" + id))
@@ -201,7 +203,7 @@ public class ActivityControllerTest {
 
     @Test
     public void deleteTest() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 delete("/activity/" + id)
@@ -225,7 +227,7 @@ public class ActivityControllerTest {
 
     @Test
     public void deleteTestInvalidUserId() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 delete("/activity/" + id)
@@ -242,13 +244,13 @@ public class ActivityControllerTest {
             Assert.assertEquals(new Integer(27), activity.getDay());
             Assert.assertEquals(new Integer(1), activity.getMonth());
             Assert.assertEquals(new Integer(2004), activity.getYear());
-            Assert.assertEquals(new Integer(16), activity.getCapacity());
+            Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
     @Test
     public void deleteTestInvalidToken() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 delete("/activity/" + id)
@@ -265,13 +267,13 @@ public class ActivityControllerTest {
             Assert.assertEquals(new Integer(27), activity.getDay());
             Assert.assertEquals(new Integer(1), activity.getMonth());
             Assert.assertEquals(new Integer(2004), activity.getYear());
-            Assert.assertEquals(new Integer(16), activity.getCapacity());
+            Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
     @Test
     public void updateTest() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
@@ -309,7 +311,7 @@ public class ActivityControllerTest {
 
     @Test
     public void updateTestInvalidUserId() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
@@ -328,13 +330,13 @@ public class ActivityControllerTest {
             Assert.assertEquals(new Integer(27), activity.getDay());
             Assert.assertEquals(new Integer(1), activity.getMonth());
             Assert.assertEquals(new Integer(2004), activity.getYear());
-            Assert.assertEquals(new Integer(16), activity.getCapacity());
+            Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
     @Test
     public void updateTestInvalidToken() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
@@ -353,7 +355,7 @@ public class ActivityControllerTest {
             Assert.assertEquals(new Integer(27), activity.getDay());
             Assert.assertEquals(new Integer(1), activity.getMonth());
             Assert.assertEquals(new Integer(2004), activity.getYear());
-            Assert.assertEquals(new Integer(16), activity.getCapacity());
+            Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
@@ -363,7 +365,7 @@ public class ActivityControllerTest {
         final IUAUser user = userRepository.save(new IUAUser("Name", "mail@mail.mail", "test", ""));
         tokenRepository.save(new Token(user.getId(), "TEST_TOKEN"));
         // create activity with authorized user
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, 16, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
@@ -383,7 +385,7 @@ public class ActivityControllerTest {
             Assert.assertEquals(new Integer(27), activity.getDay());
             Assert.assertEquals(new Integer(1), activity.getMonth());
             Assert.assertEquals(new Integer(2004), activity.getYear());
-            Assert.assertEquals(new Integer(16), activity.getCapacity());
+            Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
 
         // delete unauthorized user

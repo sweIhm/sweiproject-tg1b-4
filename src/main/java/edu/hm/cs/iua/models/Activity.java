@@ -22,11 +22,11 @@ public class Activity {
 
     public Activity (){}
 
-    public Activity(Integer day, Integer month, Integer year, Integer capacity, Long author, String title, String text, String... tags) {
+    public Activity(Integer day, Integer month, Integer year, Long author, String title, String text, String... tags) {
         this.day = day;
         this.month = month;
         this.year = year;
-        this.capacity = capacity;
+        this.capacity = -1;
         this.author = author;
         this.text = text;
         this.tags = tags;
