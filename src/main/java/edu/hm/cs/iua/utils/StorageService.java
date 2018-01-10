@@ -4,9 +4,9 @@ import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageAccessException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
 import edu.hm.cs.iua.exceptions.storage.StorageFileEmptyException;
-import edu.hm.cs.iua.exceptions.storage.StorageFileNotFoundException;
 import edu.hm.cs.iua.exceptions.storage.StorageInitializeException;
 import edu.hm.cs.iua.exceptions.storage.StorageOperationException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -48,17 +48,23 @@ public class StorageService {
         return rootLocation.resolve(filename);
     }
 
-    public Resource loadAsResource(String filename) throws StorageFileNotFoundException {
+    public Resource loadAsResource(String filename) {
         try {
             final Path file = load(filename);
             final Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable())
                 return resource;
             else
-                throw new StorageFileNotFoundException("Could not read file: " + filename);
+                if (filename.contains("user"))
+                    return new ClassPathResource("user_default_picture.png");
+                else
+                    return new ClassPathResource("activity_default_picture.png");
         }
         catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: " + filename);
+            if (filename.contains("user"))
+                return new ClassPathResource("user_default_picture.png");
+            else
+                return new ClassPathResource("activity_default_picture.png");
         }
     }
 

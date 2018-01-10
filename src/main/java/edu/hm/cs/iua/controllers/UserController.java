@@ -5,7 +5,6 @@ import edu.hm.cs.iua.exceptions.auth.UnauthorizedException;
 import edu.hm.cs.iua.exceptions.login.UserNotFoundException;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
-import edu.hm.cs.iua.exceptions.storage.StorageFileNotFoundException;
 import edu.hm.cs.iua.models.IUAUser;
 import edu.hm.cs.iua.models.UserProfile;
 import edu.hm.cs.iua.repositories.IUAUserRepository;
@@ -55,8 +54,7 @@ public class UserController {
     }
 
     @GetMapping("{id}/picture")
-    public ResponseEntity<Resource> getProfilePicture(@PathVariable Long id)
-            throws StorageFileNotFoundException {
+    public ResponseEntity<Resource> getProfilePicture(@PathVariable Long id) {
 
         final Resource file = storageService.loadAsResource("user_" + id.toString() + ".png");
         return ResponseEntity.ok().header("Content-Type", "image/png").body(file);
