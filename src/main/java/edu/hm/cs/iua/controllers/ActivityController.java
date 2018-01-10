@@ -63,7 +63,7 @@ public class ActivityController {
 
         tokenRepository.verify(user, token);
 
-        return activityRepository.save(new Activity(user, input.getTitle(), input.getText(), input.getTags()));
+        return activityRepository.save(new Activity(input.getDay(), input.getMonth(), input.getYear(), input.getCapacity(), user, input.getTitle(), input.getText(), input.getTags()));
     }
 
     @DeleteMapping("{id}")
@@ -91,6 +91,10 @@ public class ActivityController {
         activity.setText(input.getText());
         activity.setTags(input.getTags());
         activity.setTitle(input.getTitle());
+        activity.setDay(input.getDay());
+        activity.setMonth(input.getMonth());
+        activity.setYear(input.getYear());
+        activity.setCapacity(input.getCapacity());
         activityRepository.save(activity);
     }
 
