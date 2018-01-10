@@ -15,13 +15,13 @@ public class Activity {
     private String text;
     private String[] tags;
     private String title;
-    private String date;
+    private String dueDate;
     private Integer capacity;
 
     public Activity (){}
 
-    public Activity(String date, Long author, String title, String text, String... tags) {
-        this.date = date;
+    public Activity(String dueDate, Long author, String title, String text, String... tags) {
+        this.dueDate = dueDate;
         this.capacity = -1;
         this.author = author;
         this.text = text;
@@ -69,12 +69,12 @@ public class Activity {
         this.title = title;
     }
 
-    public String getDate() {
-        return date;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Integer getCapacity() {

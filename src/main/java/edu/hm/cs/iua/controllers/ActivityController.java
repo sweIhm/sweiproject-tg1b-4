@@ -65,7 +65,7 @@ public class ActivityController {
         tokenRepository.verify(user, token);
         verifyActivity(input);
 
-        final Activity activity = new Activity(getSafeDate(input.getDate()), user, input.getTitle(), input.getText(), input.getTags());
+        final Activity activity = new Activity(getSafeDate(input.getDueDate()), user, input.getTitle(), input.getText(), input.getTags());
         if (input.getCapacity() != null)
             activity.setCapacity(input.getCapacity());
         return activityRepository.save(activity);
@@ -97,7 +97,7 @@ public class ActivityController {
         activity.setTitle(input.getTitle());
         activity.setText(input.getText());
         activity.setTags(input.getTags());
-        activity.setDate(getSafeDate(input.getDate()));
+        activity.setDueDate(getSafeDate(input.getDueDate()));
         activity.setCapacity(input.getCapacity());
         activityRepository.save(activity);
     }
@@ -129,13 +129,13 @@ public class ActivityController {
             throw new InvalidDataException("Activity must have a title!");
         if (activity.getText() == null || activity.getText().isEmpty())
             throw new InvalidDataException("Activity must have a text body!");
-        if (activity.getDate() == null || activity.getDate().isEmpty())
+        if (activity.getDueDate() == null || activity.getDueDate().isEmpty())
             throw new InvalidDataException("Activity must have a valid date");
     }
 
     private String getSafeDate(String unsafe) throws InvalidDataException {
         if (unsafe.contains("Z"))
-            unsafe = unsafe.substring(0, unsafe.indexOf("Z"));
+            unsafe = unsafe.substring(0, unsafe.indexOf('Z'));
         try {
             return LocalDateTime.parse(unsafe).toString();
         } catch (DateTimeParseException e) {

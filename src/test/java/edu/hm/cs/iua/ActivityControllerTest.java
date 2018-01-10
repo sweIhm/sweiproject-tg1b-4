@@ -103,7 +103,7 @@ public class ActivityControllerTest {
                 get("/activity"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":-1}]"));
+                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":-1}]"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -114,7 +114,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -124,7 +124,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tag1", "Tag2"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(16), activity.getCapacity());
         }
     }
@@ -135,7 +135,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", "9999")
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -148,7 +148,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", "INVALID_TOKEN")
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -161,14 +161,14 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title1\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title1\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
         mockMvc.perform(
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title2\",\"date\":\"2017-01-10T22:00\",\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title2\",\"dueDate\":\"2017-01-10T22:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -185,7 +185,7 @@ public class ActivityControllerTest {
                 get("/activity/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json("{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}"));
+                .andExpect(content().json("{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -239,7 +239,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
@@ -260,7 +260,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
@@ -273,7 +273,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
+                .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":17}")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -283,7 +283,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("test", activity.getText());
             String[] want = {"tag"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(17), activity.getCapacity());
         }
     }
@@ -294,7 +294,7 @@ public class ActivityControllerTest {
                 put("/activity/9999")
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
+                .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
                 .contentType("application/json"))
                 .andExpect(status().isBadRequest());
 
@@ -309,7 +309,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", "9999")
                         .param("token", token)
-                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
+                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":17}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -319,7 +319,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
@@ -332,7 +332,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", userID.toString())
                         .param("token", "INVALID_TOKEN")
-                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
+                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":17}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -342,7 +342,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
@@ -359,7 +359,7 @@ public class ActivityControllerTest {
                 put("/activity/" + id)
                         .param("user", user.getId().toString())
                         .param("token", "TEST_TOKEN")
-                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
+                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":17}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -370,7 +370,7 @@ public class ActivityControllerTest {
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
 
