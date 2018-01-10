@@ -169,10 +169,8 @@
             </md-toolbar>
             <md-content layout-padding layout="column">
                 <span style="text-align: center;">This is a user profile</span>
-                <div style="height: 200px; width: 200px; display: block; margin-left: auto; margin-right: auto;
-                background: gray center; background-size: cover; border-radius: 100px; padding: 0;"
-                     ng-style="{'background-image':'url('+profile.picture_url+')'}">
-                </div>
+                <img ng-src="{{profile.picture_url}}" alt="Profile picture missing." style="object-fit: cover; height: 200px;
+                width: 200px; display: block; margin-left: auto; margin-right: auto; border-radius: 100px; padding: 0;">
                 <span style="text-align: center;">{{profile.name}}</span>
                 <md-button class="md-raised md-accent" ng-click="open_message_dialog(current_user, $event)"
                            ng-show="loginButtonHide && !isSignedInUser">
@@ -187,9 +185,7 @@
                 <md-subheader class="md-no-sticky">Users</md-subheader>
                 <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
                               ng-click="toggleRightSidebar(user.id)">
-                    <div class="md-avatar" style="background: gray center; background-size: cover;"
-                         ng-style="{'background-image':'url('+user.picture_url+')'}">
-                    </div>
+                    <img ng-src="{{user.picture_url}}" class="md-avatar" alt="User picture missing." style="object-fit: cover;">
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
                         <p>E-Mail...</p>
@@ -204,10 +200,9 @@
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar style="padding-top: 6px;">
-                    <div class="md-user-avatar" style=" background: gray center; background-size: cover;
-                         height: inherit; width: inherit;" ng-style="{'background-image':'url('+activity.authorPictureURL+')'}"
+                    <img class="md-user-avatar" ng-src="{{activity.authorPictureURL}}" alt="User picture missing."
+                         style="object-fit: cover; height: inherit; width: inherit;"
                          ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);">
-                    </div>
                 </md-card-avatar>
                 <md-card-header-text>
                     <div style="padding-top: 6px">
@@ -263,9 +258,7 @@
                 <md-subheader class="md-no-sticky">Users</md-subheader>
                 <md-list-item class="md-2-line contact-item" ng-repeat="user in users | searchFieldUsers: search_text_field"
                               ng-click="toggleRightSidebar(user.id)">
-                    <div class="md-avatar" style="background: gray center; background-size: cover;"
-                         ng-style="{'background-image':'url('+user.picture_url+')'}">
-                    </div>
+                    <img ng-src="{{user.picture_url}}" class="md-avatar" alt="User picture missing." style="object-fit: cover;">
                     <div class="md-list-item-text compact">
                         <h3>{{user.name}}</h3>
                         <p>E-Mail...</p>
@@ -281,10 +274,9 @@
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar style="padding-top: 6px;">
-                    <div class="md-user-avatar" style=" background: gray center; background-size: cover;
-                         height: inherit; width: inherit;" ng-style="{'background-image':'url('+activity.authorPictureURL+')'}"
+                    <img class="md-user-avatar" ng-src="{{activity.authorPictureURL}}" alt="User picture missing."
+                         style="object-fit: cover; height: inherit; width: inherit;"
                          ng-click="$event.stopPropagation(); toggleRightSidebar(activity.author);">
-                    </div>
                 </md-card-avatar>
                 <md-card-header-text>
                     <div style="padding-top: 6px">

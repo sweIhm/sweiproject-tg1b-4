@@ -11,10 +11,8 @@
         </md-toolbar>
         <md-dialog-content style="min-width: 100px">
             <div class="md-dialog-content" layout="column">
-                <div style="height: 150px; width: 150px; display: block; margin-left: auto; margin-right: auto;
-                background: gray center; background-size: cover; border-radius: 75px;"
-                     ng-style="{'background-image':'url('+profile.picture_url+')'}">
-                </div>
+                <img ng-src="{{profile.picture_url}}" alt="Profile picture missing." style="object-fit: cover; height: 150px;
+                width: 150px; display: block; margin-left: auto; margin-right: auto; border-radius: 75px;">
                 <div style="display: flow-root;">
                     <input type="file" file-model="profile_picture_upload" aria-label="profile_pic_upload" accept="image/png">
                     <md-button class="md-raised md-accent" ng-click="edit_pic()">

@@ -5,9 +5,8 @@
                          ng-click="toggleRightSidebar(activity.author);">
                     <md-card-header style="padding-top: 10px; margin-left: -20px">
                         <md-card-avatar>
-                            <div class="md-user-avatar" style=" background: gray center; background-size: cover; height: inherit;
-                                 width: inherit;" ng-style="{'background-image':'url('+activity.authorPictureURL+')'}">
-                            </div>
+                            <img class="md-user-avatar" ng-src="{{activity.authorPictureURL}}" alt="User picture missing."
+                                 style="object-fit: cover; height: inherit; width: inherit;">
                         </md-card-avatar>
                         <md-card-header-text>
                             <span class="md-title">{{activity.authorName}}</span>
@@ -21,14 +20,15 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content style="min-width: 100px">
+        <md-dialog-content style="min-width: 100px;">
             <md-card layout-fill flex>
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline" style="word-break: break-all;">{{activity.title}}</span>
                     </md-card-title-text>
                 </md-card-title>
-                <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+                <img ng-src="{{activity.picture_url}}" class="md-card-image" alt="Activity picture missing."
+                     style="object-fit: cover; max-height: 400px; max-width: 400px;">
                 <md-card-actions layout="row" layout-align="start center">
                     <md-chips ng-model="activity.tags" readonly="true" >
                         <md-chip-template>
