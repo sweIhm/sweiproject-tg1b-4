@@ -15,17 +15,13 @@ public class Activity {
     private String text;
     private String[] tags;
     private String title;
-    private Integer day;
-    private Integer month;
-    private Integer year;
+    private String date;
     private Integer capacity;
 
     public Activity (){}
 
-    public Activity(Integer day, Integer month, Integer year, Long author, String title, String text, String... tags) {
-        this.day = day;
-        this.month = month;
-        this.year = year;
+    public Activity(String date, Long author, String title, String text, String... tags) {
+        this.date = date;
         this.capacity = -1;
         this.author = author;
         this.text = text;
@@ -73,28 +69,12 @@ public class Activity {
         this.title = title;
     }
 
-    public Integer getDay() {
-        return day;
+    public String getDate() {
+        return date;
     }
 
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public Integer getCapacity() {
