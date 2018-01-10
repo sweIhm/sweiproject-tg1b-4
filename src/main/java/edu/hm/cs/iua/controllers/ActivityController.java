@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class ActivityController {
         tokenRepository.verify(user, token);
         verifyActivity(input);
 
-        final Activity activity = new Activity(input.getDay(), input.getMonth(), input.getYear(), user, input.getTitle(), input.getText(), input.getTags());
+        final Activity activity = new Activity(getSafeDate(input.getDate()), user, input.getTitle(), input.getText(), input.getTags());
         if (input.getCapacity() != null)
             activity.setCapacity(input.getCapacity());
         return activityRepository.save(activity);
@@ -96,9 +97,7 @@ public class ActivityController {
         activity.setTitle(input.getTitle());
         activity.setText(input.getText());
         activity.setTags(input.getTags());
-        activity.setDay(input.getDay());
-        activity.setMonth(input.getMonth());
-        activity.setYear(input.getYear());
+        activity.setDate(getSafeDate(input.getDate()));
         activity.setCapacity(input.getCapacity());
         activityRepository.save(activity);
     }
@@ -130,11 +129,16 @@ public class ActivityController {
             throw new InvalidDataException("Activity must have a title!");
         if (activity.getText() == null || activity.getText().isEmpty())
             throw new InvalidDataException("Activity must have a text body!");
-        if (activity.getDay() == null || activity.getMonth() == null || activity.getYear() == null)
+        if (activity.getDate() == null || activity.getDate().isEmpty())
             throw new InvalidDataException("Activity must have a valid date");
+    }
+
+    private String getSafeDate(String unsafe) throws InvalidDataException {
+        if (unsafe.contains("Z"))
+            unsafe = unsafe.substring(0, unsafe.indexOf("Z"));
         try {
-            LocalDate.of(activity.getYear(), activity.getMonth(), activity.getDay());
-        } catch (IllegalArgumentException | NullPointerException e) {
+            return LocalDateTime.parse(unsafe).toString();
+        } catch (DateTimeParseException e) {
             throw new InvalidDataException("Activity must have a valid date");
         }
     }

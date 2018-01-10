@@ -94,7 +94,7 @@ public class ActivityControllerTest {
 
     @Test
     public void listAllTest() throws Exception {
-        activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tag1", "Tag2"));
+        activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tag1", "Tag2"));
         Long id = 0L;
         for (Activity activity: activityRepository.findAll())
             id = activity.getId();
@@ -103,7 +103,7 @@ public class ActivityControllerTest {
                 get("/activity"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":-1}]"));
+                .andExpect(content().string("[{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":-1}]"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -114,7 +114,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -124,9 +124,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tag1", "Tag2"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(27), activity.getDay());
-            Assert.assertEquals(new Integer(1), activity.getMonth());
-            Assert.assertEquals(new Integer(2004), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(16), activity.getCapacity());
         }
     }
@@ -137,7 +135,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", "9999")
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -150,7 +148,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", "INVALID_TOKEN")
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -163,14 +161,14 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title1\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title1\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
         mockMvc.perform(
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title2\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title2\",\"date\":\"2017-01-10T22:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -179,7 +177,7 @@ public class ActivityControllerTest {
 
     @Test
     public void findTest() throws Exception {
-        final Activity activity = new Activity(27, 1, 2004, userID, "Title", "Text", "Tag1", "Tag2");
+        final Activity activity = new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tag1", "Tag2");
         activity.setCapacity(16);
         final Long id = activityRepository.save(activity).getId();
 
@@ -187,7 +185,7 @@ public class ActivityControllerTest {
                 get("/activity/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json("{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}"));
+                .andExpect(content().json("{\"id\":" + id + ",\"author\":" + userID + ",\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}"));
 
         Assert.assertEquals(1, activityRepository.count());
     }
@@ -203,7 +201,7 @@ public class ActivityControllerTest {
 
     @Test
     public void deleteTest() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 delete("/activity/" + id)
@@ -227,7 +225,7 @@ public class ActivityControllerTest {
 
     @Test
     public void deleteTestInvalidUserId() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 delete("/activity/" + id)
@@ -241,16 +239,14 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(27), activity.getDay());
-            Assert.assertEquals(new Integer(1), activity.getMonth());
-            Assert.assertEquals(new Integer(2004), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
     @Test
     public void deleteTestInvalidToken() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 delete("/activity/" + id)
@@ -264,22 +260,20 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(27), activity.getDay());
-            Assert.assertEquals(new Integer(1), activity.getMonth());
-            Assert.assertEquals(new Integer(2004), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
     @Test
     public void updateTest() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T22:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"day\":28,\"month\":2,\"year\":2005,\"capacity\":17}")
+                .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -289,9 +283,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("test", activity.getText());
             String[] want = {"tag"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(28), activity.getDay());
-            Assert.assertEquals(new Integer(2), activity.getMonth());
-            Assert.assertEquals(new Integer(2005), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(17), activity.getCapacity());
         }
     }
@@ -302,7 +294,7 @@ public class ActivityControllerTest {
                 put("/activity/9999")
                         .param("user", userID.toString())
                         .param("token", token)
-                .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"day\":27,\"month\":1,\"year\":2004,\"capacity\":16}")
+                .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"date\":\"2018-01-10T23:00\",\"capacity\":16}")
                 .contentType("application/json"))
                 .andExpect(status().isBadRequest());
 
@@ -311,13 +303,13 @@ public class ActivityControllerTest {
 
     @Test
     public void updateTestInvalidUserId() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
                         .param("user", "9999")
                         .param("token", token)
-                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"day\":28,\"month\":2,\"year\":2005,\"capacity\":17}")
+                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -327,22 +319,20 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(27), activity.getDay());
-            Assert.assertEquals(new Integer(1), activity.getMonth());
-            Assert.assertEquals(new Integer(2004), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
 
     @Test
     public void updateTestInvalidToken() throws Exception {
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
                         .param("user", userID.toString())
                         .param("token", "INVALID_TOKEN")
-                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"day\":28,\"month\":2,\"year\":2005,\"capacity\":17}")
+                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -352,9 +342,7 @@ public class ActivityControllerTest {
             Assert.assertEquals("Text", activity.getText());
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(27), activity.getDay());
-            Assert.assertEquals(new Integer(1), activity.getMonth());
-            Assert.assertEquals(new Integer(2004), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
     }
@@ -365,13 +353,13 @@ public class ActivityControllerTest {
         final IUAUser user = userRepository.save(new IUAUser("Name", "mail@mail.mail", "test", ""));
         tokenRepository.save(new Token(user.getId(), "TEST_TOKEN"));
         // create activity with authorized user
-        final Long id = activityRepository.save(new Activity(27, 1, 2004, userID, "Title", "Text", "Tags")).getId();
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
 
         mockMvc.perform(
                 put("/activity/" + id)
                         .param("user", user.getId().toString())
                         .param("token", "TEST_TOKEN")
-                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"day\":28,\"month\":2,\"year\":2005,\"capacity\":17}")
+                        .content("{\"text\":\"test\",\"tags\":[\"tag\"],\"title\":\"Test\",\"date\":\"2018-01-10T23:00\",\"capacity\":17}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
 
@@ -382,9 +370,7 @@ public class ActivityControllerTest {
             String[] want = {"Tags"};
             Assert.assertArrayEquals(want, activity.getTags());
             Assert.assertArrayEquals(want, activity.getTags());
-            Assert.assertEquals(new Integer(27), activity.getDay());
-            Assert.assertEquals(new Integer(1), activity.getMonth());
-            Assert.assertEquals(new Integer(2004), activity.getYear());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDate());
             Assert.assertEquals(new Integer(-1), activity.getCapacity());
         }
 
