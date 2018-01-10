@@ -5,7 +5,6 @@ import edu.hm.cs.iua.exceptions.auth.InvalidTokenException;
 import edu.hm.cs.iua.exceptions.auth.UnauthorizedException;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
 import edu.hm.cs.iua.exceptions.storage.StorageException;
-import edu.hm.cs.iua.exceptions.storage.StorageFileNotFoundException;
 import edu.hm.cs.iua.models.Activity;
 import edu.hm.cs.iua.repositories.ActivityRepository;
 import edu.hm.cs.iua.repositories.TokenRepository;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +59,14 @@ public class ActivityController {
     @PostMapping
     public Activity create(@RequestParam Long user, @RequestParam String token,
                            @RequestBody Activity input)
-            throws InvalidTokenException {
+            throws InvalidTokenException, InvalidDataException {
 
         tokenRepository.verify(user, token);
+        verifyActivity(input);
+
         final Activity activity = new Activity(input.getDay(), input.getMonth(), input.getYear(), user, input.getTitle(), input.getText(), input.getTags());
-        activity.setCapacity(input.getCapacity());
+        if (input.getCapacity() != null)
+            activity.setCapacity(input.getCapacity());
         return activityRepository.save(activity);
     }
 
@@ -83,15 +86,16 @@ public class ActivityController {
     public void update(@RequestParam Long user, @RequestParam String token,
                            @PathVariable Long id, @RequestBody Activity input)
             throws InvalidTokenException,
-            ActivityNotFoundException, UnauthorizedException {
+            ActivityNotFoundException, UnauthorizedException, InvalidDataException {
 
         tokenRepository.verify(user, token);
         activityRepository.verify(id, user);
+        verifyActivity(input);
 
         final Activity activity = activityRepository.findOne(id);
+        activity.setTitle(input.getTitle());
         activity.setText(input.getText());
         activity.setTags(input.getTags());
-        activity.setTitle(input.getTitle());
         activity.setDay(input.getDay());
         activity.setMonth(input.getMonth());
         activity.setYear(input.getYear());
@@ -100,8 +104,7 @@ public class ActivityController {
     }
 
     @GetMapping("{id}/picture")
-    public ResponseEntity<Resource> getActivityPicture(@PathVariable Long id)
-            throws StorageFileNotFoundException {
+    public ResponseEntity<Resource> getActivityPicture(@PathVariable Long id) {
 
         final Resource file = storageService.loadAsResource("activity_" + id.toString() + ".png");
         return ResponseEntity.ok().header("Content-Type", "image/png").body(file);
@@ -120,6 +123,20 @@ public class ActivityController {
 
         storageService.store(file, "activity_" + id.toString() + ".png");
         return getActivityPicture(id);
+    }
+
+    private void verifyActivity(Activity activity) throws InvalidDataException {
+        if (activity.getTitle() == null || activity.getTitle().isEmpty())
+            throw new InvalidDataException("Activity must have a title!");
+        if (activity.getText() == null || activity.getText().isEmpty())
+            throw new InvalidDataException("Activity must have a text body!");
+        if (activity.getDay() == null || activity.getMonth() == null || activity.getYear() == null)
+            throw new InvalidDataException("Activity must have a valid date");
+        try {
+            LocalDate.of(activity.getYear(), activity.getMonth(), activity.getDay());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new InvalidDataException("Activity must have a valid date");
+        }
     }
 
 }
