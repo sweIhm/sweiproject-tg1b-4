@@ -78,6 +78,7 @@ function loadActivities ($scope, $http){
             getUserData($scope, $http, value.author).then(function(data){
                 value.authorName = data.name;
                 value.authorPictureURL = window.location.href + 'user/' + value.author + '/picture';
+                value.picture_url = window.location.href + 'activity/' + value.id + '/picture';
             });
         })
     });
@@ -505,7 +506,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     'Content-Type': undefined
                 }};
             $scope.upload_in_progress = false;
-            $http.post(url, data, config).then(function () {
+            $http.post(url, $scope.activity.pic, config).then(function () {
                 $scope.upload_in_progress = true;
                 $mdToast.show(
                     $mdToast.simple()
@@ -524,11 +525,15 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
-                    tags: $scope.activity.tags
+                    tags: $scope.activity.tags,
+                    dueDate: $scope.activity.dueDate,
+                    capacity: $scope.activity.capacity
                 }
             };
             $http(postRequest).then(function (response) {
-                $scope.activity = response.data;
+                $scope.activity.id = response.data.id;
+                /*console.log(new Date("2018-01-10T23:00"));
+                console.log($scope.activity.dueDate);*/
                 $scope.upload_pic($scope.activity.id);
             }).then(function () {
                 $scope.cancel();

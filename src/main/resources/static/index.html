@@ -197,7 +197,7 @@
         </md-content>
     </div>
     <div hide-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 64px;">
-        <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px; min-height: 500px;"
+        <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
@@ -235,13 +235,14 @@
                     </md-fab-actions>
                 </md-fab-speed-dial>
             </md-card-header>
-            <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+            <img ng-src="{{activity.picture_url}}" class="md-card-image" alt="Activity picture missing.">
             <md-card-title>
                 <md-card-title-text style="max-width: 100%">
                     <span class="md-headline" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{activity.title}}</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-actions layout="row" layout-align="start center">
+            <span ng-hide="activity.capacity<=0" style="margin-left: 16px;">Capacity:  ? / {{activity.capacity}}</span>
+            <md-card-actions layout="row" layout-align="start center" ng-hide="activity.tags.length==0">
                 <md-chips ng-model="activity.tags" readonly="true" >
                     <md-chip-template>
                         #{{$chip}}
@@ -272,7 +273,7 @@
     </div>
     <div hide-gt-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 56px;">
         <!--layout="row" can be removed to make the cards fit the whole screen on mobile-->
-        <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 0; min-height: 500px; margin-left: auto; margin-right: auto;"
+        <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 0; margin-left: auto; margin-right: auto;"
                  ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
@@ -310,13 +311,14 @@
                     </md-fab-actions>
                 </md-fab-speed-dial>
             </md-card-header>
-            <img src="assets/activity_background.png" class="md-card-image" alt="Washed Out">
+            <img ng-src="{{activity.picture_url}}" class="md-card-image" alt="Activity picture missing.">
             <md-card-title>
                 <md-card-title-text style="max-width: 100%">
                     <span class="md-headline" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{activity.title}}</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-actions layout="row" layout-align="start center">
+            <span ng-hide="activity.capacity<=0" style="margin-left: 16px;">Capacity:  ? / {{activity.capacity}}</span>
+            <md-card-actions layout="row" layout-align="start center" ng-hide="activity.tags.length==0">
                 <md-chips ng-model="activity.tags" readonly="true" >
                     <md-chip-template>
                         #{{$chip}}
