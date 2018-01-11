@@ -30,6 +30,22 @@ app.filter('searchFieldActivities', function() {
     };
 });
 
+app.filter('userActivities', function () {
+    return function(items, search_type_useract, userID) {
+        if (search_type_useract === false) {
+            return items;
+        }
+        var filtered = [];
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (userID === item.author) {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+    }
+});
+
 app.filter('searchFieldUsers', function() {
     return function(items, search_text_field) {
         if (search_text_field === undefined) {
@@ -167,6 +183,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     $scope.search_type_act = true;
     $scope.search_type_user = false;
+    $scope.search_type_useract = false;
 
     loadActivities($scope, $http);
 
@@ -832,6 +849,13 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             });
         };
     }
+});
+
+app.controller('UserMenuCtrl', function($scope) {
+    $scope.search_type_useract = $scope.$parent.search_type_useract;
+    $scope.search_type_useract_change = function () {
+        $scope.$parent.search_type_useract = $scope.search_type_useract;
+    };
 });
 
 app.controller('FilterMenuCtrl', function($scope, $http) {

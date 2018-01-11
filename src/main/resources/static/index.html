@@ -9,21 +9,21 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!--Style for AngularJS Material-->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="external_components/angular-material/angular-material.min.css">
     <!--Custom styles-->
     <link rel="stylesheet" href="styles.css">
 
     <!--AngularJS scripts-->
-    <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
-    <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+    <script src="external_components/angular/angular.min.js"></script>
+    <script src="external_components/angular-animate/angular-animate.min.js"></script>
+    <script src="external_components/angular-aria/angular-aria.min.js"></script>
+    <script src="external_components/angular-messages/angular-messages.min.js"></script>
     <!---AngularJS Material script-->
-    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="external_components/angular-material/angular-material.min.js"></script>
     <!--Chart.js-->
-    <script src="bower_components/chart.js/dist/Chart.bundle.min.js"></script>
+    <script src="external_components/chart.js/dist/Chart.bundle.min.js"></script>
     <!--Moment.js-->
-    <script src="bower_components/moment.js/moment.min.js"></script>
+    <script src="external_components/moment.js/moment.min.js"></script>
     <!--Custom scripts-->
     <script src="controller.js"></script>
 
@@ -86,7 +86,7 @@
                 Login
             </md-button>
             <h1 hide-xs ng-show="loginButtonHide" style="margin-right: 5px">{{current_user.name}}</h1>
-            <md-menu>
+            <md-menu ng-controller="UserMenuCtrl">
                 <md-button class="md-fab md-primary" aria-label="Profil Picture" style="height: 48px; width: 48px;
                            background: gray center; background-size: cover;" ng-style="{'background-image':'url('+current_user.picture_url+')'}"
                            ng-click="openUserMenu($mdMenu, $event)"
@@ -99,10 +99,13 @@
                         <md-button ng-click="open_add_activity_dialog(current_user, $event)">Add activity</md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button>My activities</md-button>
+                        <md-switch md-invert class="md-primary" name="filter_user_activities" ng-model="search_type_useract"
+                                   style="margin-top: 9px; margin-bottom: 9px;" ng-change="search_type_useract_change()">
+                            My activities
+                        </md-switch>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button>Subscribed activities</md-button>
+                        <md-button ng-disabled="true">Subscribed activities</md-button>
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
@@ -196,7 +199,7 @@
     </div>
     <div hide-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 64px;">
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px;"
-                 ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
+                 ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities:search_text_field | userActivities:search_type_useract:current_user.id"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar style="padding-top: 6px;">
