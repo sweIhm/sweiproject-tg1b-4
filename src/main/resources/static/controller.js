@@ -79,6 +79,7 @@ function loadActivities ($scope, $http){
                 value.authorName = data.name;
                 value.authorPictureURL = window.location.href + 'user/' + value.author + '/picture';
                 value.picture_url = window.location.href + 'activity/' + value.id + '/picture';
+                value.dueDateRaw = value.dueDate;
                 value.dueDate = moment(new Date(value.dueDate)).format('Do MMM YYYY');
             });
         })
@@ -216,6 +217,10 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             angular.forEach($scope.activities, function(value, key) {
                 getUserData($scope, $http, value.author).then(function(data){
                     value.authorName = data.name;
+                    value.authorPictureURL = window.location.href + 'user/' + value.author + '/picture';
+                    value.picture_url = window.location.href + 'activity/' + value.id + '/picture';
+                    value.dueDateRaw = value.dueDate;
+                    value.dueDate = moment(new Date(value.dueDate)).format('Do MMM YYYY');
                 });
             });
             $mdToast.show(
@@ -552,13 +557,46 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
 
     function editActivityDialogCtrl($scope, $mdDialog, $mdConstant, $mdToast, $http, activity, current_user) {
         $scope.activity = activity;
+        $scope.activity.pic = undefined;
+        $scope.activity.dueDateRaw = new Date($scope.activity.dueDateRaw);
         $scope.current_user = current_user;
         $scope.keys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.SPACE];
+        $scope.upload_in_progress = true;
+        $scope.upload_finished = true;
 
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
+        $scope.add_pic = function() {
+            if ($scope.activity_picture_upload === undefined) {
+                return;
+            }
+            var data = new FormData();
+            data.append('file', $scope.activity_picture_upload);
+            $scope.activity.pic = data;
+            $scope.upload_finished = false;
+        };
+        $scope.upload_pic = function(activity_id) {
+            if ($scope.activity.pic === undefined) {
+                return;
+            }
+            var url = "/activity/" + activity_id + "/picture?user=" + current_user.id + "&token=" + current_user.key;
+            var config = {
+                transformRequest: angular.identity,
+                transformResponse: angular.identity,
+                headers : {
+                    'Content-Type': undefined
+                }};
+            $scope.upload_in_progress = false;
+            $http.post(url, $scope.activity.pic, config).then(function () {
+                $scope.upload_in_progress = true;
+            });
+        };
         $scope.edit = function(activity) {
+            if ($scope.activity.dueDate === undefined) {
+                return;
+            }
+            $scope.activity.dueDateRaw = moment($scope.activity.dueDateRaw).add(1, 'hour'); //Fix timezone
             var putRequest = {
                 method : 'PUT',
                 url: (window.location.hostname === 'localhost' ?
@@ -567,19 +605,26 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 data: {
                     title: $scope.activity.title,
                     text: $scope.activity.text,
-                    tags: $scope.activity.tags
+                    tags: $scope.activity.tags,
+                    dueDate: $scope.activity.dueDateRaw,
+                    capacity: $scope.activity.capacity
                 }
             };
             $http(putRequest).then(function (response) {
-                $scope.activities = response.data;
+                $scope.upload_pic($scope.activity.id);
             }).then(function () {
                 $scope.cancel();
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Activity ' + $scope.activity.title + ' edited.')
+                        .textContent('Activity ' + $scope.activity.title + ' edited. Refresh the page to see the change.')
                         .position('bottom right')
-                        .hideDelay(3000)
-                );
+                        .action('Refresh')
+                        .hideDelay(0)
+                ).then(function (response){
+                    if (response === 'ok') {
+                        location.reload();
+                    }
+                });
             });
         };
     }

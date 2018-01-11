@@ -36,6 +36,8 @@
                         </md-chip-template>
                     </md-chips>
                 </md-card-actions>
+                <span ng-hide="activity.capacity<=0" style="margin-left: 16px; margin-right: 16px;">Capacity: ? / {{activity.capacity}}</span>
+                <span style="margin-left: 16px; margin-right: 16px;">Due Date: {{activity.dueDate}}</span>
                 <md-card-content style="word-wrap: break-word;">
                     {{activity.text}}
                 </md-card-content>
