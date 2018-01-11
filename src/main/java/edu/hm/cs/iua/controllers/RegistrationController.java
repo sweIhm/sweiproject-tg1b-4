@@ -37,13 +37,16 @@ public class RegistrationController {
 
     private static final TokenGenerator generator = new TokenGenerator();
     private static final List<String> validDomains = new LinkedList<>();
+    private static final String PROTOCOLL = "http://";
+    public static final String CODE_PARAMETER = "&code=";
+
     static {
         validDomains.add("hm.edu");
         validDomains.add("calpoly.edu");
     }
 
     private static String confirmationEmail = "/templates/confirmationEmail.html";
-    private static String resetPasswordEmail = "/templates/resetPasswordEmail.html";
+    private static String resetPassEmail = "/templates/resetPasswordEmail.html";
 
     @Autowired
     private IUAUserRepository userRepository;
@@ -134,7 +137,7 @@ public class RegistrationController {
 
     @GetMapping("reset")
     public String resetPage(@RequestParam Long userId, @RequestParam String code, Model model) {
-        model.addAttribute("link", "http://" + hostAddress + "/register/reset?userId=" + userId + "&code=" + code);
+        model.addAttribute("link", "http://" + hostAddress + "/register/reset?userId=" + userId + CODE_PARAMETER + code);
         return "resetPasswordPage";
     }
 
@@ -155,7 +158,7 @@ public class RegistrationController {
         currentUser.setRequestingPassword(false);
         currentUser.setConfirmationCode(null);
         currentUser.setPassword(user.getPassword());
-        System.out.println(userRepository.save(currentUser).getPassword());
+        userRepository.save(currentUser);
     }
 
     private void sendPasswordResetEmail(String email, Long userId, String code)
@@ -164,8 +167,8 @@ public class RegistrationController {
         final String emailUserName = System.getenv("EMAIL_USERNAME");
         final String emailPassword = System.getenv("EMAIL_PASSWORD");
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
-        final String link = "http://" + hostAddress + "/register/reset?userId=" + userId + "&code=" + code;
-        final InputStream resource = this.getClass().getResourceAsStream(resetPasswordEmail);
+        final String link = PROTOCOLL + hostAddress + "/register/reset?userId=" + userId + CODE_PARAMETER + code;
+        final InputStream resource = this.getClass().getResourceAsStream(resetPassEmail);
         final String content;
 
         if (resource != null) {
@@ -185,7 +188,7 @@ public class RegistrationController {
         final String emailUserName = System.getenv("EMAIL_USERNAME");
         final String emailPassword = System.getenv("EMAIL_PASSWORD");
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
-        final String link = "http://" + hostAddress + "/register/activate?userId=" + userId + "&code=" + code;
+        final String link = PROTOCOLL + hostAddress + "/register/activate?userId=" + userId + CODE_PARAMETER + code;
         final InputStream resource = this.getClass().getResourceAsStream(confirmationEmail);
         final String content;
 

@@ -77,7 +77,7 @@ public class StorageService {
         try {
             Files.delete(file);
         } catch (IOException e) {
-            if (Files.exists(file))
+            if (file.toFile().exists())
                 log.error("Could not delete file: " + filename, e);
         }
     }

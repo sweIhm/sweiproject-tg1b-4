@@ -33,6 +33,8 @@ import java.util.List;
 @RequestMapping("/activity")
 public class ActivityController {
 
+    public static final String PICTURE_NAME_PREFIX = "activity_";
+    public static final String PICTURE_FILE_TYPE = ".png";
     @Autowired
     private StorageService storageService;
   
@@ -81,7 +83,7 @@ public class ActivityController {
         activityRepository.verify(id, user);
 
         activityRepository.delete(id);
-        storageService.delete("activity_" + id + ".png");
+        storageService.delete(PICTURE_NAME_PREFIX + id + PICTURE_FILE_TYPE);
     }
 
     @PutMapping("{id}")
@@ -106,7 +108,7 @@ public class ActivityController {
     @GetMapping("{id}/picture")
     public ResponseEntity<Resource> getActivityPicture(@PathVariable Long id) {
 
-        final Resource file = storageService.loadAsResource("activity_" + id.toString() + ".png");
+        final Resource file = storageService.loadAsResource(PICTURE_NAME_PREFIX + id.toString() + ".png");
         return ResponseEntity.ok().header("Content-Type", "image/png").body(file);
     }
 
@@ -121,7 +123,7 @@ public class ActivityController {
 
         storageService.verify(file);
 
-        storageService.store(file, "activity_" + id.toString() + ".png");
+        storageService.store(file, PICTURE_NAME_PREFIX + id.toString() + ".png");
         return getActivityPicture(id);
     }
 
