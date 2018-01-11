@@ -236,7 +236,7 @@ public class RegistrationControllerTest {
     public void activateUserTest() throws Exception {
         final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
 
-        mockMvc.perform(get("/register")
+        mockMvc.perform(get("/register/activate")
                     .param("userId", userID.toString())
                     .param("code", "CODE"))
                 .andExpect(status().isOk())
@@ -256,7 +256,7 @@ public class RegistrationControllerTest {
     public void activateUserNotFoundTest() throws Exception {
         final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
 
-        mockMvc.perform(get("/register")
+        mockMvc.perform(get("/register/activate")
                 .param("userId", "9999")
                 .param("code", "CODE"))
                 .andExpect(status().isOk())
@@ -276,7 +276,7 @@ public class RegistrationControllerTest {
     public void activateUserInvalidCodeTest() throws Exception {
         final Long userID = userRepository.save(new IUAUser("TestUser", "test@hm.edu", "test", "CODE")).getId();
 
-        mockMvc.perform(get("/register")
+        mockMvc.perform(get("/register/activate")
                 .param("userId", userID.toString())
                 .param("code", "INVALID"))
                 .andExpect(status().isOk())

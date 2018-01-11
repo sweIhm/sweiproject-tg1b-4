@@ -6,6 +6,8 @@ import edu.hm.cs.iua.exceptions.storage.StorageException;
 import edu.hm.cs.iua.exceptions.storage.StorageFileEmptyException;
 import edu.hm.cs.iua.exceptions.storage.StorageInitializeException;
 import edu.hm.cs.iua.exceptions.storage.StorageOperationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,6 +23,8 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class StorageService {
+
+    private final Logger log = LoggerFactory.getLogger(StorageService.class);
 
     private final Path rootLocation = Paths.get("data");
 
@@ -65,6 +69,16 @@ public class StorageService {
                 return new ClassPathResource("user_default_picture.png");
             else
                 return new ClassPathResource("activity_default_picture.png");
+        }
+    }
+
+    public void delete(String filename) {
+        final Path file = load(filename);
+        try {
+            Files.delete(file);
+        } catch (IOException e) {
+            if (Files.exists(file))
+                log.error("Could not delete file: " + filename, e);
         }
     }
 

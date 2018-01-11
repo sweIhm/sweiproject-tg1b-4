@@ -1,5 +1,8 @@
 package edu.hm.cs.iua.controllers;
 
+import edu.hm.cs.iua.exceptions.auth.InvalidTokenException;
+import edu.hm.cs.iua.exceptions.login.UserNotFoundException;
+import edu.hm.cs.iua.exceptions.login.UserNotValidatedException;
 import edu.hm.cs.iua.exceptions.registration.EmailAlreadyTakenException;
 import edu.hm.cs.iua.exceptions.registration.EmailTransmissionFailed;
 import edu.hm.cs.iua.exceptions.registration.InvalidDataException;
@@ -13,6 +16,7 @@ import edu.hm.cs.iua.utils.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +43,7 @@ public class RegistrationController {
     }
 
     private static String confirmationEmail = "/templates/confirmationEmail.html";
+    private static String resetPasswordEmail = "/templates/resetPasswordEmail.html";
 
     @Autowired
     private IUAUserRepository userRepository;
@@ -52,8 +57,7 @@ public class RegistrationController {
     @Value("${host.url}")
     private String hostAddress;
 
-    @ResponseBody
-    @PostMapping
+    @PostMapping @ResponseBody
     public void create(@RequestBody IUAUser input)
             throws RegistrationException {
 
@@ -80,7 +84,7 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping
+    @GetMapping("activate")
     public String activate(@RequestParam Long userId, @RequestParam String code) {
 
         final IUAUser user = userRepository.findOne(userId);
@@ -97,13 +101,91 @@ public class RegistrationController {
         return "activationInvalidCode";
     }
 
+    @GetMapping("request_reset") @ResponseBody
+    public void resetPassword(@RequestParam String email)
+            throws EmailTransmissionFailed, UserNotFoundException, UserNotValidatedException {
+
+        IUAUser currentUser = null;
+        for (IUAUser user: userRepository.findAll())
+            if (user.getEmail().equals(email)) {
+                currentUser = user;
+                break;
+            }
+
+        if (currentUser != null) {
+            if (!currentUser.isValidated())
+                throw new UserNotValidatedException();
+            final String code = generator.nextToken();
+            currentUser.setRequestingPassword(true);
+            currentUser.setConfirmationCode(code);
+            final Long userId = userRepository.save(currentUser).getId();
+            try {
+                sendPasswordResetEmail(email, userId, code);
+            } catch (MessagingException e) {
+                currentUser = userRepository.findOne(userId);
+                currentUser.setRequestingPassword(false);
+                currentUser.setConfirmationCode(null);
+                userRepository.save(currentUser);
+                throw new EmailTransmissionFailed();
+            }
+        } else
+            throw new UserNotFoundException();
+    }
+
+    @GetMapping("reset")
+    public String resetPage(@RequestParam Long userId, @RequestParam String code, Model model) {
+        model.addAttribute("link", "http://" + hostAddress + "/register/reset?userId=" + userId + "&code=" + code);
+        return "resetPasswordPage";
+    }
+
+    @PostMapping("reset") @ResponseBody
+    public void resetPassword(@RequestParam Long userId, @RequestParam String code, @RequestBody IUAUser user)
+            throws UserNotFoundException, InvalidTokenException, InvalidDataException {
+
+        final IUAUser currentUser = userRepository.findOne(userId);
+        if (currentUser == null)
+            throw new UserNotFoundException();
+        if (!currentUser.isRequestingPassword())
+            throw new UserNotFoundException();
+        if (!currentUser.getConfirmationCode().equals(code))
+            throw new InvalidTokenException();
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty())
+            throw new InvalidDataException("Password invalid.");
+
+        currentUser.setRequestingPassword(false);
+        currentUser.setConfirmationCode(null);
+        currentUser.setPassword(user.getPassword());
+        System.out.println(userRepository.save(currentUser).getPassword());
+    }
+
+    private void sendPasswordResetEmail(String email, Long userId, String code)
+            throws MessagingException {
+
+        final String emailUserName = System.getenv("EMAIL_USERNAME");
+        final String emailPassword = System.getenv("EMAIL_PASSWORD");
+        final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
+        final String link = "http://" + hostAddress + "/register/reset?userId=" + userId + "&code=" + code;
+        final InputStream resource = this.getClass().getResourceAsStream(resetPasswordEmail);
+        final String content;
+
+        if (resource != null) {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+            final StringBuilder emailContent = new StringBuilder("");
+            reader.lines().forEach(emailContent::append);
+            content = emailContent.toString().replace("${link}", link);
+        } else
+            content = "Click <a href=\"" + link + "\">here</a> to reset your IUA user password.";
+
+        client.sendMail(email, "IUA Password Reset", content);
+    }
+
     private void sendAuthorisationCode(String email, Long userId, String code)
             throws MessagingException {
 
         final String emailUserName = System.getenv("EMAIL_USERNAME");
         final String emailPassword = System.getenv("EMAIL_PASSWORD");
         final EmailClient client = new EmailClient(emailUserName, emailPassword, emailServer, emailPort);
-        final String link = "http://" + hostAddress + "/register?userId=" + userId + "&code=" + code;
+        final String link = "http://" + hostAddress + "/register/activate?userId=" + userId + "&code=" + code;
         final InputStream resource = this.getClass().getResourceAsStream(confirmationEmail);
         final String content;
 
@@ -111,10 +193,9 @@ public class RegistrationController {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
             final StringBuilder emailContent = new StringBuilder("");
             reader.lines().forEach(emailContent::append);
-            content = emailContent.toString().replace("{link}", link);
-        } else {
+            content = emailContent.toString().replace("${link}", link);
+        } else
             content = "Click <a href=\"" + link + "\">here</a> to activate your IUA Account.";
-        }
 
         client.sendMail(email, "Confirm your IUA Account", content);
     }

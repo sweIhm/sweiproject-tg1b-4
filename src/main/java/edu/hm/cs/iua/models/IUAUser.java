@@ -15,6 +15,7 @@ public class IUAUser {
     private String name;
     private String password;
     private boolean isValidated;
+    private boolean isRequestingPassword;
     private String confirmationCode;
 
     public IUAUser() {}
@@ -24,6 +25,7 @@ public class IUAUser {
         this.email = email;
         this.password = password;
         this.isValidated = false;
+        this.isRequestingPassword = false;
         this.confirmationCode = confirmationCode;
     }
 
@@ -65,6 +67,14 @@ public class IUAUser {
 
     public void setValidated(boolean validated) {
         isValidated = validated;
+    }
+
+    public boolean isRequestingPassword() {
+        return isRequestingPassword;
+    }
+
+    public void setRequestingPassword(boolean requestingPassword) {
+        this.isRequestingPassword = requestingPassword;
     }
 
     public String getConfirmationCode() {

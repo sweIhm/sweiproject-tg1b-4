@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +53,28 @@ public class UserController {
         if (user == null || !user.isValidated())
             throw new UserNotFoundException();
         return user.getProfile();
+    }
+
+    @PutMapping("{id}")
+    public void updateUser(@PathVariable Long id, @RequestParam Long user, @RequestParam String token, @RequestBody IUAUser input)
+            throws UnauthorizedException, InvalidTokenException, InvalidDataException {
+
+        if (!user.equals(id))
+            throw new UnauthorizedException();
+        tokenRepository.verify(user, token);
+
+        final IUAUser currentUser = userRepository.findOne(id);
+        if (input.getName() != null)
+            if (input.getName().trim().isEmpty())
+                throw new InvalidDataException("Name invalid.");
+            else
+                currentUser.setName(input.getName());
+        if (input.getPassword() != null)
+            if (input.getPassword().trim().isEmpty())
+                throw new InvalidDataException("Password invalid.");
+            else
+                currentUser.setPassword(input.getPassword());
+            userRepository.save(currentUser);
     }
 
     @GetMapping("{id}/picture")

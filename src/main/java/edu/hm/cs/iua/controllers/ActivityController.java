@@ -81,6 +81,7 @@ public class ActivityController {
         activityRepository.verify(id, user);
 
         activityRepository.delete(id);
+        storageService.delete("activity_" + id + ".png");
     }
 
     @PutMapping("{id}")
