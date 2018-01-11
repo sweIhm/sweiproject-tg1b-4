@@ -137,7 +137,7 @@ public class RegistrationController {
 
     @GetMapping("reset")
     public String resetPage(@RequestParam Long userId, @RequestParam String code, Model model) {
-        model.addAttribute("link", "http://" + hostAddress + "/register/reset?userId=" + userId + CODE_PARAMETER + code);
+        model.addAttribute("link", PROTOCOLL + hostAddress + "/register/reset?userId=" + userId + CODE_PARAMETER + code);
         return "resetPasswordPage";
     }
 
