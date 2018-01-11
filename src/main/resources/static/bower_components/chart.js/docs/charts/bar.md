@@ -49,7 +49,7 @@ A bar chart provides a way of showing data values represented as vertical bars. 
         }
     }
 }
-{% endchartjs %}
+
 
 ## Example Usage
 ```javascript
