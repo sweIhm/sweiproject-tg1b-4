@@ -30,7 +30,7 @@
                 </md-input-container>
                 <md-input-container>
                     <label>Category:</label>
-                    <md-select ng-model="activity.category" tabindex="3">
+                    <md-select ng-model="activity.category" tabindex="3" ng-disabled="true">
                         <md-option value="None"><em>None</em></md-option>
                         <md-option value="Official">Official</md-option>
                     </md-select>
@@ -44,7 +44,7 @@
                         <input ng-model="activity.capacity" type="number" placeholder="Capacity:" min="0" tabindex="5">
                     </md-input-container>
                 </div>
-                <md-checkbox ng-model="activity.allowComments" aria-label="Add Activity Checkbox" tabindex="6">
+                <md-checkbox ng-model="activity.allowComments" aria-label="Add Activity Checkbox" tabindex="6" ng-disabled="true">
                     Disable comments
                 </md-checkbox>
                 <div style="display: flow-root;">

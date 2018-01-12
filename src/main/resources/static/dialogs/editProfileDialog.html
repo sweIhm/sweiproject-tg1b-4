@@ -1,5 +1,5 @@
 <md-dialog aria-label="Edit Profile" style="min-width: 35%;">
-    <form id="edit_profile_form" ng-submit="edit()">
+    <form id="edit_profile_form" name="edit_profile_form" ng-submit="edit()">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Edit profile</h2>
@@ -23,6 +23,7 @@
                     </md-progress-circular>
                     <md-icon ng-hide="upload_finished" class="material-icons" aria-label="Upload finished"> check </md-icon>
                 </div>
+                <span>If you want to change your name, enter a new name<br>and enter your current password and confirm it.</span>
                 <md-input-container>
                     <input ng-model="profile.name" name="profile_name" type="text" placeholder="Name:" md-autofocus tabindex="1" required
                            ng-trim="false" pattern="^[A-Za-z0-9_]+" ng-pattern=/^[A-Za-z0-9_]+$/>
@@ -32,14 +33,7 @@
                         <div ng-message="nameAlreadyTaken">This name is already taken!</div>
                     </div>
                 </md-input-container>
-                <md-input-container>
-                    <input ng-model="profile.email" name="profile_email" type="email" placeholder="E-Mail:" tabindex="2" required>
-                    <div ng-messages="edit_profile_form.profile_email.$error" role="alert">
-                        <div ng-message="required">This is required!</div>
-                        <div ng-message="noHMorCalEmail">E-Mail does not end with @hm.edu or @calpoly.edu!</div>
-                        <div ng-message="emailAlreadyExists">This e-mail is already associated with another account!</div>
-                    </div>
-                </md-input-container>
+                <span>If you want to change your password, enter a new<br>password and confirm it.</span>
                 <md-input-container>
                     <input ng-model="profile.password" name="profile_password" type="password" placeholder="Password:" tabindex="3"
                            required minlength="10" ng-pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/>

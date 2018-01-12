@@ -716,7 +716,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     'http://localhost:8080/register/request_reset?email=' + login.email :
                     heroku_address + '/register/request_reset?email=' + login.email)
             };
-            $http(getRequest).then(function (response) {
+            $http(getRequest).then(function () {
                 $mdToast.show(
                     $mdToast.simple()
                         .textContent('An e-mail with a password reset link was send to your address.')
@@ -775,9 +775,7 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }
             };
             $scope.registration_in_progress = false;
-            $http(postRequest).then(function (response) {
-                //...
-            }).then(function () {
+            $http(postRequest).then(function () {
                 $scope.registration_in_progress = true;
                 $scope.cancel();
                 $mdToast.show(
@@ -858,7 +856,31 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
             $mdDialog.cancel();
         };
         $scope.edit = function() {
-            //...
+            if ($scope.profile.password !== $scope.profile.passwordConfirm) {
+                $scope.edit_profile_form.profile_password_confirm.$setValidity('password', false);
+                return;
+            } else {
+                $scope.edit_profile_form.profile_password_confirm.$setValidity('password', true);
+            }
+            var putRequest = {
+                method : 'PUT',
+                url: (window.location.hostname === 'localhost' ?
+                    'http://localhost:8080/user/' + $scope.profile.id + '?user=' + current_user.id + '&token=' + current_user.key:
+                    heroku_address + '/user/' + $scope.profile.id + '?user=' + current_user.id + '&token=' + current_user.key),
+                data: {
+                    name: $scope.profile.name,
+                    password: $scope.profile.password
+                }
+            };
+            $http(putRequest).then(function () {
+                $scope.cancel();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('User details edited.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
+            });
         };
         $scope.edit_pic = function() {
             if ($scope.profile_picture_upload === undefined) {
