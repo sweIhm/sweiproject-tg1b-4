@@ -1,3 +1,4 @@
 # global settings
+theme: jekyll-theme-tactile
 title: "International University App"
 description: "All news around MUAS and CalPoly"
