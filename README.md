@@ -8,3 +8,12 @@
 
 ### IUA - International University App
 An activity metering solution will give an easy visual overview on the collaborative activities at Cal Poly (California Polytechnic State University, San Luis Obispo) and MUAS (Munich University of Applied Sciences).
+
+
+#### When you build this project
+
+You'll build a service that will accept CRUD (HTTP POST, HTTP GET, HTTP PUT, HTTP DELETE) requests at:
+```
+http://localhost:8080/activity
+```
+and respond with a JSON representation of an activity (title, text, tags) or a list of activities.
