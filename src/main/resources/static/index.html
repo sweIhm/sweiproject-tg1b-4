@@ -199,7 +199,8 @@
     </div>
     <div hide-xs ng-hide="search_type_user" class="cards" layout="row" layout-wrap style="margin-top: 64px;">
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 20px;"
-                 ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities:search_text_field | userActivities:search_type_useract:current_user.id"
+                 ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities:search_text_field
+                            | userActivities:search_type_useract:current_user.id"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar style="padding-top: 6px;">
@@ -273,7 +274,8 @@
     <div hide-gt-xs ng-hide="search_type_user" class="cards" layout-wrap style="margin-top: 56px;">
         <!--layout="row" can be removed to make the cards fit the whole screen on mobile-->
         <md-card style="max-width: 400px; min-width: 300px; margin-bottom: 0; margin-left: auto; margin-right: auto;"
-                 ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities: search_text_field"
+                 ng-repeat="activity in activities | orderBy: reverse:true | searchFieldActivities:search_text_field
+                            | userActivities:search_type_useract:current_user.id"
                  ng-click="open_activity_details_dialog(activity, $event)">
             <md-card-header>
                 <md-card-avatar style="padding-top: 6px;">
