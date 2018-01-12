@@ -703,8 +703,50 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                 }
             });
         };
-        $scope.forgot_password = function () {
-            //Handle forgot password
+        $scope.forgot_password = function (login) {
+            $scope.login_form.login_email.$setValidity('emailNeededForReset', true);
+            $scope.login_form.login_email.$setValidity('required', true);
+            if (login.email === undefined) {
+                $scope.login_form.login_email.$setValidity('emailNeededForReset', false);
+                return;
+            }
+            var getRequest = {
+                method : 'GET',
+                url: (window.location.hostname === 'localhost' ?
+                    'http://localhost:8080/register/request_reset?email=' + login.email :
+                    heroku_address + '/register/request_reset?email=' + login.email)
+            };
+            $http(getRequest).then(function (response) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('An e-mail with a password reset link was send to your address.')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
+            }).catch(function (error) {
+                var error_data = error.data;
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.login.UserNotValidatedException") {
+                    if (error_data.message !== "No message available") {
+                        $scope.login.timeTillUnlock = error_data.message;
+                        $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', false);
+                    } else {
+                        $scope.login_form.login_email.$setValidity('accNotConfirmedWithResend', false);
+                    }
+                } else {
+                    $scope.login_form.login_email.$setValidity('accNotConfirmedLocked', true);
+                    $scope.login_form.login_email.$setValidity('accNotConfirmedWithResend', true);
+                }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.login.UserNotFoundException") {
+                    $scope.login_form.login_email.$setValidity('emailNotExists', false);
+                } else {
+                    $scope.login_form.login_email.$setValidity('emailNotExists', true);
+                }
+                if (error_data.exception.toString() === "edu.hm.cs.iua.exceptions.registration.EmailTransmissionFailed") {
+                    $scope.login_form.login_email.$setValidity('sendEmailFailed', false)
+                } else {
+                    $scope.login_form.login_email.$setValidity('sendEmailFailed', true)
+                }
+            });
         }
     }
 

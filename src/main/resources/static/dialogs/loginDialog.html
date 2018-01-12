@@ -11,7 +11,7 @@
         </md-toolbar>
         <md-dialog-content style="min-width: 100px">
             <div class="md-dialog-content" layout="column">
-                <md-input-container id="login_input_container">
+                <md-input-container>
                     <input ng-model="login.email" name="login_email" type="email" placeholder="E-Mail:" md-autofocus tabindex="1" required>
                     <div ng-messages="login_form.login_email.$error" role="alert">
                         <div ng-message="required">This is required!</div>
@@ -20,9 +20,10 @@
                             Please use the link in the e-mail we send you, to confirm your account.</div>
                         <div ng-message="accNotConfirmedLocked">Your account is not confirmed.
                             Resend of the confirmation e-mail possible in {{login.timeTillUnlock}} minutes.</div>
+                        <div ng-message="emailNeededForReset">Enter your e-mail in order to be able to reset your password.</div>
                     </div>
                 </md-input-container>
-                <md-input-container id="login_input_container">
+                <md-input-container>
                     <input ng-model="login.password" name="login_password" type="password" placeholder="Password:" tabindex="2" required>
                     <div ng-messages="login_form.login_password.$error" role="alert">
                         <div ng-message="required">This is required!</div>
@@ -36,7 +37,7 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-fab md-mini md-primary" ng-click="forgot_password()" tabindex="5">
+            <md-button class="md-fab md-mini md-primary" ng-click="forgot_password(login)" tabindex="5">
                 <md-tooltip md-direction="top">Forgot password ?</md-tooltip>
                 <md-icon md-font-set="material-icons"> help_outline </md-icon>
             </md-button>
