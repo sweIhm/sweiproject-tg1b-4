@@ -4,7 +4,7 @@
             <div class="md-toolbar-tools">
                 <h2>Edit profile</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" type="reset" ng-click="cancel()" tabindex="5">
+                <md-button class="md-icon-button" type="reset" ng-click="cancel()" tabindex="7">
                     <md-icon class="material-icons" aria-label="Close dialog"> close </md-icon>
                 </md-button>
             </div>
@@ -23,7 +23,7 @@
                     </md-progress-circular>
                     <md-icon ng-hide="upload_finished" class="material-icons" aria-label="Upload finished"> check </md-icon>
                 </div>
-                <span>If you want to change your name, enter a new name<br>and enter your current password and confirm it.</span>
+                <span>If you want to change your name, enter a new name<br>and enter your current password.</span>
                 <md-input-container>
                     <input ng-model="profile.name" name="profile_name" type="text" placeholder="Name:" md-autofocus tabindex="1" required
                            ng-trim="false" pattern="^[A-Za-z0-9_]+" ng-pattern=/^[A-Za-z0-9_]+$/>
@@ -33,10 +33,17 @@
                         <div ng-message="nameAlreadyTaken">This name is already taken!</div>
                     </div>
                 </md-input-container>
-                <span>If you want to change your password, enter a new<br>password and confirm it.</span>
                 <md-input-container>
-                    <input ng-model="profile.password" name="profile_password" type="password" placeholder="Password:" tabindex="3"
-                           required minlength="10" ng-pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/>
+                    <input ng-model="profile.passwordOld" name="profile_password_old" type="password"
+                           placeholder="Current password:" tabindex="3" required/>
+                    <div ng-messages="edit_profile_form.profile_password_old.$error" role="alert">
+                        <div ng-message="required">This is required!</div>
+                    </div>
+                </md-input-container>
+                <span>If you want to change your password, enter your current<br> and a new password and confirm it.</span>
+                <md-input-container>
+                    <input ng-model="profile.password" name="profile_password" type="password" placeholder="New password:" tabindex="4"
+                           minlength="10" ng-pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/>
                     <div ng-messages="edit_profile_form.profile_password.$error" role="alert">
                         <div ng-message="required">This is required!</div>
                         <div ng-message="pattern">Password needs at least one uppercase-,one lowercase letter and one number.</div>
@@ -44,7 +51,7 @@
                 </md-input-container>
                 <md-input-container>
                     <input ng-model="profile.passwordConfirm" name="profile_password_confirm" type="password"
-                           placeholder="Confirm password:" tabindex="4" required>
+                           placeholder="Confirm new password:" tabindex="5">
                     <div ng-messages="edit_profile_form.profile_password_confirm.$error" role="alert">
                         <div ng-message="required">This is required!</div>
                         <div ng-message="password">Passwords don't match!</div>
@@ -54,7 +61,7 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-raised md-accent " type="submit" tabindex="4">
+            <md-button class="md-raised md-accent " type="submit" tabindex="6">
                 Save
             </md-button>
         </md-dialog-actions>

@@ -869,7 +869,8 @@ app.controller('IUACtrl', function($scope, $http, $mdSidenav, $mdDialog, $mdToas
                     heroku_address + '/user/' + $scope.profile.id + '?user=' + current_user.id + '&token=' + current_user.key),
                 data: {
                     name: $scope.profile.name,
-                    password: $scope.profile.password
+                    password: $scope.profile.password,
+                    confirmationCode: $scope.profile.passwordOld
                 }
             };
             $http(putRequest).then(function () {
