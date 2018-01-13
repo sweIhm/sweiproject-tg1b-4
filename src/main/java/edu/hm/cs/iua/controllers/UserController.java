@@ -64,17 +64,22 @@ public class UserController {
         tokenRepository.verify(user, token);
 
         final IUAUser currentUser = userRepository.findOne(id);
-        if (input.getName() != null)
+
+        if (input.getName() != null) {
             if (input.getName().trim().isEmpty())
                 throw new InvalidDataException("Name invalid.");
-            else
-                currentUser.setName(input.getName());
-        if (input.getPassword() != null)
+            currentUser.setName(input.getName());
+        }
+
+        if (input.getPassword() != null) {
             if (input.getPassword().trim().isEmpty())
                 throw new InvalidDataException("Password invalid.");
-            else
-                currentUser.setPassword(input.getPassword());
-            userRepository.save(currentUser);
+            if (!currentUser.getPassword().equals(input.getConfirmationCode()))
+                throw new UnauthorizedException("Old password not valid.");
+            currentUser.setPassword(input.getPassword());
+        }
+
+        userRepository.save(currentUser);
     }
 
     @GetMapping("{id}/picture")

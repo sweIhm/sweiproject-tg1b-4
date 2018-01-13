@@ -10,5 +10,8 @@ public class UnauthorizedException extends AuthException {
         super();
     }
 
+    public UnauthorizedException(String message) {
+        super(message);
+    }
 
 }
