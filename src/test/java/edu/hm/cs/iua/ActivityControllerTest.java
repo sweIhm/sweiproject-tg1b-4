@@ -15,11 +15,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -130,6 +136,27 @@ public class ActivityControllerTest {
     }
 
     @Test
+    public void createActivityZoneDateTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00Z+1.00\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isOk());
+
+        Assert.assertEquals(1, activityRepository.count());
+        for (Activity activity: activityRepository.findAll()) {
+            Assert.assertEquals("Title", activity.getTitle());
+            Assert.assertEquals("Text", activity.getText());
+            String[] want = {"Tag1", "Tag2"};
+            Assert.assertArrayEquals(want, activity.getTags());
+            Assert.assertEquals("2018-01-10T23:00", activity.getDueDate());
+            Assert.assertEquals(new Integer(16), activity.getCapacity());
+        }
+    }
+
+    @Test
     public void createActivityTestInvalidUserID() throws Exception {
         mockMvc.perform(
                 post("/activity")
@@ -138,6 +165,19 @@ public class ActivityControllerTest {
                         .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
                         .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void createActivityTestInvalidDate() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"INVALID\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
 
         Assert.assertEquals(0, activityRepository.count());
     }
@@ -168,7 +208,7 @@ public class ActivityControllerTest {
                 post("/activity")
                         .param("user", userID.toString())
                         .param("token", token)
-                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title2\",\"dueDate\":\"2017-01-10T22:00\",\"capacity\":16}")
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title2\",\"dueDate\":\"2017-01-10T22:00\"}")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -377,6 +417,110 @@ public class ActivityControllerTest {
         // delete unauthorized user
         userRepository.delete(user.getId());
         tokenRepository.delete(user.getId());
+    }
+
+    @Test
+    public void getDefaultPictureTest() throws Exception {
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(get("/activity/" + id + "/picture"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.IMAGE_PNG))
+                .andExpect(content().bytes(Files.readAllBytes(Paths.get(new ClassPathResource("activity_default_picture.png").getURI()))));
+    }
+
+    @Test
+    public void uploadPictureTest() throws Exception {
+        final Long id = activityRepository.save(new Activity("2018-01-10T23:00", userID, "Title", "Text", "Tags")).getId();
+
+        mockMvc.perform(fileUpload("/activity/" + id + "/picture")
+                    .file(new MockMultipartFile("file", "test.png", MediaType.IMAGE_PNG_VALUE,
+                            Files.readAllBytes(Paths.get(new ClassPathResource("activity_default_picture.png").getURI()))))
+                    .param("user", userID.toString())
+                    .param("token", token))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.IMAGE_PNG))
+                .andExpect(content().bytes(Files.readAllBytes(Paths.get(new ClassPathResource("activity_default_picture.png").getURI()))));
+
+        Assert.assertTrue(Paths.get("data/activity_" + id.toString() + ".png").toFile().exists());
+    }
+
+    @Test
+    public void invalidActivityTitleMissingTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void invalidActivityTitleEmptyTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void invalidActivityTextMissingTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void invalidActivityTextEmptyTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"2018-01-10T23:00\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void invalidActivityDueDateMissingTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
+    }
+
+    @Test
+    public void invalidActivityDueDateEmptyTest() throws Exception {
+        mockMvc.perform(
+                post("/activity")
+                        .param("user", userID.toString())
+                        .param("token", token)
+                        .content("{\"text\":\"Text\",\"tags\":[\"Tag1\",\"Tag2\"],\"title\":\"Title\",\"dueDate\":\"\",\"capacity\":16}")
+                        .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(0, activityRepository.count());
     }
 
 }
