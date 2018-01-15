@@ -343,6 +343,243 @@ public class RegistrationControllerTest {
         // Finally we make the evil shit undone
         field.set(RegistrationController.class, oldValue);
         field.setAccessible(false);
+}
+
+    @Test
+    public void activateValidatedUserTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "test@hm.edu", "test", null);
+        testUser.setValidated(true);
+        final Long userID = userRepository.save(testUser).getId();
+
+        mockMvc.perform(get("/register/activate")
+                .param("userId", userID.toString())
+                .param("code", "CODE"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("activationSuccessful"));
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("test@hm.edu", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals(null, user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+        }
+    }
+
+    @Test
+    public void requestPasswordResetTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", null);
+        testUser.setValidated(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(get("/register/request_reset")
+                .param("email", "information.iua@gmail.com"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void resetPageTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        testUser.setRequestingPassword(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(get("/register/reset")
+                .param("userId", userId.toString())
+                .param("code", "CODE"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("resetPasswordPage"));
+    }
+
+    @Test
+    public void resetPasswordTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        testUser.setRequestingPassword(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(post("/register/reset")
+                .param("userId", userId.toString())
+                .param("code", "CODE").contentType(MediaType.APPLICATION_JSON).content("{\"password\":\"new_test\",\"confirmationCode\":\"test\"}"))
+                .andExpect(status().isOk());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("information.iua@gmail.com", user.getEmail());
+            Assert.assertEquals("new_test", user.getPassword());
+            Assert.assertEquals(null, user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+            Assert.assertEquals(false, user.isRequestingPassword());
+        }
+    }
+
+    @Test
+    public void resetPasswordUserNotFoundTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        testUser.setRequestingPassword(true);
+        userRepository.save(testUser);
+
+        mockMvc.perform(post("/register/reset")
+                .param("userId", "9999")
+                .param("code", "CODE").contentType(MediaType.APPLICATION_JSON).content("{\"password\":\"new_test\",\"confirmationCode\":\"test\"}"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("information.iua@gmail.com", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+            Assert.assertEquals(true, user.isRequestingPassword());
+        }
+    }
+
+    @Test
+    public void resetPasswordUserNotRequestingPasswordTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(post("/register/reset")
+                .param("userId", userId.toString())
+                .param("code", "CODE").contentType(MediaType.APPLICATION_JSON).content("{\"password\":\"new_test\",\"confirmationCode\":\"test\"}"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("information.iua@gmail.com", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+            Assert.assertEquals(false, user.isRequestingPassword());
+        }
+    }
+
+    @Test
+    public void resetPasswordInvalidCodeTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        testUser.setRequestingPassword(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(post("/register/reset")
+                .param("userId", userId.toString())
+                .param("code", "INVALID").contentType(MediaType.APPLICATION_JSON).content("{\"password\":\"new_test\",\"confirmationCode\":\"test\"}"))
+                .andExpect(status().isUnauthorized());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("information.iua@gmail.com", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+            Assert.assertEquals(true, user.isRequestingPassword());
+        }
+    }
+
+    @Test
+    public void resetPasswordInvalidNullTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        testUser.setRequestingPassword(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(post("/register/reset")
+                .param("userId", userId.toString())
+                .param("code", "CODE").contentType(MediaType.APPLICATION_JSON).content("{\"confirmationCode\":\"test\"}"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("information.iua@gmail.com", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+            Assert.assertEquals(true, user.isRequestingPassword());
+        }
+    }
+
+    @Test
+    public void resetPasswordInvalidEmptyTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE");
+        testUser.setValidated(true);
+        testUser.setRequestingPassword(true);
+        final Long userId = userRepository.save(testUser).getId();
+
+        mockMvc.perform(post("/register/reset")
+                .param("userId", userId.toString())
+                .param("code", "CODE").contentType(MediaType.APPLICATION_JSON).content("{\"password\":\"\",\"confirmationCode\":\"test\"}"))
+                .andExpect(status().isBadRequest());
+
+        Assert.assertEquals(1, userRepository.count());
+        for (IUAUser user: userRepository.findAll()) {
+            Assert.assertEquals("TestUser", user.getName());
+            Assert.assertEquals("information.iua@gmail.com", user.getEmail());
+            Assert.assertEquals("test", user.getPassword());
+            Assert.assertEquals("CODE", user.getConfirmationCode());
+            Assert.assertEquals(true, user.isValidated());
+            Assert.assertEquals(true, user.isRequestingPassword());
+        }
+    }
+
+    @Test
+    public void requestPasswordResetFallBackMailTest() throws Exception {
+        // Again some black magic, so we can test the reset password email fallback
+        final Field field = RegistrationController.class.getDeclaredField("resetPassEmail");
+        field.setAccessible(true);
+        // store the old value, because we will need it later
+        final Object oldValue = field.get(RegistrationController.class);
+        field.set(null, "/not/found");
+
+
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", null);
+        testUser.setValidated(true);
+        userRepository.save(testUser);
+
+        mockMvc.perform(get("/register/request_reset")
+                .param("email", "information.iua@gmail.com"))
+                .andExpect(status().isOk());
+
+        // Finally we make the evil shit undone (again)
+        field.set(RegistrationController.class, oldValue);
+        field.setAccessible(false);
+    }
+
+    @Test
+    public void requestPasswordResetUnvalidatedUserTest() throws Exception {
+        userRepository.save(new IUAUser("TestUser", "information.iua@gmail.com", "test", "CODE"));
+        mockMvc.perform(get("/register/request_reset")
+                .param("email", "information.iua@gmail.com"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void requestPasswordResetUserNotFoundTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "information.iua@gmail.com", "test", null);
+        testUser.setValidated(true);
+        userRepository.save(testUser);
+
+        mockMvc.perform(get("/register/request_reset")
+                .param("email", "test@hm.edu"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void requestPasswordEmailTransmissionFailedTest() throws Exception {
+        final IUAUser testUser = new IUAUser("TestUser", "invalid", "test", null);
+        testUser.setValidated(true);
+        userRepository.save(testUser);
+
+        mockMvc.perform(get("/register/request_reset")
+                .param("email", "invalid"))
+                .andExpect(status().isBadRequest());
     }
 
 }
