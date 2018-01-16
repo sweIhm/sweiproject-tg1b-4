@@ -9,6 +9,21 @@
 ### IUA - International University App
 An activity metering solution will give an easy visual overview on the collaborative activities at Cal Poly (California Polytechnic State University, San Luis Obispo) and MUAS (Munich University of Applied Sciences).
 
+---
+
+_Click here for:_
+
+* [Project instruction](https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/docs/ProjectProposal_ActivityMeter.pdf)
+
+* [Basic example Project](https://github.com/sweIhm/sweiproject-example)
+
+* [Wiki](https://github.com/sweIhm/sweiproject-tg1b-4/wiki)
+
+* [GitHub generated Page](https://sweihm.github.io/sweiproject-tg1b-4/)
+
+* [Mainsite](https://iua.herokuapp.com/)
+
+---
 
 #### When you build this project
 
@@ -17,3 +32,9 @@ You'll build a service that will accept CRUD (HTTP POST, HTTP GET, HTTP PUT, HTT
 http://localhost:8080/activity
 ```
 and respond with a JSON representation of an activity (title, text, tags) or a list of activities.
+
+
+---
+###### We use Angular-Material, Angular-JS, Moment-JS, Chart-JS, Google Material Icons and Google Roboto font and Cookie Consent by Insites.
+###### © 2017 All rights reserved.
+---
