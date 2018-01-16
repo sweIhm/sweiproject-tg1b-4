@@ -2,6 +2,7 @@
 
 ## Structure
  * Linkings
+ * Systemidea
  * Project introduction
 
 ---
@@ -16,9 +17,27 @@ _Click here for:_
 
 * [Wiki](https://github.com/sweIhm/sweiproject-tg1b-4/wiki)
 
-* [GitHub generated Page](https://sweihm.github.io/sweiproject-tg1b-4/)
+* [Project repository](https://github.com/sweIhm/sweiproject-tg1b-4)
 
 * [Mainsite](https://iua.herokuapp.com/)
+
+---
+
+## Sytemidea
+**Feature List:**
+* User Login
+* Create Account
+* Cal Poly and MUAS Newsfeed
+* Activity Feed, anonymous 
+* Ability to post activities with name, category, departments, Tags
+* Get E-Mail to Post which you created
+* Search function: sort after categories, by Tag, by time, etc...
+* Contact button to find important people for every University
+* Possibility to get access to specified groups
+* Event maps and visualizations
+
+**Requirements:**
+* Javasprict-enabled browser (e.g. Smartphone)
 
 ---
 
