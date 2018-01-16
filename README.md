@@ -11,17 +11,17 @@ An activity metering solution will give an easy visual overview on the collabora
 
 ---
 
-Click here for:
+_Click here for:_
 
-[Project instruction](https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/docs/ProjectProposal_ActivityMeter.pdf)
+* [Project instruction](https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/docs/ProjectProposal_ActivityMeter.pdf)
 
-[Basic example Project](https://github.com/sweIhm/sweiproject-example)
+* [Basic example Project](https://github.com/sweIhm/sweiproject-example)
 
-[Wiki](https://github.com/sweIhm/sweiproject-tg1b-4/wiki)
+* [Wiki](https://github.com/sweIhm/sweiproject-tg1b-4/wiki)
 
-[GitHub generated Page](https://sweihm.github.io/sweiproject-tg1b-4/)
+* [GitHub generated Page](https://sweihm.github.io/sweiproject-tg1b-4/)
 
-[Mainsite](https://iua.herokuapp.com/)
+* [Mainsite](https://iua.herokuapp.com/)
 
 ---
 
