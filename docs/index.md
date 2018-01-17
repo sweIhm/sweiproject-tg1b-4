@@ -41,6 +41,11 @@ _Click here for:_
 
 ---
 
+Website
+![](https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/docs/Homesite.PNG)
+
+---
+
 ### Project introduction
 
 An activity metering solution will give an easy visual overview on the collaborative activities at Cal Poly (California Polytechnic State University, San Luis Obispo) and MUAS (Munich University of Applied Sciences).
