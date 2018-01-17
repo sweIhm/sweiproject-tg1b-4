@@ -42,7 +42,8 @@ _Click here for:_
 ---
 
 Website
-![](https://github.com/sweIhm/sweiproject-tg1b-4/blob/master/docs/Homesite.PNG)
+
+<img src="Homesite.PNG"/>
 
 ---
 
