@@ -1,3 +1,5 @@
+<title>Backend - Architecture and Design</title>
+
 # Package Sturcture Overview
 * controllers
 * models
