@@ -56,6 +56,7 @@ This package contains all exception thrown by our application. Most of the excep
 * login
 * registration
 * storage
+
 Each of the subpackages contain a abstract exception, from which all other expection are derived. e.g.: `InvalidPasswordException` extends `LoginException` extends `IUAExceptions`
 
 ***
